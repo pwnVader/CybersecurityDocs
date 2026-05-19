@@ -181,3 +181,93 @@ body::after {
   --sl-nav-height: 3.5rem !important;
 }
 
+/* ==========================================================================
+   Mejoras de Experiencia en la Barra Lateral Izquierda (Tree-view Index)
+   ========================================================================== */
+
+/* Líneas guía verticales para listas anidadas (Efecto IDE / Treeview) */
+.sidebar-content ul ul {
+  margin-left: 0.8rem !important;
+  padding-left: 0.4rem !important;
+  border-left: 1px dashed rgba(203, 166, 247, 0.15) !important; /* Mauve translúcido */
+  transition: border-color 0.25s ease;
+}
+
+/* Al hacer hover en un contenedor de la barra lateral, resaltamos sutilmente sus líneas guía */
+.sidebar-content li:hover > ul {
+  border-left-color: rgba(203, 166, 247, 0.4) !important;
+}
+
+/* Estilos de enlaces para que se sientan como entradas de consola interactivas */
+.sidebar-content a {
+  padding-left: 0.6rem !important;
+  border-radius: 4px !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative;
+}
+
+/* Desplazamiento a la derecha y color brillante en hover */
+.sidebar-content a:hover {
+  background-color: rgba(203, 166, 247, 0.06) !important; /* Mauve hover bg */
+  color: #ddb6f9 !important; /* Mauve brillante */
+  padding-left: 0.9rem !important;
+}
+
+/* Cursor interactivo de terminal (">") que se desliza al hacer hover */
+.sidebar-content a::before {
+  content: ">";
+  position: absolute;
+  left: 0px;
+  opacity: 0;
+  color: #cba6f7;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.sidebar-content a:hover::before {
+  opacity: 1;
+  left: 5px;
+}
+
+/* Destacado activo con glow de neón en el enlace actualmente abierto */
+.sidebar-content a[aria-current="page"] {
+  background-color: rgba(203, 166, 247, 0.12) !important;
+  color: #cba6f7 !important;
+  font-weight: 700 !important;
+  border-left: 3px solid #cba6f7 !important;
+  border-radius: 0 4px 4px 0 !important;
+  padding-left: 0.9rem !important;
+  box-shadow: inset 4px 0 10px rgba(203, 166, 247, 0.08);
+}
+
+.sidebar-content a[aria-current="page"]::before {
+  opacity: 1;
+  left: 5px;
+}
+
+/* Diseño premium de títulos colapsables (details / summary) */
+.sidebar-content details summary {
+  padding: 0.35rem 0.5rem !important;
+  border-radius: 4px !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer;
+}
+
+.sidebar-content details summary:hover {
+  background-color: rgba(49, 50, 68, 0.6) !important; /* Surface0 */
+  color: #cba6f7 !important;
+}
+
+/* Títulos de Categoría Superior en mayúsculas cibernéticas */
+.sidebar-content > ul > li > details > summary {
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #cdd6f4 !important; /* Text */
+  border-bottom: 1px solid rgba(69, 71, 90, 0.4) !important; /* Surface1 */
+  margin-bottom: 0.3rem !important;
+  padding-bottom: 0.4rem !important;
+}
+
+

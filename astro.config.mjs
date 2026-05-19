@@ -26,52 +26,64 @@ export default defineConfig({
       sidebar: [
         {
           label: '🏴‍☠️ Writeups',
+          collapsed: true,
           items: [
             {
               label: 'HackTheBox',
-              items: [{ autogenerate: { directory: 'writeups/hackthebox' } }]
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'writeups/hackthebox', collapsed: true } }]
             },
             {
               label: 'TryHackMe',
-              items: [{ autogenerate: { directory: 'writeups/tryhackme' } }]
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'writeups/tryhackme', collapsed: true } }]
             },
             {
               label: 'CTFs',
-              items: [{ autogenerate: { directory: 'writeups/ctfs' } }]
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'writeups/ctfs', collapsed: true } }]
             }
           ]
         },
         {
           label: '🎓 HTB Academy',
+          collapsed: true,
           items: [
             {
               label: 'CPTS (Certified PenTester)',
-              items: [{ autogenerate: { directory: 'writeups/htb-academy/cpts' } }]
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'writeups/htb-academy/cpts', collapsed: true } }]
             },
             {
               label: 'COAE (Certified Offense AI)',
-              items: [{ autogenerate: { directory: 'writeups/htb-academy/coae' } }]
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'writeups/htb-academy/coae', collapsed: true } }]
             }
           ]
         },
         {
           label: '📖 Metodologías',
+          collapsed: true,
           items: [
             {
               label: 'Reconocimiento y Enumeración',
-              items: [{ autogenerate: { directory: 'metodologias/recon' } }]
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'metodologias/recon', collapsed: true } }]
             },
             {
               label: 'Explotación Web',
-              items: [{ autogenerate: { directory: 'metodologias/web' } }]
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'metodologias/web', collapsed: true } }]
             },
             {
               label: 'Active Directory / Red Teams',
-              items: [{ autogenerate: { directory: 'metodologias/active-directory' } }]
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'metodologias/active-directory', collapsed: true } }]
             },
             {
               label: 'Escalada de Privilegios',
-              items: [{ autogenerate: { directory: 'metodologias/privesc' } }]
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'metodologias/privesc', collapsed: true } }]
             }
           ]
         }
