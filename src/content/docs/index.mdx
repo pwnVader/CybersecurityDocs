@@ -1,0 +1,119 @@
+---
+title: docs.pwnvader.com
+description: Nexo de documentación ofensiva, writeups de máquinas y metodologías de pentesting por PwnVader.
+template: splash
+hero:
+  title: docs.pwnvader.com
+  tagline: "root@pwnvader:~# cat welcome.txt"
+  image:
+    file: ../../assets/logo.svg
+  actions:
+    - text: Explorar Writeups
+      link: /writeups/hackthebox/placeholder/
+      icon: right-arrow
+      variant: primary
+    - text: Metodologías
+      link: /metodologias/recon/placeholder/
+      icon: open-book
+      variant: minimal
+---
+
+import { Icon } from 'astro-icon/components';
+
+<div class="cyber-terminal my-8">
+  <div class="cyber-terminal-header">
+    <div class="cyber-terminal-buttons">
+      <span class="cyber-terminal-dot red"></span>
+      <span class="cyber-terminal-dot yellow"></span>
+      <span class="cyber-terminal-dot green"></span>
+    </div>
+    <span class="text-xs text-cat-overlay">pwnvader@offsec-console:~</span>
+    <span class="text-xs text-cat-overlay font-mono">SSH v2.4</span>
+  </div>
+  <div class="p-6 font-mono text-sm leading-relaxed space-y-4">
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs border-b border-cat-surface1 pb-4 text-cat-subtext">
+      <div><span class="text-cat-mauve font-bold">SYSTEM:</span> PwnVader Tactical Documentation v1.0.0</div>
+      <div><span class="text-cat-mauve font-bold">DATABASE:</span> OffSec Writeups & Cheatsheets</div>
+      <div><span class="text-cat-mauve font-bold">STATUS:</span> <span class="text-cat-green animate-pulse font-bold">● OPERATIONAL</span></div>
+      <div><span class="text-cat-mauve font-bold">TARGETS:</span> HackTheBox, TryHackMe, Active Directory, CTFs</div>
+    </div>
+
+    <div class="pt-2">
+      <span class="text-cat-mauve font-bold">root@pwnvader</span><span class="text-cat-text">:</span><span class="text-cat-sapphire font-bold">~</span><span class="text-cat-text"># cat welcome.txt</span>
+    </div>
+
+    <div class="text-cat-text pl-4 border-l-2 border-cat-mauve space-y-2">
+      <p>
+        Bienvenido al centro neurálgico de documentación ofensiva de <strong>PwnVader</strong>.
+      </p>
+      <p>
+        Este sitio está diseñado para consolidar metodologías de ataque estructuradas, técnicas de evasión de defensas, auditorías de Active Directory y writeups técnicos detallados de máquinas vulnerables.
+      </p>
+      <p>
+        Toda la información expuesta aquí tiene fines estrictamente educativos y profesionales en ciberseguridad defensiva y ofensiva.
+      </p>
+    </div>
+
+    <div class="pt-2 flex items-center gap-1">
+      <span class="text-cat-mauve font-bold">root@pwnvader</span><span class="text-cat-text">:</span><span class="text-cat-sapphire font-bold">~</span><span class="text-cat-text"># </span>
+      <span class="w-2.5 h-5 bg-cat-mauve animate-[pulse_1s_infinite]"></span>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
+  
+  <a href="/writeups/hackthebox/placeholder/" class="block p-6 bg-cat-mantle border border-cat-surface1 rounded-lg hover:border-cat-mauve transition duration-300 group shadow-md relative overflow-hidden">
+    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+      <Icon name="tech-htb" class="w-16 h-16 text-cat-mauve" />
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <Icon name="tech-htb" class="w-8 h-8 text-cat-mauve group-hover:scale-110 transition duration-300" />
+      <h3 class="text-lg font-bold text-cat-text group-hover:text-cat-mauve transition duration-300">🏴‍☠️ Writeups HTB / THM</h3>
+    </div>
+    <p class="text-sm text-cat-subtext leading-relaxed">
+      Resoluciones analíticas e intrusiones detalladas de laboratorios y salas competitivas. Subdividido por sistemas operativos y niveles de dificultad.
+    </p>
+  </a>
+
+  <a href="/metodologias/recon/placeholder/" class="block p-6 bg-cat-mantle border border-cat-surface1 rounded-lg hover:border-cat-mauve transition duration-300 group shadow-md relative overflow-hidden">
+    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+      <Icon name="tech-kali" class="w-16 h-16 text-cat-mauve" />
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <Icon name="tech-kali" class="w-8 h-8 text-cat-mauve group-hover:scale-110 transition duration-300" />
+      <h3 class="text-lg font-bold text-cat-text group-hover:text-cat-mauve transition duration-300">📖 Metodologías y Cheatsheets</h3>
+    </div>
+    <p class="text-sm text-cat-subtext leading-relaxed">
+      Guías estructuradas de enumeración, OWASP Top 10, escalada de privilegios y ataques avanzados a infraestructuras corporativas Windows y Active Directory.
+    </p>
+  </a>
+
+  <a href="https://hacking.pwnvader.com" target="_blank" rel="noopener noreferrer" class="block p-6 bg-cat-mantle border border-cat-surface1 rounded-lg hover:border-cat-sapphire transition duration-300 group shadow-md relative overflow-hidden">
+    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+      <Icon name="tech-bash" class="w-16 h-16 text-cat-sapphire" />
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <Icon name="tech-bash" class="w-8 h-8 text-cat-sapphire group-hover:scale-110 transition duration-300" />
+      <h3 class="text-lg font-bold text-cat-text group-hover:text-cat-sapphire transition duration-300">🛠️ Laboratorio de Herramientas</h3>
+    </div>
+    <p class="text-sm text-cat-subtext leading-relaxed">
+      Acceso directo a mi arsenal de scripts ofensivos, exploits y utilidades de automatización personalizadas para auditorías de seguridad.
+    </p>
+  </a>
+
+  <a href="https://pwnvader.com" target="_blank" rel="noopener noreferrer" class="block p-6 bg-cat-mantle border border-cat-surface1 rounded-lg hover:border-cat-sapphire transition duration-300 group shadow-md relative overflow-hidden">
+    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+      <Icon name="social-github" class="w-16 h-16 text-cat-sapphire" />
+    </div>
+    <div class="flex items-center gap-3 mb-3">
+      <Icon name="social-github" class="w-8 h-8 text-cat-sapphire group-hover:scale-110 transition duration-300" />
+      <h3 class="text-lg font-bold text-cat-text group-hover:text-cat-sapphire transition duration-300">🌐 Nexo Principal (pwnvader.com)</h3>
+    </div>
+    <p class="text-sm text-cat-subtext leading-relaxed">
+      Retorno al sitio web principal. Conoce más sobre mis proyectos de investigación, servicios profesionales de Red Teaming y auditorías.
+    </p>
+  </a>
+
+</div>

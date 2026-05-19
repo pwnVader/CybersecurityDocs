@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cat-crust: #11111b;
+  --color-cat-mantle: #181825;
+  --color-cat-surface0: #313244;
+  --color-cat-surface1: #45475a;
+  --color-cat-text: #cdd6f4;
+  --color-cat-subtext: #bac2de;
+  --color-cat-overlay: #7f849c;
+  --color-cat-mauve: #cba6f7;
+  --color-cat-sapphire: #74c7ec;
+  --color-cat-green: #a6e3a1;
+}
+
+/* Forzar el tema de color Catppuccin Mocha oscuro en Starlight sin importar el tema */
+:root,
+[data-theme="light"],
+[data-theme="dark"] {
+  /* Tipografía JetBrains Mono para todo el sitio */
+  --sl-font-sans: 'JetBrains Mono', monospace;
+  --sl-font-mono: 'JetBrains Mono', monospace;
+
+  /* Colores Principales del Tema Catppuccin Mocha */
+  --sl-color-bg: #11111b;          /* bg-base (Crust) */
+  --sl-color-bg-sidebar: #181825;  /* bg-surface (Mantle) */
+  --sl-color-bg-nav: #11111b;      /* bg-base (Crust) */
+  --sl-color-border: #45475a;      /* border (Surface1) */
+
+  /* Colores de Escala de Grises y Textos */
+  --sl-color-text: #bac2de;        /* text-secondary (Subtext1) */
+  --sl-color-text-accent: #cba6f7; /* text-accent (Mauve) */
+  --sl-color-text-muted: #7f849c;  /* text-muted (Overlay1) */
+  
+  --sl-color-gray-1: #cdd6f4;      /* text-primary (Text) - Más brillante */
+  --sl-color-gray-2: #bac2de;      /* Subtext1 */
+  --sl-color-gray-3: #a6adc8;      /* Subtext0 */
+  --sl-color-gray-4: #585b70;      /* Surface2 */
+  --sl-color-gray-5: #45475a;      /* Surface1 (Bordes e inactivos) */
+  --sl-color-gray-6: #313244;      /* Surface0 (Elevated / Hovers / Background panels) */
+  --sl-color-gray-7: #1e1e2e;      /* Base - Fondo intermedio */
+
+  /* Colores de Realce (Accent) */
+  --sl-color-accent: #cba6f7;      /* Catppuccin Mauve (Morado Claro) */
+  --sl-color-accent-high: #ddb6f9; /* Mauve Claro (Brillante) */
+  --sl-color-accent-low: #313244;  /* Surface0 */
+  
+  /* Botones, Enlaces e Indicadores */
+  --sl-color-text-invert: #11111b; /* Texto sobre fondo accent (Crust) */
+  --sl-color-asides-note: #74c7ec; /* Sapphire para notas informativas */
+  --sl-color-asides-tip: #cba6f7;  /* Mauve para tips */
+  --sl-color-asides-caution: #f9e2af; /* Yellow para advertencias */
+  --sl-color-asides-danger: #f38ba8;  /* Red para peligros */
+}
+
+/* Ajustes globales de scrollbar y contenedor */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #11111b;
+}
+::-webkit-scrollbar-thumb {
+  background: #313244;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cba6f7;
+}
+
+/* Efecto CRT Monitor de Fósforo Retro */
+body {
+  position: relative;
+  overflow-x: hidden;
+  background-color: #11111b !important;
+}
+
+/* Líneas de Escaneo */
+body::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: repeating-linear-gradient(
+    rgba(18, 16, 16, 0) 0px,
+    rgba(18, 16, 16, 0) 2px,
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+  z-index: 99999;
+  pointer-events: none;
+}
+
+/* Haz de Radar (Línea de barrido vertical) */
+body::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(203, 166, 247, 0.06); /* Mauve ultra-translúcido */
+  box-shadow: 0 0 10px rgba(203, 166, 247, 0.2);
+  z-index: 99998;
+  pointer-events: none;
+  animation: scan-beam 8s linear infinite;
+}
+
+@keyframes scan-beam {
+  0% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(110vh);
+  }
+}
+
+/* Efecto decorativo cyber terminal */
+.cyber-terminal {
+  background-color: #181825;
+  border: 1px solid #45475a;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 0 15px rgba(203, 166, 247, 0.08);
+}
+
+.cyber-terminal-header {
+  background-color: #313244;
+  border-bottom: 1px solid #45475a;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  color: #7f849c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cyber-terminal-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.cyber-terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.cyber-terminal-dot.red { background-color: #f38ba8; }
+.cyber-terminal-dot.yellow { background-color: #f9e2af; }
+.cyber-terminal-dot.green { background-color: #a6e3a1; }
+
+/* ==========================================================================
+   Ajustes de Compactación y Espaciado (Hero & Header)
+   ========================================================================== */
+
+/* Reducir el espacio vertical arriba/abajo del Hero en la página de inicio (splash) */
+.hero {
+  padding-block: clamp(1.5rem, 3.5vw, 2.5rem) !important;
+}
+
+/* Reducir la separación interna entre texto e imagen en el Hero */
+.hero > .sl-flex {
+  gap: 1.5rem !important;
+}
+
+/* Reducir el tamaño máximo de la imagen del Hero para que sea más compacta */
+.hero img {
+  max-height: 220px !important;
+  margin: 0 auto !important;
+}
+
+/* Ajustes para compactar el encabezado global (Navbar) */
+.header {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+/* Si existe un margen superior para empujar el contenido principal, ajustarlo */
+:root {
+  --sl-nav-height: 3.5rem !important;
+}
+
