@@ -73,15 +73,17 @@ function copyRecursive(src, dest) {
       copyRecursive(path.join(src, file), path.join(dest, file));
     }
   } else {
+    const ext = path.extname(src).toLowerCase();
     const filename = path.basename(src);
     let finalDest = dest;
     
-    // Convertir README.md a index.md para enrutamiento limpio
+    // Convertir README.md o README.mdx a index.md o index.mdx para enrutamiento limpio
     if (filename.toLowerCase() === 'readme.md') {
       finalDest = path.join(path.dirname(dest), 'index.md');
+    } else if (filename.toLowerCase() === 'readme.mdx') {
+      finalDest = path.join(path.dirname(dest), 'index.mdx');
     }
     
-    const ext = path.extname(src).toLowerCase();
     if (ext === '.md' || ext === '.mdx') {
       processAndCopyMarkdown(src, finalDest);
     } else {
