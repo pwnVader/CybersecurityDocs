@@ -1,0 +1,72 @@
+# ==========================================
+# docs.pwnvader.com — robots.txt
+# ==========================================
+
+# ------------------------------------------
+# 1. Permitir indexación a buscadores tradicionales
+# ------------------------------------------
+User-agent: *
+Allow: /
+Disallow: /reference/example/
+Disallow: /guides/example/
+
+# ------------------------------------------
+# 2. Bloquear bots de Inteligencia Artificial y Entrenamiento de LLMs
+# ------------------------------------------
+# OpenAI (ChatGPT / GPT-4 / GPT-5)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+# Anthropic (Claude / Claude 3)
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Anthropic-ai
+Disallow: /
+
+# Google Gemini (Excluye entrenamiento, mantiene búsqueda tradicional)
+User-agent: Google-Extended
+Disallow: /
+
+# Common Crawl (Base de datos abierta usada por casi todas las IAs)
+User-agent: CCBot
+Disallow: /
+
+# Cohere (LLMs corporativos)
+User-agent: cohere-ai
+Disallow: /
+
+# Perplexity AI (Buscador generativo)
+User-agent: PerplexityBot
+Disallow: /
+
+# You.com (Buscador generativo)
+User-agent: YouBot
+Disallow: /
+
+# ByteDance (TikTok / Doubao LLM scraper)
+User-agent: Bytespider
+Disallow: /
+
+# Meta (Llama Models / Meta AI)
+User-agent: FacebookBot
+Disallow: /
+
+# Omgili & Diffbot (Extractores y raspadores de IA masivos)
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: Omgili
+User-agent: Diffbot
+Disallow: /
+
+# ------------------------------------------
+# 3. Mapa del Sitio
+# ------------------------------------------
+Sitemap: https://docs.pwnvader.com/sitemap-index.xml
