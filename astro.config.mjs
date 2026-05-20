@@ -27,11 +27,15 @@ export default defineConfig({
       head: [
         {
           tag: 'meta',
-          attrs: { property: 'og:title', content: 'pwnVader Docs | Offensive Security Writeups, Methodologies & Guides' }
+          attrs: { name: 'description', content: 'Base de conocimiento técnico, writeups de entornos corporativos y documentación metodológica de explotación.' }
         },
         {
           tag: 'meta',
-          attrs: { property: 'og:description', content: 'Explore professional cybersecurity writeups, HackTheBox/TryHackMe solutions, HTB Academy (CPTS/COAE) certification guides, and advanced offensive security methodologies by pwnVader.' }
+          attrs: { property: 'og:title', content: 'Knowledge Base | Metodologías de Seguridad Ofensiva' }
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:description', content: 'Base de conocimiento técnico, writeups de entornos corporativos y documentación metodológica de explotación.' }
         },
         {
           tag: 'meta',
@@ -39,7 +43,7 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { property: 'og:url', content: 'https://docs.pwnvader.com/' }
+          attrs: { property: 'og:url', content: 'https://docs.pwnvader.com' }
         },
         {
           tag: 'meta',
@@ -51,11 +55,11 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { name: 'twitter:title', content: 'pwnVader Docs | Offensive Security Writeups, Methodologies & Guides' }
+          attrs: { name: 'twitter:title', content: 'Knowledge Base | Metodologías de Seguridad Ofensiva' }
         },
         {
           tag: 'meta',
-          attrs: { name: 'twitter:description', content: 'Explore professional cybersecurity writeups, HackTheBox/TryHackMe solutions, HTB Academy (CPTS/COAE) certification guides, and advanced offensive security methodologies by pwnVader.' }
+          attrs: { name: 'twitter:description', content: 'Base de conocimiento técnico, writeups de entornos corporativos y documentación metodológica de explotación.' }
         },
         {
           tag: 'meta',
@@ -63,7 +67,7 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { name: 'twitter:url', content: 'https://docs.pwnvader.com/' }
+          attrs: { name: 'twitter:url', content: 'https://docs.pwnvader.com' }
         }
       ],
       sidebar: [
