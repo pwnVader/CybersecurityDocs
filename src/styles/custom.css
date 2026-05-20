@@ -304,4 +304,77 @@ header.header > div.header {
   padding-bottom: 0.4rem !important;
 }
 
+/* ==========================================================================
+   Responsive — Tablet & Mobile
+   --------------------------------------------------------------------------
+   Las cheatsheets contienen ~150 tablas Markdown que Starlight renderiza
+   como `<table>` plano (sin wrapper de scroll). En viewport <768px desbordan
+   el ancho y rompen el layout. Estos bloques aplican scroll horizontal
+   contenido a tablas + ajustes de header/hero para móvil.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Tablas: scroll horizontal dentro del propio elemento, sin reventar viewport */
+  .sl-markdown-content table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Indicador visual sutil de scroll en el borde derecho */
+    background:
+      linear-gradient(to right, var(--sl-color-bg) 30%, rgba(17,17,27,0)),
+      linear-gradient(to right, rgba(17,17,27,0), var(--sl-color-bg) 70%) 100% 0,
+      radial-gradient(farthest-side at 0 50%, rgba(203,166,247,0.18), rgba(0,0,0,0)),
+      radial-gradient(farthest-side at 100% 50%, rgba(203,166,247,0.18), rgba(0,0,0,0)) 100% 0;
+    background-repeat: no-repeat;
+    background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+    background-attachment: local, local, scroll, scroll;
+  }
+
+  /* Cuerpo y celdas: padding más compacto, código no fuerza nowrap a la fila */
+  .sl-markdown-content table th,
+  .sl-markdown-content table td {
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Cyber-terminal de la home: scroll horizontal si alguna línea de prompt
+     no cabe (paths largos, URLs, etc.) — el contenedor mantiene su look */
+  .cyber-terminal {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hero del splash: reducir imagen y padding vertical para no monopolizar
+     el fold inicial en móvil */
+  .hero {
+    padding-block: 1rem !important;
+  }
+  .hero img {
+    max-height: 140px !important;
+  }
+  .hero > .sl-flex {
+    gap: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Header total más bajo en pantallas muy pequeñas (≤iPhone SE) para
+     liberar verticales al contenido principal */
+  :root {
+    --sl-nav-height: 4.5rem !important;
+  }
+
+  /* Asides de "Ecosistema pwnVader" en el body de las metodologías:
+     reducir padding y forzar que el contenido respire en columnas únicas */
+  .sl-markdown-content aside {
+    padding: 0.75rem !important;
+  }
+
+  /* Cyber-terminal: tipografía ligeramente menor para que quepa más prompt */
+  .cyber-terminal {
+    font-size: 0.78rem;
+  }
+}
+
 

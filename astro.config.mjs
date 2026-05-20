@@ -142,24 +142,44 @@ export default defineConfig({
           collapsed: true,
           items: [
             {
-              label: 'Reconocimiento y Enumeración',
+              label: '📋 Fundamentos & Metodología',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'metodologias/fundamentos', collapsed: true } }]
+            },
+            {
+              label: '🔍 Recon & Enumeración',
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/recon', collapsed: true } }]
             },
             {
-              label: 'Explotación Web',
+              label: '🌐 Web Exploitation',
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/web', collapsed: true } }]
             },
             {
-              label: 'Active Directory / Red Teams',
+              label: '⚙️ Servicios Comunes',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'metodologias/servicios', collapsed: true } }]
+            },
+            {
+              label: '💻 Exploitation & Foothold',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'metodologias/exploitation', collapsed: true } }]
+            },
+            {
+              label: '🔐 Escalada de Privilegios',
+              collapsed: true,
+              items: [{ autogenerate: { directory: 'metodologias/privesc', collapsed: true } }]
+            },
+            {
+              label: '🏢 Active Directory',
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/active-directory', collapsed: true } }]
             },
             {
-              label: 'Escalada de Privilegios',
+              label: '🔀 Pivoting & Lateral',
               collapsed: true,
-              items: [{ autogenerate: { directory: 'metodologias/privesc', collapsed: true } }]
+              items: [{ autogenerate: { directory: 'metodologias/pivoting', collapsed: true } }]
             }
           ]
         }
