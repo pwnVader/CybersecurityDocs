@@ -10,6 +10,17 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'docs.pwnvader.com',
+      defaultLocale: 'root',
+      locales: {
+        root: {
+          label: 'Español',
+          lang: 'es',
+        },
+        en: {
+          label: 'English',
+          lang: 'en',
+        },
+      },
       logo: {
         src: './src/assets/logo.svg',
       },
@@ -102,20 +113,32 @@ export default defineConfig({
       sidebar: [
         {
           label: '🏴‍☠️ Writeups',
+          translations: {
+            en: '🏴‍☠️ Writeups',
+          },
           collapsed: true,
           items: [
             {
               label: 'HackTheBox',
+              translations: {
+                en: 'HackTheBox',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'writeups/hackthebox', collapsed: true } }]
             },
             {
               label: 'TryHackMe',
+              translations: {
+                en: 'TryHackMe',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'writeups/tryhackme', collapsed: true } }]
             },
             {
               label: 'CTFs',
+              translations: {
+                en: 'CTFs',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'writeups/ctfs', collapsed: true } }]
             }
@@ -123,15 +146,24 @@ export default defineConfig({
         },
         {
           label: '🎓 HTB Academy',
+          translations: {
+            en: '🎓 HTB Academy',
+          },
           collapsed: true,
           items: [
             {
               label: 'CPTS (Certified PenTester)',
+              translations: {
+                en: 'CPTS (Certified PenTester)',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'writeups/htb-academy/cpts', collapsed: true } }]
             },
             {
               label: 'COAE (Certified Offense AI)',
+              translations: {
+                en: 'COAE (Certified Offense AI)',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'writeups/htb-academy/coae', collapsed: true } }]
             }
@@ -139,45 +171,72 @@ export default defineConfig({
         },
         {
           label: '📖 Metodologías',
+          translations: {
+            en: '📖 Methodologies',
+          },
           collapsed: true,
           items: [
             {
               label: '📋 Fundamentos & Metodología',
+              translations: {
+                en: '📋 Fundamentals & Methodology',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/fundamentos', collapsed: true } }]
             },
             {
               label: '🔍 Recon & Enumeración',
+              translations: {
+                en: '🔍 Recon & Enumeration',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/recon', collapsed: true } }]
             },
             {
               label: '🌐 Web Exploitation',
+              translations: {
+                en: '🌐 Web Exploitation',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/web', collapsed: true } }]
             },
             {
               label: '⚙️ Servicios Comunes',
+              translations: {
+                en: '⚙️ Common Services',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/servicios', collapsed: true } }]
             },
             {
               label: '💻 Exploitation & Foothold',
+              translations: {
+                en: '💻 Exploitation & Foothold',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/exploitation', collapsed: true } }]
             },
             {
               label: '🔐 Escalada de Privilegios',
+              translations: {
+                en: '🔐 Privilege Escalation',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/privesc', collapsed: true } }]
             },
             {
               label: '🏢 Active Directory',
+              translations: {
+                en: '🏢 Active Directory',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/active-directory', collapsed: true } }]
             },
             {
               label: '🔀 Pivoting & Lateral',
+              translations: {
+                en: '🔀 Pivoting & Lateral Movement',
+              },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/pivoting', collapsed: true } }]
             }
