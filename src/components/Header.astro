@@ -1,0 +1,35 @@
+---
+import Default from '@astrojs/starlight/components/Header.astro';
+import type { Props } from '@astrojs/starlight/props';
+
+const links = [
+  { href: 'https://pwnvader.com',         label: 'portfolio', current: false },
+  { href: 'https://hacking.pwnvader.com', label: 'lab',       current: false },
+  { href: 'https://docs.pwnvader.com',    label: 'docs',      current: true  },
+];
+---
+<div class="ecosystem-strip border-b border-white/10 bg-black/30 backdrop-blur text-[10px] font-mono uppercase tracking-[0.18em] w-full z-50">
+  <div class="mx-auto max-w-6xl px-4 py-1.5 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-4 text-zinc-500">
+      <span class="hidden sm:inline">ecosystem</span>
+      <span class="text-zinc-700 hidden sm:inline">·</span>
+      {links.map(l => l.current ? (
+        <span class="text-orange-400 border-b border-orange-400 pb-0.5 -mb-0.5 font-bold">{l.label}</span>
+      ) : (
+        <a href={l.href} target="_blank" rel="noopener" class="hover:text-orange-400 transition-colors">{l.label}</a>
+      ))}
+    </div>
+    <span class="hidden md:inline text-zinc-700">pwnVader · v1</span>
+  </div>
+</div>
+
+<div class="default-header-container w-full flex-1 flex items-center">
+  <Default {...Astro.props} />
+</div>
+
+<style>
+  /* Asegurar que el contenedor por defecto llene el espacio restante */
+  .default-header-container {
+    height: 3.5rem;
+  }
+</style>

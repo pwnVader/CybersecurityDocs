@@ -40,3 +40,25 @@ whoami /priv
 :: Servicios con rutas sin comillas (Unquoted Service Paths)
 wmic service get name,displayname,pathname,startmode | findstr /i "auto" | findstr /i /v "c:\windows\\" | findstr /i /v """
 ```
+
+---
+
+## 🛠️ Herramientas Relacionadas (Ecosistema pwnVader)
+
+<aside class="my-6 p-4 rounded-md border-l-4 border-orange-400 bg-orange-500/5 not-prose">
+  <div class="text-[10px] uppercase tracking-widest text-orange-400 font-bold mb-1">
+    Herramienta · hacking.pwnvader.com
+  </div>
+  <p class="text-sm text-zinc-300">
+    ¿Conseguiste dumpear las credenciales locales de SAM o hashes del directorio activo? Rompe las contraseñas offline diseñando patrones en el <a href="https://hacking.pwnvader.com/cracking/hashcat" class="text-orange-400 hover:underline">Hashcat Mask Builder</a>.
+  </p>
+</aside>
+
+<aside class="my-6 p-4 rounded-md border-l-4 border-orange-400 bg-orange-500/5 not-prose">
+  <div class="text-[10px] uppercase tracking-widest text-orange-400 font-bold mb-1">
+    Herramienta · hacking.pwnvader.com
+  </div>
+  <p class="text-sm text-zinc-300">
+    ¿Necesitas codificar exploits en Base64, Hex o URL para transferir archivos al host objetivo sin activar detecciones? Usa la suite <a href="https://hacking.pwnvader.com/encoders/recipes" class="text-orange-400 hover:underline">Encoders & Decoders Recipes</a>.
+  </p>
+</aside>

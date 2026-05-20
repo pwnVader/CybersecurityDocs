@@ -23,6 +23,7 @@ export default defineConfig({
       ],
       components: {
         ThemeSelect: './src/components/ThemeSelect.astro',
+        Header: './src/components/Header.astro',
       },
       head: [
         {

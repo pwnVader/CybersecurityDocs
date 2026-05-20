@@ -170,15 +170,17 @@ body::after {
   margin: 0 auto !important;
 }
 
-/* Ajustes para compactar el encabezado global (Navbar) */
+/* Ajustes para el encabezado global (Navbar + Ecosystem Strip) */
 .header {
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
+  padding: 0 !important;
+  height: 5.25rem !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-/* Si existe un margen superior para empujar el contenido principal, ajustarlo */
+/* Ajustar el margen superior para empujar el contenido principal */
 :root {
-  --sl-nav-height: 3.5rem !important;
+  --sl-nav-height: 5.25rem !important;
 }
 
 /* ==========================================================================
