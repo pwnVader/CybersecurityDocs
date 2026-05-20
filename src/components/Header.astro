@@ -14,9 +14,9 @@ const links = [
       <span class="hidden sm:inline">ecosystem</span>
       <span class="text-zinc-700 hidden sm:inline">·</span>
       {links.map(l => l.current ? (
-        <span class="text-orange-400 border-b border-orange-400 pb-0.5 -mb-0.5 font-bold">{l.label}</span>
+        <span class="text-[#cba6f7] border-b border-[#cba6f7] pb-0.5 -mb-0.5 font-bold">{l.label}</span>
       ) : (
-        <a href={l.href} target="_blank" rel="noopener" class="hover:text-orange-400 transition-colors">{l.label}</a>
+        <a href={l.href} target="_blank" rel="noopener" class="hover:text-[#cba6f7] transition-colors">{l.label}</a>
       ))}
     </div>
     <span class="hidden md:inline text-zinc-700">pwnVader · v1</span>

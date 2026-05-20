@@ -45,20 +45,20 @@ wmic service get name,displayname,pathname,startmode | findstr /i "auto" | finds
 
 ## 🛠️ Herramientas Relacionadas (Ecosistema pwnVader)
 
-<aside class="my-6 p-4 rounded-md border-l-4 border-orange-400 bg-orange-500/5 not-prose">
-  <div class="text-[10px] uppercase tracking-widest text-orange-400 font-bold mb-1">
+<aside class="my-6 p-4 rounded-md border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose">
+  <div class="text-[10px] uppercase tracking-widest text-[#cba6f7] font-bold mb-1">
     Herramienta · hacking.pwnvader.com
   </div>
   <p class="text-sm text-zinc-300">
-    ¿Conseguiste dumpear las credenciales locales de SAM o hashes del directorio activo? Rompe las contraseñas offline diseñando patrones en el <a href="https://hacking.pwnvader.com/cracking/hashcat" class="text-orange-400 hover:underline">Hashcat Mask Builder</a>.
+    ¿Conseguiste dumpear las credenciales locales de SAM o hashes del directorio activo? Rompe las contraseñas offline diseñando patrones en el <a href="https://hacking.pwnvader.com/cracking/hashcat" class="text-[#cba6f7] hover:underline">Hashcat Mask Builder</a>.
   </p>
 </aside>
 
-<aside class="my-6 p-4 rounded-md border-l-4 border-orange-400 bg-orange-500/5 not-prose">
-  <div class="text-[10px] uppercase tracking-widest text-orange-400 font-bold mb-1">
+<aside class="my-6 p-4 rounded-md border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose">
+  <div class="text-[10px] uppercase tracking-widest text-[#cba6f7] font-bold mb-1">
     Herramienta · hacking.pwnvader.com
   </div>
   <p class="text-sm text-zinc-300">
-    ¿Necesitas codificar exploits en Base64, Hex o URL para transferir archivos al host objetivo sin activar detecciones? Usa la suite <a href="https://hacking.pwnvader.com/encoders/recipes" class="text-orange-400 hover:underline">Encoders & Decoders Recipes</a>.
+    ¿Necesitas codificar exploits en Base64, Hex o URL para transferir archivos al host objetivo sin activar detecciones? Usa la suite <a href="https://hacking.pwnvader.com/encoders/recipes" class="text-[#cba6f7] hover:underline">Encoders & Decoders Recipes</a>.
   </p>
 </aside>

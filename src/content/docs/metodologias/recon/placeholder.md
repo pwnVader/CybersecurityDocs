@@ -45,20 +45,20 @@ wfuzz -c -f subdomains.json -w /usr/share/wordlists/SecLists/Discovery/DNS/subdo
 
 ## 🛠️ Herramientas Relacionadas (Ecosistema pwnVader)
 
-<aside class="my-6 p-4 rounded-md border-l-4 border-orange-400 bg-orange-500/5 not-prose">
-  <div class="text-[10px] uppercase tracking-widest text-orange-400 font-bold mb-1">
+<aside class="my-6 p-4 rounded-md border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose">
+  <div class="text-[10px] uppercase tracking-widest text-[#cba6f7] font-bold mb-1">
     Herramienta · hacking.pwnvader.com
   </div>
   <p class="text-sm text-zinc-300">
-    ¿Encontraste una inyección de comandos o RCE durante el escaneo? Genera al instante payloads de reverse shells en Bash, Netcat, PowerShell o Python utilizando el <a href="https://hacking.pwnvader.com/networking/revshell" class="text-orange-400 hover:underline">Reverse Shell Generator</a>.
+    ¿Encontraste una inyección de comandos o RCE durante el escaneo? Genera al instante payloads de reverse shells en Bash, Netcat, PowerShell o Python utilizando el <a href="https://hacking.pwnvader.com/networking/revshell" class="text-[#cba6f7] hover:underline">Reverse Shell Generator</a>.
   </p>
 </aside>
 
-<aside class="my-6 p-4 rounded-md border-l-4 border-orange-400 bg-orange-500/5 not-prose">
-  <div class="text-[10px] uppercase tracking-widest text-orange-400 font-bold mb-1">
+<aside class="my-6 p-4 rounded-md border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose">
+  <div class="text-[10px] uppercase tracking-widest text-[#cba6f7] font-bold mb-1">
     Herramienta · hacking.pwnvader.com
   </div>
   <p class="text-sm text-zinc-300">
-    ¿El sitio detectado utiliza un gestor de contenidos? Audita de forma 100% pasiva y segura sin disparar alarmas con el <a href="https://hacking.pwnvader.com/cms/wordpress" class="text-orange-400 hover:underline">WordPress Audit Tool</a>, <a href="https://hacking.pwnvader.com/cms/joomla" class="text-orange-400 hover:underline">Joomla Audit Tool</a> o <a href="https://hacking.pwnvader.com/cms/drupal" class="text-orange-400 hover:underline">Drupal Audit Tool</a>.
+    ¿El sitio detectado utiliza un gestor de contenidos? Audita de forma 100% pasiva y segura sin disparar alarmas con el <a href="https://hacking.pwnvader.com/cms/wordpress" class="text-[#cba6f7] hover:underline">WordPress Audit Tool</a>, <a href="https://hacking.pwnvader.com/cms/joomla" class="text-[#cba6f7] hover:underline">Joomla Audit Tool</a> o <a href="https://hacking.pwnvader.com/cms/drupal" class="text-[#cba6f7] hover:underline">Drupal Audit Tool</a>.
   </p>
 </aside>
