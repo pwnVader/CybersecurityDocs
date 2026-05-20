@@ -1,49 +1,42 @@
-# Starlight Starter Kit: Basics
+# docs.pwnvader.com — Centro de Documentación Táctica y Writeups
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+Repositorio oficial del centro neurálgico de documentación ofensiva y writeups técnicos de **pwnVader**. Este sitio centraliza metodologías de intrusión estructuradas, resoluciones detalladas de laboratorios (HackTheBox, TryHackMe, CTFs) y guías de preparación para certificaciones avanzadas de ciberseguridad ofensiva.
 
-```
-npm create astro@latest -- --template starlight
-```
+---
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🛠️ Arquitectura y Stack Tecnológico
 
-## 🚀 Project Structure
+El sitio se construye bajo un enfoque moderno de alto rendimiento estático (SSG) y diseño táctico de baja latencia:
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+- **Core**: [Astro v6](https://astro.build/) — Framework web optimizado para velocidad extrema y generación de sitios estáticos limpios.
+- **Engine**: [Starlight](https://starlight.astro.build/) — Plataforma de documentación técnica integrada con motor de búsqueda local en tiempo real ([Pagefind](https://pagefind.app/)).
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) — Sistema de estilos a medida con una interfaz oscura interactiva, fuentes monoespaciadas de alta fidelidad y detalles visuales adaptados a terminales de comandos.
+- **Formato**: [MDX](https://mdxjs.com/) — Markdown interactivo para la carga de componentes vectoriales dinámicos y sombras con glow de neón en logotipos oficiales.
+- **Procesamiento de Imagen**: [Sharp](https://sharp.pixelplumbing.com/) — Compresión y procesamiento adaptativo de capturas de pantalla de laboratorios y diagramas de red.
 
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
-```
+---
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+## 🪐 Navegación del Ecosistema pwnVader
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+Para garantizar la interconexión y fluidez de la infraestructura digital de pwnVader, el ecosistema se divide en tres pilares:
 
-Static assets, like favicons, can be placed in the `public/` directory.
+| Portal | Dominio Principal | Propósito Técnico |
+| :--- | :--- | :--- |
+| **Portafolio Principal** | [pwnvader.com](https://pwnvader.com) | Carta de presentación, proyectos destacados, perfil profesional e integraciones de actividad. |
+| **Laboratorio de Intrusión** | [hacking.pwnvader.com](https://hacking.pwnvader.com) | Consola interactiva, laboratorios activos, simulaciones y herramientas de explotación web en tiempo real. |
+| **Centro de Documentación** | [docs.pwnvader.com](https://docs.pwnvader.com) | *Este repositorio*. Biblioteca de writeups (HTB/THM), metodologías y apuntes de certificaciones (CPTS, COAE). |
 
-## 🧞 Commands
+---
 
-All commands are run from the root of the project, from a terminal:
+## ⚠️ Disclaimer / OPSEC
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Toda la información, writeups, scripts y metodologías expuestas en este repositorio e infraestructura digital asociada tienen **fines estrictamente educativos, de investigación y de auditoría de seguridad autorizada**.
 
-## 👀 Want to learn more?
+El uso no autorizado de estas técnicas para comprometer sistemas ajenos sin el consentimiento expreso y por escrito de los propietarios es ilegal y está sujeto a sanciones penales. El autor no se hace responsable por el mal uso o daños derivados de la aplicación de los contenidos aquí descritos.
 
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+---
+
+## ✉️ Contacto y Enlaces
+
+- **GitHub**: [github.com/pwnVader](https://github.com/pwnVader)
+- **LinkedIn**: [linkedin.com/in/pwnvader](https://linkedin.com/in/pwnvader)
