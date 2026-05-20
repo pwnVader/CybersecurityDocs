@@ -27,7 +27,16 @@ function ensureDirectoryExistence(filePath) {
   fs.mkdirSync(dirname);
 }
 
-function processFile(srcPath, destPath) {
+function processFile(srcPath, destPath, relativePath) {
+  // Comprobar si ya existe una traducción manual
+  if (fs.existsSync(destPath)) {
+    const existingContent = fs.readFileSync(destPath, 'utf8');
+    if (!existingContent.includes('Language Fallback · Contenido en Español')) {
+      console.log(`  - Preservando traducción manual: en/metodologias/${relativePath}`);
+      return;
+    }
+  }
+
   let content = fs.readFileSync(srcPath, 'utf8');
 
   // Separar frontmatter y body
@@ -67,17 +76,14 @@ function walk(dir, callback) {
 console.log('🔄 Sincronizando metodologías para localización en inglés...');
 
 if (fs.existsSync(srcDir)) {
-  // Limpiar destino viejo para evitar huerfanos
-  if (fs.existsSync(destDir)) {
-    fs.rmSync(destDir, { recursive: true, force: true });
+  if (!fs.existsSync(destDir)) {
+    fs.mkdirSync(destDir, { recursive: true });
   }
-  fs.mkdirSync(destDir, { recursive: true });
 
   walk(srcDir, (srcPath) => {
     const relativePath = path.relative(srcDir, srcPath);
     const destPath = path.join(destDir, relativePath);
-    processFile(srcPath, destPath);
-    console.log(`  ✓ Clonado con fallback: metodologias/${relativePath}`);
+    processFile(srcPath, destPath, relativePath);
   });
   console.log('✨ Sincronización de metodologías completada con éxito.');
 } else {

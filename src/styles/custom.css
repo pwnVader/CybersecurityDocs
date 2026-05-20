@@ -210,6 +210,53 @@ header.header > div.header {
 /* En páginas con sidebar, Starlight usa su CSS-grid nativo para alinear el
    título sobre la sidebar — NO lo tocamos para no romper esa alineación. */
 
+/* Definir las variables de ancho de barra lateral y columna principal en :root
+   para que puedan ser heredadas por la Ecosystem Strip, ya que Starlight las define
+   únicamente dentro del selector local de .header. */
+@media (min-width: 50rem) {
+  :root[data-has-sidebar] {
+    --__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
+    --__toc-width: var(--sl-sidebar-width);
+  }
+  :root[data-has-sidebar]:not([data-has-toc]) {
+    --__toc-width: 0rem;
+  }
+  :root[data-has-sidebar] {
+    --__sidebar-width: max(0rem, var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x));
+    --__main-column-fr: calc(
+      (
+          100% + var(--__sidebar-pad, 0rem) - var(--__toc-width) -
+            (2 * var(--__toc-width, var(--sl-nav-pad-x))) - var(--sl-content-inline-start, 0rem) -
+            var(--sl-content-width)
+      ) / 2
+    );
+  }
+}
+
+/* Alinear la Ecosystem Strip con el header nativo de Starlight en páginas con sidebar */
+:root[data-has-sidebar] .ecosystem-strip-inner {
+  max-width: none !important;
+  margin: 0 !important;
+  padding-inline: var(--sl-nav-pad-x, 1.5rem) !important;
+}
+
+@media (min-width: 50rem) {
+  :root[data-has-sidebar] .ecosystem-strip-inner {
+    display: grid !important;
+    grid-template-columns: minmax(calc(var(--__sidebar-width, 0rem) + max(0rem, var(--__main-column-fr, 0rem) - var(--sl-nav-gap, 0rem))), auto) 1fr auto !important;
+    align-items: center !important;
+  }
+
+  :root[data-has-sidebar] .ecosystem-strip-links {
+    grid-column: 1 !important;
+  }
+
+  :root[data-has-sidebar] .lang-selector-cyber {
+    grid-column: 3 !important;
+    justify-self: end !important;
+  }
+}
+
 /* Altura total reservada: 26px (strip) + 56px (header nativo) ≈ 5.25rem */
 :root {
   --sl-nav-height: 5.25rem !important;

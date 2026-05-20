@@ -84,7 +84,6 @@ dist/
 # Generados por el script de sincronización automática de writeups (docs.pwnvader.com)
 /src/content/docs/writeups/
 !/src/content/docs/writeups/.gitkeep
-/src/content/docs/en/metodologias/
 
 # Claude
 .claude/
