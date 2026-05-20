@@ -24,6 +24,48 @@ export default defineConfig({
       components: {
         ThemeSelect: './src/components/ThemeSelect.astro',
       },
+      head: [
+        {
+          tag: 'meta',
+          attrs: { property: 'og:title', content: 'pwnVader Docs | Offensive Security Writeups, Methodologies & Guides' }
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:description', content: 'Explore professional cybersecurity writeups, HackTheBox/TryHackMe solutions, HTB Academy (CPTS/COAE) certification guides, and advanced offensive security methodologies by pwnVader.' }
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:type', content: 'website' }
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:url', content: 'https://docs.pwnvader.com/' }
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:image', content: 'https://docs.pwnvader.com/og-image.png' }
+        },
+        {
+          tag: 'meta',
+          attrs: { name: 'twitter:card', content: 'summary_large_image' }
+        },
+        {
+          tag: 'meta',
+          attrs: { name: 'twitter:title', content: 'pwnVader Docs | Offensive Security Writeups, Methodologies & Guides' }
+        },
+        {
+          tag: 'meta',
+          attrs: { name: 'twitter:description', content: 'Explore professional cybersecurity writeups, HackTheBox/TryHackMe solutions, HTB Academy (CPTS/COAE) certification guides, and advanced offensive security methodologies by pwnVader.' }
+        },
+        {
+          tag: 'meta',
+          attrs: { name: 'twitter:image', content: 'https://docs.pwnvader.com/og-image.png' }
+        },
+        {
+          tag: 'meta',
+          attrs: { name: 'twitter:url', content: 'https://docs.pwnvader.com/' }
+        }
+      ],
       sidebar: [
         {
           label: '🏴‍☠️ Writeups',
