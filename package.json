@@ -3,8 +3,8 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "predev": "node ./scripts/sync-writeups.js",
-    "prebuild": "node ./scripts/sync-writeups.js",
+    "predev": "node ./scripts/sync-writeups.js && node ./scripts/sync-english-metodologias.js",
+    "prebuild": "node ./scripts/sync-writeups.js && node ./scripts/sync-english-metodologias.js",
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",

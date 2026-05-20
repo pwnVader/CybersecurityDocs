@@ -377,4 +377,9 @@ header.header > div.header {
   }
 }
 
+/* Ocultar el selector de idioma por defecto de Starlight para usar el de la Ecosystem Strip */
+.sl-lang-select {
+  display: none !important;
+}
+
 

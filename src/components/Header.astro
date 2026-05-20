@@ -19,6 +19,19 @@ const links = [
   { href: 'https://hacking.pwnvader.com', label: 'lab',       current: false },
   { href: 'https://docs.pwnvader.com',    label: 'docs',      current: true  },
 ];
+
+// Calcular idioma actual y URLs exactas de alternancia de idioma
+const pathname = Astro.url.pathname;
+const isEnglish = pathname.startsWith('/en/') || pathname === '/en';
+
+let spanishUrl = pathname;
+let englishUrl = pathname;
+
+if (isEnglish) {
+  spanishUrl = pathname.replace(/^\/en/, '') || '/';
+} else {
+  englishUrl = `/en${pathname === '/' ? '/' : pathname}`;
+}
 ---
 <div class="ecosystem-strip">
   <div class="ecosystem-strip-inner">
@@ -31,7 +44,14 @@ const links = [
         <a href={l.href} target="_blank" rel="noopener" class="ecosystem-strip-link">{l.label}</a>
       ))}
     </div>
-    <span class="ecosystem-strip-version">pwnVader · v1</span>
+    
+    <div class="lang-selector-cyber">
+      <span class="lang-label">lang</span>
+      <span class="lang-sep">·</span>
+      <a href={spanishUrl} class={`lang-opt ${!isEnglish ? 'active' : ''}`}>ES</a>
+      <span class="lang-opt-sep">/</span>
+      <a href={englishUrl} class={`lang-opt ${isEnglish ? 'active' : ''}`}>EN</a>
+    </div>
   </div>
 </div>
 
@@ -90,15 +110,44 @@ const links = [
   .ecosystem-strip-link:hover {
     color: var(--sl-color-accent, #cba6f7);
   }
-  .ecosystem-strip-version {
+
+  /* ── Cyber Language Selector ──────────────────────────────────── */
+  .lang-selector-cyber {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+  .lang-label {
+    color: var(--sl-color-gray-4, #585b70);
+  }
+  .lang-sep {
     color: var(--sl-color-gray-5, #45475a);
-    display: none;
   }
-  @media (min-width: 768px) {
-    .ecosystem-strip-version {
-      display: inline;
-    }
+  .lang-opt-sep {
+    color: var(--sl-color-gray-5, #45475a);
+    font-size: 8px;
   }
+  .lang-opt {
+    color: var(--sl-color-gray-4, #585b70);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s ease, text-shadow 0.15s ease;
+  }
+  .lang-opt:hover {
+    color: var(--sl-color-accent, #cba6f7);
+    text-shadow: 0 0 4px rgba(203, 166, 247, 0.4);
+  }
+  .lang-opt.active {
+    color: var(--sl-color-accent, #cba6f7);
+    font-weight: 700;
+    border-bottom: 1px solid var(--sl-color-accent, #cba6f7);
+    padding-bottom: 2px;
+    margin-bottom: -2px;
+  }
+
   @media (max-width: 640px) {
     .ecosystem-strip-label,
     .ecosystem-strip-sep {
