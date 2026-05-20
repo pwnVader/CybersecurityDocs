@@ -170,15 +170,47 @@ body::after {
   margin: 0 auto !important;
 }
 
-/* Ajustes para el encabezado global (Navbar + Ecosystem Strip) */
-.header {
+/* ──────────────────────────────────────────────────────────────────
+   Encabezado global = Ecosystem Strip (≈26px) + Header nativo de Starlight
+   ──────────────────────────────────────────────────────────────────
+   GOTCHA: Starlight tiene DOS elementos con clase `.header`:
+     1. `<header class="header">` (outer, fijo en top, en PageFrame.astro)
+     2. `<div class="header">`    (inner, dentro de Header.astro, con la
+        rejilla horizontal de logo/search/social-icons)
+   Si aplicamos `display:flex; flex-direction:column` a `.header` plano,
+   también pinta el inner como columna → search y GitHub se apilan en
+   filas separadas (bug visible reportado).
+   La solución es usar selector específico `header.header` (sólo el outer).
+*/
+header.header {
   padding: 0 !important;
-  height: 5.25rem !important;
   display: flex !important;
   flex-direction: column !important;
+  height: auto !important;
+  min-height: var(--sl-nav-height) !important;
 }
 
-/* Ajustar el margen superior para empujar el contenido principal */
+/* El inner `<div class="header">` mantiene la rejilla original de Starlight
+   — aseguramos que ocupe el espacio restante bajo la strip. */
+header.header > div.header {
+  flex: 1 !important;
+  width: 100% !important;
+}
+
+/* Centrar el header interno cuando NO hay sidebar (páginas splash como /).
+   En modo splash el header de Starlight se queda pegado al margen izquierdo;
+   con max-width + margin:auto matchea visualmente la ecosystem-strip
+   (también centrada a 72rem) y los headers de pwnvader.com/hacking.pwnvader.com. */
+:root:not([data-has-sidebar]) header.header > div.header {
+  max-width: 72rem !important;
+  margin-inline: auto !important;
+  padding-inline: 1rem !important;
+}
+
+/* En páginas con sidebar, Starlight usa su CSS-grid nativo para alinear el
+   título sobre la sidebar — NO lo tocamos para no romper esa alineación. */
+
+/* Altura total reservada: 26px (strip) + 56px (header nativo) ≈ 5.25rem */
 :root {
   --sl-nav-height: 5.25rem !important;
 }

@@ -1,6 +1,18 @@
 ---
+/**
+ * Override del header de Starlight para inyectar el "Ecosystem Strip"
+ * (portfolio · lab · docs) en una franja superior, manteniendo intacto
+ * el header nativo de Starlight (logo + buscador + social icons).
+ *
+ * IMPORTANTE: no envolver <Default /> en contenedores con flex/items —
+ * el componente trae su propia retícula interna (grid + flex) y cualquier
+ * wrapper extra hace que los hijos (search, theme, social) se reorganicen
+ * o se apilen en columna en lugar de una sola fila.
+ *
+ * El stacking vertical de la strip + el header nativo se logra en CSS
+ * (.header { display:flex; flex-direction:column }) en custom.css.
+ */
 import Default from '@astrojs/starlight/components/Header.astro';
-import type { Props } from '@astrojs/starlight/props';
 
 const links = [
   { href: 'https://pwnvader.com',         label: 'portfolio', current: false },
@@ -8,28 +20,89 @@ const links = [
   { href: 'https://docs.pwnvader.com',    label: 'docs',      current: true  },
 ];
 ---
-<div class="ecosystem-strip border-b border-white/10 bg-black/30 backdrop-blur text-[10px] font-mono uppercase tracking-[0.18em] w-full z-50">
-  <div class="mx-auto max-w-6xl px-4 py-1.5 flex items-center justify-between gap-4">
-    <div class="flex items-center gap-4 text-zinc-500">
-      <span class="hidden sm:inline">ecosystem</span>
-      <span class="text-zinc-700 hidden sm:inline">·</span>
+<div class="ecosystem-strip">
+  <div class="ecosystem-strip-inner">
+    <div class="ecosystem-strip-links">
+      <span class="ecosystem-strip-label">ecosystem</span>
+      <span class="ecosystem-strip-sep">·</span>
       {links.map(l => l.current ? (
-        <span class="text-[#cba6f7] border-b border-[#cba6f7] pb-0.5 -mb-0.5 font-bold">{l.label}</span>
+        <span class="ecosystem-strip-current">{l.label}</span>
       ) : (
-        <a href={l.href} target="_blank" rel="noopener" class="hover:text-[#cba6f7] transition-colors">{l.label}</a>
+        <a href={l.href} target="_blank" rel="noopener" class="ecosystem-strip-link">{l.label}</a>
       ))}
     </div>
-    <span class="hidden md:inline text-zinc-700">pwnVader · v1</span>
+    <span class="ecosystem-strip-version">pwnVader · v1</span>
   </div>
 </div>
 
-<div class="default-header-container w-full flex-1 flex items-center">
-  <Default {...Astro.props} />
-</div>
+<Default {...Astro.props} />
 
 <style>
-  /* Asegurar que el contenedor por defecto llene el espacio restante */
-  .default-header-container {
-    height: 3.5rem;
+  /* ── Ecosystem strip ────────────────────────────────────────────
+     Estilos encapsulados — no usamos clases utility de tailwind aquí
+     porque Starlight inyecta sus propios estilos sobre `.header` y
+     pelean con `flex-1`, `w-full`, etc. Mejor CSS plano y predecible.
+  ────────────────────────────────────────────────────────────────── */
+  .ecosystem-strip {
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    flex-shrink: 0;
+  }
+  .ecosystem-strip-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0.375rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+  .ecosystem-strip-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--sl-color-gray-4, #585b70);
+  }
+  .ecosystem-strip-label {
+    color: var(--sl-color-gray-4, #585b70);
+  }
+  .ecosystem-strip-sep {
+    color: var(--sl-color-gray-5, #45475a);
+  }
+  .ecosystem-strip-current {
+    color: var(--sl-color-accent, #cba6f7);
+    border-bottom: 1px solid var(--sl-color-accent, #cba6f7);
+    padding-bottom: 2px;
+    margin-bottom: -2px;
+    font-weight: 700;
+  }
+  .ecosystem-strip-link {
+    color: var(--sl-color-gray-4, #585b70);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .ecosystem-strip-link:hover {
+    color: var(--sl-color-accent, #cba6f7);
+  }
+  .ecosystem-strip-version {
+    color: var(--sl-color-gray-5, #45475a);
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .ecosystem-strip-version {
+      display: inline;
+    }
+  }
+  @media (max-width: 640px) {
+    .ecosystem-strip-label,
+    .ecosystem-strip-sep {
+      display: none;
+    }
   }
 </style>

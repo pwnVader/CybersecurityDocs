@@ -26,6 +26,34 @@ export default defineConfig({
         Header: './src/components/Header.astro',
       },
       head: [
+        // ─── CSS crítico inline para eliminar FOUC del header ───────────
+        // Estas reglas duplican las que viven en custom.css pero se inlinean
+        // en el <head> para que apliquen en el PRIMER paint del navegador,
+        // antes de que se descargue el <link rel="stylesheet"> externo.
+        // Sin esto se ve por ~50ms el header pegado a la izquierda antes
+        // de que custom.css lo centre.
+        {
+          tag: 'style',
+          content: `
+            :root { --sl-nav-height: 5.25rem !important; }
+            header.header {
+              padding: 0 !important;
+              display: flex !important;
+              flex-direction: column !important;
+              height: auto !important;
+              min-height: var(--sl-nav-height) !important;
+            }
+            header.header > div.header {
+              flex: 1 !important;
+              width: 100% !important;
+            }
+            :root:not([data-has-sidebar]) header.header > div.header {
+              max-width: 72rem !important;
+              margin-inline: auto !important;
+              padding-inline: 1rem !important;
+            }
+          `.replace(/\s+/g, ' ').trim(),
+        },
         {
           tag: 'meta',
           attrs: { name: 'description', content: 'Base de conocimiento técnico, writeups de entornos corporativos y documentación metodológica de explotación.' }
