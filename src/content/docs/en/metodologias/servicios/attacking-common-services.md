@@ -476,7 +476,7 @@ RDP:
 
 DNS:
   1. dig AXFR → complete zone transfer if vulnerable
-  2. fierce/subfinder → subdominios
+  2. fierce/subfinder → subdomains
   3. host CNAME → does it point to an expired service? → takeover
 
 SMTP:

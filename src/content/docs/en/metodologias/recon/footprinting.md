@@ -71,7 +71,7 @@ ftp -p <IP>          # -p passive mode (avoids NAT issues)
 > Name: anonymous
 > ls -la
 > cd pub
-> get archivo.txt
+> get file.txt
 > exit
 
 # Download entire FTP (non-passive mode)
@@ -100,18 +100,18 @@ openssl s_client -connect <IP>:21 -starttls ftp
 smbclient -N -L \\\\<IP>
 
 # Connect to share
-smbclient -U usuario \\\\<IP>\\share
+smbclient -U user \\\\<IP>\\share
 smbclient -N \\\\<IP>\\share           # without credentials
-> ls / cd / get archivo / put archivo
+> ls / cd / get file / put file
 
 # smbmap — view permissions on all shares
 smbmap -H <IP>
-smbmap -H <IP> -u usuario -p password
+smbmap -H <IP> -u user -p password
 
 # CrackMapExec — quick enumeration
 crackmapexec smb <IP>
 crackmapexec smb <IP> -u '' -p '' --shares
-crackmapexec smb <IP> -u usuario -p password --shares --users
+crackmapexec smb <IP> -u user -p password --shares --users
 
 # rpcclient — RPC enumeration (null session)
 rpcclient -U "" <IP>
@@ -219,8 +219,8 @@ QUIT
 sudo nmap -sV -p110,143,993,995 -sC <IP>
 
 # Connect IMAPS with curl (enumerate mailboxes)
-curl -k 'imaps://<IP>' --user usuario:password
-curl -k 'imaps://<IP>' --user usuario:password -v  # TLS details + banner
+curl -k 'imaps://<IP>' --user user:password
+curl -k 'imaps://<IP>' --user user:password -v  # TLS details + banner
 
 # Connect via OpenSSL (interactive)
 openssl s_client -connect <IP>:pop3s
@@ -230,7 +230,7 @@ openssl s_client -connect <IP>:imaps
 ### IMAP Commands (After Login)
 
 ```
-1 LOGIN usuario password
+1 LOGIN user password
 1 LIST "" *                 # list folders
 1 SELECT INBOX              # select mailbox
 1 FETCH 1 all               # read message ID 1
@@ -240,7 +240,7 @@ openssl s_client -connect <IP>:imaps
 ### POP3 Commands
 
 ```
-USER usuario
+USER user
 PASS password
 STAT                        # number of messages
 LIST                        # list with sizes
@@ -297,9 +297,9 @@ mysql -u root -pP4SSw0rd -h <IP>
 show databases;
 use <database>;
 show tables;
-show columns from <tabla>;
-select * from <tabla>;
-select * from <tabla> where <columna> = "string";
+show columns from <table>;
+select * from <table>;
+select * from <table> where <column> = "string";
 select version();
 select user();
 select @@hostname;
@@ -475,7 +475,7 @@ rsync -av -e "ssh -p2222" rsync://<IP>/share /tmp/
 sudo nmap -sV -p512,513,514 <IP>
 
 # rlogin — login on remote host (if .rhosts is misconfigured)
-rlogin <IP> -l usuario
+rlogin <IP> -l user
 
 # rwho — authenticated users on the network
 rwho
@@ -501,8 +501,8 @@ git clone https://github.com/CiscoCXSecurity/rdp-sec-check.git
 ./rdp-sec-check.pl <IP>
 
 # Connect via xfreerdp
-xfreerdp /u:usuario /p:"password" /v:<IP>
-xfreerdp /u:usuario /p:"password" /v:<IP> /cert:ignore   # ignore self-signed cert
+xfreerdp /u:user /p:"password" /v:<IP>
+xfreerdp /u:user /p:"password" /v:<IP> /cert:ignore   # ignore self-signed cert
 ```
 
 ### WinRM — TCP 5985 (HTTP), 5986 (HTTPS)
@@ -512,16 +512,16 @@ xfreerdp /u:usuario /p:"password" /v:<IP> /cert:ignore   # ignore self-signed ce
 nmap -sV -sC -p5985,5986 --disable-arp-ping -n <IP>
 
 # evil-winrm — remote PowerShell shell
-evil-winrm -i <IP> -u usuario -p "password"
-evil-winrm -i <IP> -u usuario -H "NTLM_HASH"  # pass-the-hash
+evil-winrm -i <IP> -u user -p "password"
+evil-winrm -i <IP> -u user -H "NTLM_HASH"  # pass-the-hash
 ```
 
 ### WMI — TCP 135 (Start) → Random Port
 
 ```bash
 # wmiexec.py — run commands
-/usr/share/doc/python3-impacket/examples/wmiexec.py usuario:"password"@<IP> "whoami"
-wmiexec.py usuario:"password"@<IP>   # interactive shell
+/usr/share/doc/python3-impacket/examples/wmiexec.py user:"password"@<IP> "whoami"
+wmiexec.py user:"password"@<IP>   # interactive shell
 ```
 
 ---

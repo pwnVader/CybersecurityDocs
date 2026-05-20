@@ -69,7 +69,7 @@ ffuf -w wordlist.txt -ic -u http://TARGET/FUZZ -e .html \
 ffuf -u http://TARGET/post.php \
      -X POST \
      -H "Content-Type: application/x-www-form-urlencoded" \
-     -d "parametro=FUZZ" \
+     -d "parameter=FUZZ" \
      -w /usr/share/seclists/Discovery/Web-Content/common.txt \
      -mc 200 -v
 
@@ -310,7 +310,7 @@ curl -I http://TARGET/backup/dump.sql
 # Content-Type: application/sql, text/plain, etc.
 
 # 3. Confirm valid parameter without exploiting
-curl "http://TARGET/page?id=VALOR_ENCONTRADO"
+curl "http://TARGET/page?id=FOUND_VALUE"
 
 # 4. Directory listing enabled → list content
 # The HTML response will include <h2>Index of /backup/</h2>
@@ -327,7 +327,7 @@ ffuf -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt 
 
 # STEP 2: For each interesting directory → search for files
 ffuf -w /usr/share/seclists/Discovery/Web-Content/common.txt \
-     -u http://TARGET/DIRECTORIO/FUZZ \
+     -u http://TARGET/DIRECTORY/FUZZ \
      -e .php,.bak,.txt,.html,.js,.sql,.env,.zip
 
 # STEP 3: vhosts (if a domain is configured in /etc/hosts)
@@ -340,7 +340,7 @@ wenum -w /usr/share/seclists/Discovery/Web-Content/common.txt \
       --hc 404 -u "http://TARGET/page?FUZZ=test"
 
 # STEP 5: Validate findings with curl
-curl -I http://TARGET/HALLAZGO
+curl -I http://TARGET/FINDING
 ```
 
 ---

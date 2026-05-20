@@ -95,7 +95,7 @@ rpcinfo TARGET_IP    # enumerate RPC services
 # Create subdomain list
 cat subdomains.txt  # one per line
 
-eyewitness -f subdomains.txt -d CLIENTE_subdomain_EyeWitness
+eyewitness -f subdomains.txt -d CLIENT_subdomain_EyeWitness
 # → review the HTML report to prioritize targets
 ```
 

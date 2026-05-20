@@ -234,7 +234,7 @@ curl -s http://TARGET/api/data \
 
 # JS does: XMLHttpRequest with Authorization header
 curl -s http://TARGET/api/data \
-     -H "Authorization: Bearer TOKEN_DEL_JS"
+     -H "Authorization: Bearer JS_TOKEN"
 ```
 
 ---

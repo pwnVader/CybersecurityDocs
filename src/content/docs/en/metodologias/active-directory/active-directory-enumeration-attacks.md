@@ -195,7 +195,7 @@ sc query windefend               # Defender status
 # net.exe
 net accounts /domain             # password policy
 net group "Domain Admins" /domain
-net user /domain <usuario>
+net user /domain <username>
 net1 group /domain               # alternative if net is monitored
 
 # dsquery (admin context)
@@ -502,7 +502,7 @@ findstr /S /I cpassword \\<DC>\sysvol\<domain>\policies\*.xml
 - **PowerView `Find-InterestingDomainAcl`** → extremely slow in large domains. Use `Get-DomainObjectACL` with a specific SID instead.
 - **SharpHound on Win 2022 DC** → may require `/ldaps` if LDAP without TLS is disabled.
 - **GPP Passwords** → the MS14-025 patch only prevents creating new GPPs with `cpassword`, it does not delete existing ones. Always search SYSVOL.
-- **SID History / ExtraSids** → requires SID Filtering to not be enabled on the trust. In trusts moderns with active SID filtering, the attack does not work.
+- **SID History / ExtraSids** → requires SID Filtering to not be enabled on the trust. In modern trusts with active SID filtering, the attack does not work.
 - **Automatic raiseChild.py** → can fail if the child domain does not have a standard trust configuration. Perform the process manually in that case.
 
 ---

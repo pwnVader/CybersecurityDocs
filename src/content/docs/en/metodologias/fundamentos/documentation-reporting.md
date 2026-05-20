@@ -13,7 +13,7 @@ sidebar:
 ## Project Folder Structure
 
 ```bash
-mkdir -p CLIENTE-IPT/{Admin,Deliverables,Evidence/{Findings,Scans/{Vuln,Service,Web,'AD Enumeration'},Notes,OSINT,Wireless,'Logging output','Misc Files'},Retest}
+mkdir -p CLIENT-IPT/{Admin,Deliverables,Evidence/{Findings,Scans/{Vuln,Service,Web,'AD Enumeration'},Notes,OSINT,Wireless,'Logging output','Misc Files'},Retest}
 ```
 
 | Folder | Content |

