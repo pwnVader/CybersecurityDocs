@@ -1,0 +1,66 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { Icon } from 'astro-icon/components';
+import type { Props } from '@astrojs/starlight/props';
+
+const year = new Date().getFullYear();
+
+const footerLinks = [
+  {
+    label: 'GitHub',
+    href: 'https://github.com/pwnvader',
+    icon: 'social-github',
+    colorClass: 'text-slate-300/60',
+    hoverClass: 'hover:text-slate-300',
+  },
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/jesuspromero/',
+    icon: 'social-linkedin',
+    colorClass: 'text-sky-500/60',
+    hoverClass: 'hover:text-sky-500',
+  },
+  {
+    label: 'TikTok',
+    href: 'https://www.tiktok.com/@pwnvader',
+    icon: 'social-tiktok',
+    colorClass: 'text-slate-300/60',
+    hoverClass: 'hover:text-slate-300',
+  },
+];
+---
+
+<Default {...Astro.props}>
+  <slot />
+</Default>
+
+<div class="mt-8 pt-8 border-t border-slate-800 flex flex-col items-center">
+  <div class="w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+    <!-- Terminal prompt (softened with Tactical Green colors) -->
+    <p class="font-mono text-xs text-slate-500">
+      <span class="text-sky-500 font-bold">root@pwnvader</span><span class="text-slate-600">:</span><span class="text-slate-500 font-bold">~</span><span class="text-slate-600">#</span>
+      <span class="ml-1 text-slate-400">echo "Built with Astro & ☕"</span>
+    </p>
+
+    <!-- Social icons using SVG components from astro-icon -->
+    <div class="flex items-center gap-3">
+      {footerLinks.map((link) => (
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={link.label}
+          aria-label={link.label}
+          class={`inline-flex items-center justify-center w-8 h-8 rounded transition-colors ${link.colorClass} ${link.hoverClass}`}
+        >
+          <Icon name={link.icon} class="w-5 h-5 block" />
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <p class="font-mono text-[11px] text-slate-500 text-center mt-6">
+    © {year} pwnVader · Jesus P Romero
+  </p>
+</div>

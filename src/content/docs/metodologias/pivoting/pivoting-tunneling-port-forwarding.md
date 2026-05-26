@@ -362,14 +362,14 @@ proxychains firefox-esr 172.16.5.135:80
 
 ---
 
-## 🛠️ Herramientas Relacionadas (Ecosistema pwnVader)
+## Herramientas Relacionadas (Ecosistema pwnVader)
 
-<aside class="my-6 p-4 rounded-md border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose">
-  <div class="text-[10px] uppercase tracking-widest text-[#cba6f7] font-bold mb-1">
+<aside class="my-6 p-4 rounded-md border-l-4 border-[#0ea5e9] bg-[#0ea5e9]/5 not-prose">
+  <div class="text-[10px] uppercase tracking-widest text-[#0ea5e9] font-bold mb-1">
     Herramienta · hacking.pwnvader.com
   </div>
   <p class="text-sm text-zinc-300">
-    ¿Quieres estructurar y generar comandos de redireccionamiento rápidamente? Diseña tus comandos de Chisel, SSH Port Forwarding o Ligolo de manera interactiva utilizando el <a href="https://hacking.pwnvader.com/networking/tunneling" class="text-[#cba6f7] hover:underline">Tunneling & Pivoting Designer</a> en nuestra suite serverless.
+    ¿Quieres estructurar y generar comandos de redireccionamiento rápidamente? Diseña tus comandos de Chisel, SSH Port Forwarding o Ligolo de manera interactiva utilizando el <a href="https://hacking.pwnvader.com/networking/tunneling" class="text-[#0ea5e9] hover:underline">Tunneling & Pivoting Designer</a> en nuestra suite serverless.
   </p>
 </aside>
 

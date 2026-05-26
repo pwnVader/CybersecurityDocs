@@ -1,0 +1,65 @@
+---
+import Default from '@astrojs/starlight/components/Sidebar.astro';
+import { Icon } from 'astro-icon/components';
+import coaeBadge from '../assets/coae.webp';
+
+const socialLinks = [
+  { name: 'GitHub', icon: 'social-github', url: 'https://github.com/pwnvader' },
+  { name: 'LinkedIn', icon: 'social-linkedin', url: 'https://www.linkedin.com/in/jesuspromero/' },
+  { name: 'Medium', icon: 'social-medium', url: 'https://medium.com/@pwnvader' },
+  { name: 'TryHackMe', icon: 'social-thm', url: 'https://tryhackme.com/p/pwnVader' },
+  { name: 'HackTheBox', icon: 'tech-htb', url: 'https://app.hackthebox.com/users/1247070' },
+  { name: 'TikTok', icon: 'social-tiktok', url: 'https://www.tiktok.com/@pwnvader' }
+];
+---
+
+<div class="sidebar-wrapper flex flex-col h-full">
+  <div class="flex-1 min-h-0 overflow-y-auto">
+    <Default {...Astro.props} />
+  </div>
+
+  <div class="sidebar-extras flex flex-col gap-3 mt-4 pt-4 pb-5 border-t border-slate-800/50 font-mono shrink-0">
+    <!-- Certificaciones: icono + título, enlazadas a su verificación -->
+    <ul class="cert-list flex flex-col gap-2 px-2">
+      <li>
+        <a href="https://certs.ine.com/a3d19feb-3d6e-4102-ba75-75e6013bfeee#acc.SaZlAfnt" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.8rem]">
+          <Icon name="cert-ejpt" class="w-5 h-5 shrink-0" />
+          eJPTv2
+        </a>
+      </li>
+      <li>
+        <a href="https://academy.hackthebox.com/achievement/badge/847979fe-4aca-11f1-82d1-bea50ffe6cb4" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.8rem]">
+          <img src={coaeBadge.src} alt="COAE" class="w-5 h-5 shrink-0 object-contain" />
+          COAE
+        </a>
+      </li>
+    </ul>
+
+    <!-- Redes sociales (compactas) -->
+    <ul class="social-list flex flex-col gap-2 px-2 pt-3 border-t border-slate-800/40">
+      {socialLinks.map((link) => (
+        <li>
+          <a href={link.url} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.78rem]">
+            <Icon name={link.icon} class="social-icon w-4 h-4 transition-transform group-hover:scale-110" />
+            {link.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<style>
+  /* Ensure the sidebar wrapper takes full height to push social links to the bottom if content is short */
+  .sidebar-wrapper {
+    min-height: 100%;
+  }
+
+  /* TryHackMe viene sin atributo `fill` (se veía negro/invisible). Hereda el
+     color claro del enlace en vez de quedar gris. Los iconos con color de
+     marca propio (LinkedIn azul, TikTok cian/rosa, HackTheBox verde) traen sus
+     fills baked y no se ven afectados por currentColor. */
+  .social-list [data-icon="social-thm"] {
+    fill: currentColor;
+  }
+</style>

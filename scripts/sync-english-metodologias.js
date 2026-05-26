@@ -6,12 +6,12 @@ const destDir = path.resolve('src/content/docs/en/metodologias');
 
 // Banner de advertencia en inglés para los cheatsheets en español
 const fallbackBanner = `
-<aside class="my-8 p-5 rounded-lg border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose shadow-lg backdrop-blur-sm">
-  <div class="text-xs uppercase tracking-widest text-[#cba6f7] font-bold mb-2 font-mono flex items-center gap-2">
-    <span class="inline-block w-2 h-2 rounded-full bg-[#cba6f7] animate-pulse"></span>
+<aside class="my-8 p-5 rounded-lg border-l-4 border-[#0ea5e9] bg-[#0ea5e9]/5 not-prose shadow-lg backdrop-blur-sm">
+  <div class="text-xs uppercase tracking-widest text-[#0ea5e9] font-bold mb-2 font-mono flex items-center gap-2">
+    <span class="inline-block w-2 h-2 rounded-full bg-[#0ea5e9] animate-pulse"></span>
     Language Fallback · Contenido en Español
   </div>
-  <p class="text-sm text-zinc-300 leading-relaxed">
+  <p class="text-sm text-slate-300 leading-relaxed">
     This methodology cheatsheet is currently written in Spanish. Technical command syntaxes, cheatsheets, and checklists remain highly readable. You can switch back to Spanish at any time using the language toggle above.
   </p>
 </aside>

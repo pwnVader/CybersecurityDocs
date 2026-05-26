@@ -340,14 +340,14 @@ cat Logs/TARGET_IP/etc/passwd.log
 
 ---
 
-## 🛠️ Related Tools (pwnVader Ecosystem)
+## Related Tools (pwnVader Ecosystem)
 
-<aside class="my-6 p-4 rounded-md border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose">
-  <div class="text-[10px] uppercase tracking-widest text-[#cba6f7] font-bold mb-1">
+<aside class="my-6 p-4 rounded-md border-l-4 border-[#0ea5e9] bg-[#0ea5e9]/5 not-prose">
+  <div class="text-[10px] uppercase tracking-widest text-[#0ea5e9] font-bold mb-1">
     Tool · hacking.pwnvader.com
   </div>
   <p class="text-sm text-zinc-300">
-    Are you analyzing JSON Web Tokens (JWT) or need to encode/decode complex payloads during your testing? Bypass access controls and manipulate signatures with the <a href="https://hacking.pwnvader.com/web/jwt" class="text-[#cba6f7] hover:underline">JWT Attacker</a>, or process advanced encoding recipes serverless-style with the <a href="https://hacking.pwnvader.com/encoders/recipes" class="text-[#cba6f7] hover:underline">Cyber Encoder Lab</a>.
+    Are you analyzing JSON Web Tokens (JWT) or need to encode/decode complex payloads during your testing? Bypass access controls and manipulate signatures with the <a href="https://hacking.pwnvader.com/web/jwt" class="text-[#0ea5e9] hover:underline">JWT Attacker</a>, or process advanced encoding recipes serverless-style with the <a href="https://hacking.pwnvader.com/encoders/recipes" class="text-[#0ea5e9] hover:underline">Cyber Encoder Lab</a>.
   </p>
 </aside>
 

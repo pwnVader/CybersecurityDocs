@@ -10,6 +10,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'docs.pwnvader.com',
+      favicon: '/favicon.png',
       defaultLocale: 'root',
       locales: {
         root: {
@@ -22,7 +23,7 @@ export default defineConfig({
         },
       },
       logo: {
-        src: './src/assets/logo.svg',
+        src: './src/assets/logo.webp',
       },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/pwnVader' }
@@ -30,38 +31,89 @@ export default defineConfig({
       customCss: [
         './src/styles/custom.css',
         '@fontsource/jetbrains-mono/400.css',
+        '@fontsource/jetbrains-mono/500.css',
         '@fontsource/jetbrains-mono/700.css',
       ],
       components: {
         ThemeSelect: './src/components/ThemeSelect.astro',
         Header: './src/components/Header.astro',
+        Footer: './src/components/Footer.astro',
+        Sidebar: './src/components/Sidebar.astro',
+        ThemeProvider: './src/components/ForceDarkTheme.astro',
+        SiteTitle: './src/components/SiteTitle.astro',
       },
       head: [
-        // ─── CSS crítico inline para eliminar FOUC del header ───────────
+        // ─── CSS crítico inline para eliminar FOUC del header y sidebar ───
         // Estas reglas duplican las que viven en custom.css pero se inlinean
         // en el <head> para que apliquen en el PRIMER paint del navegador,
         // antes de que se descargue el <link rel="stylesheet"> externo.
-        // Sin esto se ve por ~50ms el header pegado a la izquierda antes
-        // de que custom.css lo centre.
         {
           tag: 'style',
           content: `
-            :root { --sl-nav-height: 5.25rem !important; }
+            :root {
+              --eco-strip-height: 2rem;
+              --eco-header-row: 3.5rem;
+              --eco-logo-height: 2.25rem;
+              --sl-nav-height: calc(var(--eco-strip-height) + var(--eco-header-row) + 1px) !important;
+            }
+            html {
+              background-color: #050810 !important;
+              color: #cbd5e1 !important;
+              color-scheme: dark !important;
+              scrollbar-gutter: stable;
+            }
+            body {
+              background-color: #050810 !important;
+              color: #cbd5e1 !important;
+            }
+            .sidebar-pane {
+              background-color: #0f172a !important;
+            }
             header.header {
               padding: 0 !important;
               display: flex !important;
               flex-direction: column !important;
               height: auto !important;
               min-height: var(--sl-nav-height) !important;
+              background-color: #0f172a !important;
+              z-index: 50 !important;
+              border-bottom: 1px solid rgba(14, 165, 233, 0.18) !important;
+              box-shadow: 0 2px 24px rgba(0, 0, 0, 0.55) !important;
+            }
+            header.header > .ecosystem-strip {
+              height: var(--eco-strip-height) !important;
             }
             header.header > div.header {
-              flex: 1 !important;
+              flex: none !important;
               width: 100% !important;
-            }
-            :root:not([data-has-sidebar]) header.header > div.header {
+              height: var(--eco-header-row) !important;
+              min-height: 0 !important;
+              padding-block: 0 !important;
               max-width: 72rem !important;
               margin-inline: auto !important;
               padding-inline: 1rem !important;
+            }
+            header.header .site-title img {
+              height: var(--eco-logo-height) !important;
+            }
+            [data-has-sidebar] .content-panel .sl-container {
+              max-width: 56rem !important;
+              margin-inline: auto !important;
+              width: 100% !important;
+            }
+            @media (min-width: 90rem) {
+              :root {
+                --app-gutter: calc((100vw - 90rem) / 2);
+              }
+              [data-has-sidebar] .sidebar-pane {
+                inset-inline-start: var(--app-gutter) !important;
+              }
+              [data-has-sidebar] {
+                --sl-content-inline-start: calc(var(--app-gutter) + var(--sl-sidebar-width)) !important;
+              }
+              [data-has-sidebar] .main-frame {
+                padding-inline-end: var(--app-gutter) !important;
+              }
             }
           `.replace(/\s+/g, ' ').trim(),
         },
@@ -112,9 +164,9 @@ export default defineConfig({
       ],
       sidebar: [
         {
-          label: '🏴‍☠️ Writeups',
+          label: 'Writeups',
           translations: {
-            en: '🏴‍☠️ Writeups',
+            en: 'Writeups',
           },
           collapsed: true,
           items: [
@@ -145,97 +197,72 @@ export default defineConfig({
           ]
         },
         {
-          label: '🎓 HTB Academy',
+          label: 'Metodologías',
           translations: {
-            en: '🎓 HTB Academy',
+            en: 'Methodologies',
           },
           collapsed: true,
           items: [
             {
-              label: 'CPTS (Certified PenTester)',
+              label: 'Fundamentos & Metodología',
               translations: {
-                en: 'CPTS (Certified PenTester)',
-              },
-              collapsed: true,
-              items: [{ autogenerate: { directory: 'writeups/htb-academy/cpts', collapsed: true } }]
-            },
-            {
-              label: 'COAE (Certified Offense AI)',
-              translations: {
-                en: 'COAE (Certified Offense AI)',
-              },
-              collapsed: true,
-              items: [{ autogenerate: { directory: 'writeups/htb-academy/coae', collapsed: true } }]
-            }
-          ]
-        },
-        {
-          label: '📖 Metodologías',
-          translations: {
-            en: '📖 Methodologies',
-          },
-          collapsed: true,
-          items: [
-            {
-              label: '📋 Fundamentos & Metodología',
-              translations: {
-                en: '📋 Fundamentals & Methodology',
+                en: 'Fundamentals & Methodology',
               },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/fundamentos', collapsed: true } }]
             },
             {
-              label: '🔍 Recon & Enumeración',
+              label: 'Recon & Enumeración',
               translations: {
-                en: '🔍 Recon & Enumeration',
+                en: 'Recon & Enumeration',
               },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/recon', collapsed: true } }]
             },
             {
-              label: '🌐 Web Exploitation',
+              label: 'Web Exploitation',
               translations: {
-                en: '🌐 Web Exploitation',
+                en: 'Web Exploitation',
               },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/web', collapsed: true } }]
             },
             {
-              label: '⚙️ Servicios Comunes',
+              label: 'Servicios Comunes',
               translations: {
-                en: '⚙️ Common Services',
+                en: 'Common Services',
               },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/servicios', collapsed: true } }]
             },
             {
-              label: '💻 Exploitation & Foothold',
+              label: 'Exploitation & Foothold',
               translations: {
-                en: '💻 Exploitation & Foothold',
+                en: 'Exploitation & Foothold',
               },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/exploitation', collapsed: true } }]
             },
             {
-              label: '🔐 Escalada de Privilegios',
+              label: 'Escalada de Privilegios',
               translations: {
-                en: '🔐 Privilege Escalation',
+                en: 'Privilege Escalation',
               },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/privesc', collapsed: true } }]
             },
             {
-              label: '🏢 Active Directory',
+              label: 'Active Directory',
               translations: {
-                en: '🏢 Active Directory',
+                en: 'Active Directory',
               },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/active-directory', collapsed: true } }]
             },
             {
-              label: '🔀 Pivoting & Lateral',
+              label: 'Pivoting & Lateral',
               translations: {
-                en: '🔀 Pivoting & Lateral Movement',
+                en: 'Pivoting & Lateral Movement',
               },
               collapsed: true,
               items: [{ autogenerate: { directory: 'metodologias/pivoting', collapsed: true } }]

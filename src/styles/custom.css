@@ -1,56 +1,82 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cat-crust: #11111b;
-  --color-cat-mantle: #181825;
-  --color-cat-surface0: #313244;
-  --color-cat-surface1: #45475a;
-  --color-cat-text: #cdd6f4;
-  --color-cat-subtext: #bac2de;
-  --color-cat-overlay: #7f849c;
-  --color-cat-mauve: #cba6f7;
-  --color-cat-sapphire: #74c7ec;
-  --color-cat-green: #a6e3a1;
+  --color-slate-950: #050810;
+  --color-slate-900: #0f172a;
+  --color-slate-800: #1e293b;
+  --color-slate-700: #334155;
+  --color-slate-600: #475569;
+  --color-slate-400: #94a3b8;
+  --color-slate-300: #cbd5e1;
+  --color-slate-200: #e2e8f0;
+  --color-sky-500: #0ea5e9;
+  --color-sky-400: #38bdf8;
+  --font-mono: 'JetBrains Mono', monospace;
+  /* Forzar JetBrains Mono como fuente base de Tailwind: --default-font-family
+     cubre el preflight (`html`) y --font-sans la utilidad `font-sans`, de modo
+     que TODO el Home (no solo lo marcado `font-mono`) use la misma tipografía. */
+  --default-font-family: 'JetBrains Mono', monospace;
+  --font-sans: 'JetBrains Mono', monospace;
 }
 
-/* Forzar el tema de color Catppuccin Mocha oscuro en Starlight sin importar el tema */
+/* Imperial Slate oscuro en Starlight sin importar el tema */
 :root,
 [data-theme="light"],
 [data-theme="dark"] {
   /* Tipografía JetBrains Mono para todo el sitio */
-  --sl-font-sans: 'JetBrains Mono', monospace;
-  --sl-font-mono: 'JetBrains Mono', monospace;
+  --sl-font-sans: 'JetBrains Mono', monospace !important;
+  --sl-font-mono: 'JetBrains Mono', monospace !important;
+  --sl-font-system: 'JetBrains Mono', monospace !important;
 
-  /* Colores Principales del Tema Catppuccin Mocha */
-  --sl-color-bg: #11111b;          /* bg-base (Crust) */
-  --sl-color-bg-sidebar: #181825;  /* bg-surface (Mantle) */
-  --sl-color-bg-nav: #11111b;      /* bg-base (Crust) */
-  --sl-color-border: #45475a;      /* border (Surface1) */
+  /* Colores Principales del Tema Imperial Slate */
+  --sl-color-bg: #050810;           /* bg base (mismo que portfolio) */
+  --sl-color-bg-sidebar: #0f172a;   /* bg-slate-900 */
+  --sl-color-bg-nav: #0f172a;       /* slate-900 — nav elevado, distinto del contenido (#050810) */
+  --sl-color-border: #1e293b;       /* border-slate-800 */
 
   /* Colores de Escala de Grises y Textos */
-  --sl-color-text: #bac2de;        /* text-secondary (Subtext1) */
-  --sl-color-text-accent: #cba6f7; /* text-accent (Mauve) */
-  --sl-color-text-muted: #7f849c;  /* text-muted (Overlay1) */
-  
-  --sl-color-gray-1: #cdd6f4;      /* text-primary (Text) - Más brillante */
-  --sl-color-gray-2: #bac2de;      /* Subtext1 */
-  --sl-color-gray-3: #a6adc8;      /* Subtext0 */
-  --sl-color-gray-4: #585b70;      /* Surface2 */
-  --sl-color-gray-5: #45475a;      /* Surface1 (Bordes e inactivos) */
-  --sl-color-gray-6: #313244;      /* Surface0 (Elevated / Hovers / Background panels) */
-  --sl-color-gray-7: #1e1e2e;      /* Base - Fondo intermedio */
+  --sl-color-text: #94a3b8;         /* slate-400 */
+  --sl-color-text-accent: #0ea5e9;  /* sky-500 */
+  --sl-color-text-muted: #475569;   /* slate-600 */
+
+  --sl-color-gray-1: #e2e8f0;       /* slate-200 */
+  --sl-color-gray-2: #cbd5e1;       /* slate-300 */
+  --sl-color-gray-3: #94a3b8;       /* slate-400 */
+  --sl-color-gray-4: #475569;       /* slate-600 */
+  --sl-color-gray-5: #334155;       /* slate-700 */
+  --sl-color-gray-6: #1e293b;       /* slate-800 */
+  --sl-color-gray-7: #0f172a;       /* slate-900 */
 
   /* Colores de Realce (Accent) */
-  --sl-color-accent: #cba6f7;      /* Catppuccin Mauve (Morado Claro) */
-  --sl-color-accent-high: #ddb6f9; /* Mauve Claro (Brillante) */
-  --sl-color-accent-low: #313244;  /* Surface0 */
-  
+  --sl-color-accent: #0ea5e9;       /* sky-500 */
+  --sl-color-accent-high: #38bdf8;  /* sky-400 */
+  --sl-color-accent-low: #0f172a;   /* slate-900 */
+
   /* Botones, Enlaces e Indicadores */
-  --sl-color-text-invert: #11111b; /* Texto sobre fondo accent (Crust) */
-  --sl-color-asides-note: #74c7ec; /* Sapphire para notas informativas */
-  --sl-color-asides-tip: #cba6f7;  /* Mauve para tips */
-  --sl-color-asides-caution: #f9e2af; /* Yellow para advertencias */
-  --sl-color-asides-danger: #f38ba8;  /* Red para peligros */
+  --sl-color-text-invert: #050810;
+  --sl-color-asides-note: #0ea5e9;  /* sky-500 */
+  --sl-color-asides-tip: #38bdf8;   /* sky-400 */
+  --sl-color-asides-caution: #fbbf24;
+  --sl-color-asides-danger: #f87171;
+}
+
+/* Ghost Button Override para el botón principal de Starlight (Hero) */
+:root .action.primary,
+[data-theme] .action.primary,
+.action.primary {
+  background-color: transparent !important; /* bg-transparent */
+  border: 1px solid #38bdf8 !important; /* border-sky-400 */
+  color: #38bdf8 !important; /* text-sky-400 */
+  box-shadow: none !important;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out !important; /* transition-colors */
+}
+
+:root .action.primary:hover,
+[data-theme] .action.primary:hover,
+.action.primary:hover {
+  background-color: rgba(56, 189, 248, 0.1) !important; /* hover:bg-sky-400/10 */
+  border-color: #38bdf8 !important; /* border-sky-400 */
+  color: #38bdf8 !important; /* text-sky-400 */
 }
 
 /* Ajustes globales de scrollbar y contenedor */
@@ -59,21 +85,21 @@
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #11111b;
+  background: #050810;
 }
 ::-webkit-scrollbar-thumb {
-  background: #313244;
+  background: #1e293b;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #cba6f7;
+  background: #0ea5e9; /* sky-500 */
 }
 
 /* Efecto CRT Monitor de Fósforo Retro */
 body {
   position: relative;
   overflow-x: clip;
-  background-color: #11111b !important;
+  background-color: #050810 !important;
 }
 
 /* Líneas de Escaneo */
@@ -99,72 +125,122 @@ body::after {
   position: fixed;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: rgba(203, 166, 247, 0.06); /* Mauve ultra-translúcido */
-  box-shadow: 0 0 10px rgba(203, 166, 247, 0.2);
+  background: rgba(14, 165, 233, 0.06);  /* sky-500 */
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
   z-index: 99998;
   pointer-events: none;
   animation: scan-beam 8s linear infinite;
+  will-change: transform;
 }
 
 @keyframes scan-beam {
-  0% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(110vh);
-  }
+  0% { transform: translateY(-10px); }
+  100% { transform: translateY(110vh); }
 }
 
-/* Efecto decorativo cyber terminal */
+/* ==========================================================================
+   Componentes — Cyber Terminal y Globales
+   ========================================================================== */
+
+/* Navbar Site Title Color Override */
+.site-title {
+  color: #f1f5f9 !important; /* slate-100 */
+  font-weight: 600 !important;
+}
+
+/* GitHub Nav Icon Override */
+header.header a[href*="github.com"] {
+  color: #f1f5f9 !important;
+}
+header.header a[href*="github.com"]:hover {
+  color: #0ea5e9 !important; /* sky-500 hover */
+}
+
 .cyber-terminal {
-  background-color: #181825;
-  border: 1px solid #45475a;
-  border-radius: 6px;
+  background-color: rgba(15, 23, 42, 0.3); /* slate-900/30 */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(30, 41, 59, 0.5); /* slate-800/50 */
+  border-radius: 8px;
   font-family: 'JetBrains Mono', monospace;
-  box-shadow: 0 0 15px rgba(203, 166, 247, 0.08);
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.06), 0 4px 24px rgba(0,0,0,0.4);
 }
 
-.cyber-terminal-header {
-  background-color: #313244;
-  border-bottom: 1px solid #45475a;
-  padding: 6px 12px;
-  font-size: 0.8rem;
-  color: #7f849c;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* ==========================================================================
+   Unificación Tipográfica y Corrección de Overlap (Sidebar / Content)
+   ========================================================================== */
+
+/* El overlap del nav lo resuelve YA el `padding-top` propio de `.main-frame`
+   (= --sl-nav-height) que trae Starlight. El `padding-top` extra que había
+   aquí en `.page` DUPLICABA ese offset → un gran espacio en blanco sobre el
+   título de cada nota. Eliminado.
+
+   Además reservamos SIEMPRE el gutter de la barra de scroll del documento:
+   así el contenido (centrado) no salta horizontalmente al navegar entre una
+   nota corta (sin scroll vertical) y una larga (con scroll). Ese reflow era
+   la "animación rara" al cambiar de sección. */
+html {
+  scrollbar-gutter: stable;
 }
 
-.cyber-terminal-buttons {
-  display: flex;
-  gap: 6px;
+.sl-markdown-content {
+  font-family: 'JetBrains Mono', monospace !important;
 }
 
-.cyber-terminal-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+/* Tablas Markdown — estilo plano y minimalista (sin "caja").
+   Fondo transparente (se funde con la página), ancho completo y SOLO líneas
+   divisorias horizontales. Sin bordes verticales ni borde exterior. */
+.sl-markdown-content table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: visible !important;
+  margin-block: 2rem !important;
 }
 
-.cyber-terminal-dot.red { background-color: #f38ba8; }
-.cyber-terminal-dot.yellow { background-color: #f9e2af; }
-.cyber-terminal-dot.green { background-color: #a6e3a1; }
+.sl-markdown-content table thead,
+.sl-markdown-content table tbody,
+.sl-markdown-content table tr {
+  background: transparent !important;
+  border: none !important;
+}
+
+.sl-markdown-content table th {
+  color: #38bdf8 !important;        /* text-sky-400 técnico */
+  font-weight: 600 !important;      /* font-semibold */
+  text-align: left !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(30, 41, 59, 1) !important; /* border-b slate-800 */
+  padding: 1rem 0.5rem !important;  /* py-4 px-2 */
+}
+
+.sl-markdown-content table td {
+  text-align: left !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(30, 41, 59, 1) !important; /* border-b slate-800 */
+  padding: 1rem 0.5rem !important;  /* py-4 px-2 */
+}
+
 
 /* ==========================================================================
    Ajustes de Compactación y Espaciado (Hero & Header)
    ========================================================================== */
 
-/* Reducir el espacio vertical arriba/abajo del Hero en la página de inicio (splash) */
 .hero {
   padding-block: clamp(1.5rem, 3.5vw, 2.5rem) !important;
 }
 
-/* Reducir la separación interna entre texto e imagen en el Hero */
 .hero > .sl-flex {
   gap: 1.5rem !important;
 }
 
-/* Reducir el tamaño máximo de la imagen del Hero para que sea más compacta */
 .hero img {
   max-height: 220px !important;
   margin: 0 auto !important;
@@ -182,33 +258,88 @@ body::after {
    filas separadas (bug visible reportado).
    La solución es usar selector específico `header.header` (sólo el outer).
 */
+/* ──────────────────────────────────────────────────────────────────
+   FIX overlap — el header tapaba el tope del sidebar y del TOC
+   ──────────────────────────────────────────────────────────────────
+   CAUSA RAÍZ: el logo nativo (SiteTitle.astro) se dimensiona con
+   `calc(var(--sl-nav-height) - 2 * var(--sl-nav-pad-y))`. Al fijar
+   --sl-nav-height en 7.25rem, el logo crecía a ~84px; sumado al
+   padding-block del header interno (~40px) y a la strip (~30px) el
+   header REAL medía ~154px, pero solo se reservaban 116px. Como el
+   header es `position: fixed` y tanto el sidebar (`inset-block:
+   var(--sl-nav-height)`) como el TOC (`padding-top: var(--sl-nav-height)`)
+   se anclan a esos 116px, el header sobresalía ~38px sobre ambas columnas.
+
+   Además subir --sl-nav-height NO sirve: agranda el logo → agranda el
+   header → vuelve a tapar (bucle). La solución es dar alturas EXPLÍCITAS
+   e independientes a strip, fila interna y logo, y derivar --sl-nav-height
+   como su suma exacta (+1px del borde inferior del header). */
+:root {
+  --eco-strip-height: 2rem;     /* franja ecosystem (32px)        */
+  --eco-header-row: 3.5rem;     /* fila logo/search/social (56px) */
+  --eco-logo-height: 2.25rem;   /* logo desacoplado de la fórmula */
+  --sl-nav-height: calc(
+    var(--eco-strip-height) + var(--eco-header-row) + 1px
+  ) !important;
+}
+
 header.header {
   padding: 0 !important;
   display: flex !important;
   flex-direction: column !important;
   height: auto !important;
   min-height: var(--sl-nav-height) !important;
+  z-index: 50 !important;
+  /* El nav debe leerse como una barra distinta del contenido (#050810):
+     fondo slate-900 elevado + borde inferior con tinte sky + sombra. */
+  background-color: var(--sl-color-bg-nav) !important;
+  border-bottom: 1px solid rgba(14, 165, 233, 0.18) !important;
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.55) !important;
 }
 
-/* El inner `<div class="header">` mantiene la rejilla original de Starlight
-   — aseguramos que ocupe el espacio restante bajo la strip. */
-header.header > div.header {
-  flex: 1 !important;
+/* Franja ecosystem: altura fija, contenido centrado verticalmente */
+header.header > .ecosystem-strip {
+  height: var(--eco-strip-height) !important;
+  display: flex !important;
+  align-items: center !important;
+}
+header.header > .ecosystem-strip .ecosystem-strip-inner {
+  padding-block: 0 !important;
   width: 100% !important;
 }
 
-/* Centrar el header interno y la ecosystem-strip de forma global y consistente.
-   Esto alinea visualmente el encabezado de Docs con el resto del ecosistema de pwnvader.com,
-   tanto en la página de inicio (splash) como en las páginas interiores con sidebar. */
+/* Fila interna nativa: altura fija (no depende del contenido) y sin
+   padding vertical → logo/search/social se centran y nunca desbordan. */
 header.header > div.header {
+  flex: none !important;
+  width: 100% !important;
+  height: var(--eco-header-row) !important;
+  min-height: 0 !important;
+  padding-block: 0 !important;
   max-width: 72rem !important;
   margin-inline: auto !important;
   padding-inline: 1rem !important;
 }
 
-/* Altura total reservada: 26px (strip) + 56px (header nativo) ≈ 5.25rem */
-:root {
-  --sl-nav-height: 5.25rem !important;
+/* Logo con altura propia — desacoplado de --sl-nav-height para romper el
+   bucle (nav-height ↑ → logo ↑ → header ↑ → overlap). */
+header.header .site-title img {
+  height: var(--eco-logo-height) !important;
+  width: auto !important;
+}
+
+/* Hero — título reducido y sutil */
+.hero h1 {
+  font-size: clamp(1.4rem, 3vw, 2rem) !important;
+  color: #f1f5f9 !important;    /* slate-100 */
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.hero .tagline {
+  font-size: 0.85rem !important;
+  color: #475569 !important;    /* slate-600 — prompt sutil */
+  font-family: 'JetBrains Mono', monospace !important;
 }
 
 /* ==========================================================================
@@ -219,16 +350,14 @@ header.header > div.header {
 .sidebar-content ul ul {
   margin-left: 0.8rem !important;
   padding-left: 0.4rem !important;
-  border-left: 1px dashed rgba(203, 166, 247, 0.15) !important; /* Mauve translúcido */
+  border-left: 1px dashed rgba(14, 165, 233, 0.15) !important; /* sky-500 */
   transition: border-color 0.25s ease;
 }
 
-/* Al hacer hover en un contenedor de la barra lateral, resaltamos sutilmente sus líneas guía */
 .sidebar-content li:hover > ul {
-  border-left-color: rgba(203, 166, 247, 0.4) !important;
+  border-left-color: rgba(14, 165, 233, 0.4) !important;
 }
 
-/* Estilos de enlaces para que se sientan como entradas de consola interactivas */
 .sidebar-content a {
   padding-left: 0.6rem !important;
   border-radius: 4px !important;
@@ -236,20 +365,18 @@ header.header > div.header {
   position: relative;
 }
 
-/* Desplazamiento a la derecha y color brillante en hover */
 .sidebar-content a:hover {
-  background-color: rgba(203, 166, 247, 0.06) !important; /* Mauve hover bg */
-  color: #ddb6f9 !important; /* Mauve brillante */
+  background-color: rgba(14, 165, 233, 0.06) !important;
+  color: #38bdf8 !important; /* sky-400 */
   padding-left: 0.9rem !important;
 }
 
-/* Cursor interactivo de terminal (">") que se desliza al hacer hover */
 .sidebar-content a::before {
   content: ">";
   position: absolute;
   left: 0px;
   opacity: 0;
-  color: #cba6f7;
+  color: #0ea5e9; /* sky-500 */
   font-weight: 700;
   transition: all 0.2s ease;
 }
@@ -259,23 +386,23 @@ header.header > div.header {
   left: 5px;
 }
 
-/* Destacado activo con glow de neón en el enlace actualmente abierto */
 .sidebar-content a[aria-current="page"] {
-  background-color: rgba(203, 166, 247, 0.12) !important;
-  color: #cba6f7 !important;
+  background-color: rgba(14, 165, 233, 0.12) !important;
+  color: #38bdf8 !important; /* sky-400 */
   font-weight: 700 !important;
-  border-left: 3px solid #cba6f7 !important;
+  border-left: 3px solid #0ea5e9 !important;
   border-radius: 0 4px 4px 0 !important;
   padding-left: 0.9rem !important;
-  box-shadow: inset 4px 0 10px rgba(203, 166, 247, 0.08);
+  box-shadow: inset 4px 0 10px rgba(14, 165, 233, 0.08);
+  transition: none !important;
 }
 
 .sidebar-content a[aria-current="page"]::before {
   opacity: 1;
   left: 5px;
+  transition: none !important;
 }
 
-/* Diseño premium de títulos colapsables (details / summary) */
 .sidebar-content details summary {
   padding: 0.35rem 0.5rem !important;
   border-radius: 4px !important;
@@ -284,65 +411,52 @@ header.header > div.header {
 }
 
 .sidebar-content details summary:hover {
-  background-color: rgba(49, 50, 68, 0.6) !important; /* Surface0 */
-  color: #cba6f7 !important;
+  background-color: rgba(30, 41, 59, 0.6) !important;
+  color: #38bdf8 !important; /* sky-400 */
 }
 
-/* Títulos de Categoría Superior en mayúsculas cibernéticas */
 .sidebar-content > ul > li > details > summary {
   font-weight: 700 !important;
   font-size: 0.85rem !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
-  color: #cdd6f4 !important; /* Text */
-  border-bottom: 1px solid rgba(69, 71, 90, 0.4) !important; /* Surface1 */
+  color: #cbd5e1 !important;
+  border-bottom: 1px solid rgba(30, 41, 59, 0.4) !important;
   margin-bottom: 0.3rem !important;
   padding-bottom: 0.4rem !important;
 }
 
 /* ==========================================================================
    Responsive — Tablet & Mobile
-   --------------------------------------------------------------------------
-   Las cheatsheets contienen ~150 tablas Markdown que Starlight renderiza
-   como `<table>` plano (sin wrapper de scroll). En viewport <768px desbordan
-   el ancho y rompen el layout. Estos bloques aplican scroll horizontal
-   contenido a tablas + ajustes de header/hero para móvil.
    ========================================================================== */
 
 @media (max-width: 768px) {
-  /* Tablas: scroll horizontal dentro del propio elemento, sin reventar viewport */
   .sl-markdown-content table {
     display: block;
     max-width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    /* Indicador visual sutil de scroll en el borde derecho */
     background:
-      linear-gradient(to right, var(--sl-color-bg) 30%, rgba(17,17,27,0)),
-      linear-gradient(to right, rgba(17,17,27,0), var(--sl-color-bg) 70%) 100% 0,
-      radial-gradient(farthest-side at 0 50%, rgba(203,166,247,0.18), rgba(0,0,0,0)),
-      radial-gradient(farthest-side at 100% 50%, rgba(203,166,247,0.18), rgba(0,0,0,0)) 100% 0;
+      linear-gradient(to right, var(--sl-color-bg) 30%, rgba(5,8,16,0)),
+      linear-gradient(to right, rgba(5,8,16,0), var(--sl-color-bg) 70%) 100% 0,
+      radial-gradient(farthest-side at 0 50%, rgba(14,165,233,0.18), rgba(0,0,0,0)),
+      radial-gradient(farthest-side at 100% 50%, rgba(14,165,233,0.18), rgba(0,0,0,0)) 100% 0;
     background-repeat: no-repeat;
     background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
     background-attachment: local, local, scroll, scroll;
   }
 
-  /* Cuerpo y celdas: padding más compacto, código no fuerza nowrap a la fila */
   .sl-markdown-content table th,
   .sl-markdown-content table td {
     padding: 0.4rem 0.6rem !important;
     font-size: 0.85rem !important;
   }
 
-  /* Cyber-terminal de la home: scroll horizontal si alguna línea de prompt
-     no cabe (paths largos, URLs, etc.) — el contenedor mantiene su look */
   .cyber-terminal {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Hero del splash: reducir imagen y padding vertical para no monopolizar
-     el fold inicial en móvil */
   .hero {
     padding-block: 1rem !important;
   }
@@ -355,27 +469,122 @@ header.header > div.header {
 }
 
 @media (max-width: 480px) {
-  /* Header total más bajo en pantallas muy pequeñas (≤iPhone SE) para
-     liberar verticales al contenido principal */
   :root {
-    --sl-nav-height: 4.5rem !important;
+    /* Header compacto en móvil — --sl-nav-height se recalcula solo a
+       partir de la suma (strip + fila) porque referencia estas vars. */
+    --eco-header-row: 3rem !important;   /* 48px */
+    --eco-logo-height: 1.75rem !important;
   }
 
-  /* Asides de "Ecosistema pwnVader" en el body de las metodologías:
-     reducir padding y forzar que el contenido respire en columnas únicas */
   .sl-markdown-content aside {
     padding: 0.75rem !important;
   }
 
-  /* Cyber-terminal: tipografía ligeramente menor para que quepa más prompt */
   .cyber-terminal {
     font-size: 0.78rem;
   }
 }
 
-/* Ocultar el selector de idioma por defecto de Starlight para usar el de la Ecosystem Strip */
-.sl-lang-select {
-  display: none !important;
+/* ==========================================================================
+   Layout principal de la documentación — alineación / overlap
+   ==========================================================================
+   El sidebar IZQUIERDO ya queda anclado bajo el nav (`inset-block:
+   var(--sl-nav-height) 0` en Starlight). El ToC DERECHO, en cambio, usaba
+   `top:0; height:100vh` con padding-top del alto del nav → scroll raro y
+   sensación de solapamiento. Aquí lo arrancamos justo bajo el nav con altura
+   acotada, y centramos de verdad el contenido central. */
+
+/* (0) Centrado del LAYOUT COMPLETO en pantallas anchas.
+       Acotamos a 90rem y lo centramos con gutters SIMÉTRICOS: sidebar |
+       contenido | ToC quedan como un bloque centrado en la pantalla (ni
+       pegado a la izquierda ni desbalanceado). El fondo del sidebar se vuelve
+       TRANSPARENTE (se funde con el lienzo) para no generar "espacio muerto"
+       a su izquierda ni el panel gigante de versiones previas; su borde
+       derecho sigue marcando la separación con el contenido. */
+@media (min-width: 90rem) {
+  :root {
+    --app-gutter: calc((100vw - 90rem) / 2);
+  }
+  [data-has-sidebar] .sidebar-pane {
+    inset-inline-start: var(--app-gutter) !important;
+    background-color: transparent !important;
+  }
+  [data-has-sidebar] {
+    --sl-content-inline-start: calc(var(--app-gutter) + var(--sl-sidebar-width)) !important;
+  }
+  [data-has-sidebar] .main-frame {
+    padding-inline-end: var(--app-gutter) !important;
+  }
 }
 
+/* (1b) UNA sola barra de scroll en la columna izquierda.
+        Antes había dos: la del menú (writeups/metodologías) y la del propio
+        `.sidebar-pane` (columna general). Dejamos que el scroll lo gestione
+        SOLO el contenedor interno del menú (`.flex-1.min-h-0.overflow-y-auto`
+        del Sidebar): para ello `.sidebar-content` deja de crecer y el
+        `.sidebar-pane` no desborda. Las certificaciones y redes quedan fijas
+        abajo. (Solo escritorio; en móvil el sidebar es un overlay propio.) */
+@media (min-width: 50rem) {
+  .sidebar-pane {
+    overflow: hidden !important;
+  }
+  .sidebar-content {
+    min-height: 0 !important;
+    height: 100% !important;
+  }
+}
+
+/* (1) ToC derecho: empieza bajo el nav, altura acotada, scroll interno
+       (equivale a top-20 + h-[calc(100vh-5rem)]). */
+@media (min-width: 72rem) {
+  .right-sidebar {
+    top: var(--sl-nav-height) !important;
+    height: calc(100vh - var(--sl-nav-height)) !important;
+    padding-top: 1.5rem !important;
+  }
+}
+
+/* (2) Centrado real del contenido central (≈ max-w-4xl mx-auto px-6).
+       Anula el `--sl-content-margin-inline: auto 0` que lo pegaba al ToC y le
+       da un ancho de lectura óptimo, centrado en su área. Se acota a
+       `.content-panel` para NO afectar al `.sl-container` interno del ToC. */
+[data-has-sidebar] .content-panel .sl-container {
+  max-width: 56rem !important;     /* max-w-4xl */
+  margin-inline: auto !important;  /* mx-auto   */
+  width: 100% !important;
+}
+
+/* (4) ToC: encabezado técnico "EN ESTA PÁGINA" + espaciado de enlaces. */
+.right-sidebar-panel #starlight__on-this-page {
+  color: #94a3b8 !important;                            /* text-slate-400 */
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 600 !important;                          /* font-semibold  */
+  text-transform: uppercase !important;
+  font-size: 0.875rem !important;                       /* text-sm        */
+  letter-spacing: 0.06em !important;
+  margin-bottom: 1rem !important;                       /* mb-4           */
+}
+.right-sidebar-panel starlight-toc nav > ul {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;                               /* space-y-2 */
+}
+
+/* (4) Tipografía JetBrains Mono heredada en todo el layout (refuerzo por si
+       algún contenedor escapaba a las variables --sl-font-* / Tailwind). */
+body,
+.sl-markdown-content,
+.sidebar-content,
+.right-sidebar {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Selector de idioma nativo de Starlight (custom element <starlight-lang-select>).
+   Se muestra junto al tema/GitHub. El problema original era que el <select>
+   tenía un ancho fijo (7em) que cortaba "Español" → "Españ...". Le damos ancho
+   según contenido para que la etiqueta se vea completa. */
+starlight-lang-select select {
+  width: max-content !important;
+  min-width: 7em !important;
+}
 

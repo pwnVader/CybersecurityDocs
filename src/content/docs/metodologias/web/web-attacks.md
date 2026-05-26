@@ -340,14 +340,14 @@ cat Logs/TARGET_IP/etc/passwd.log
 
 ---
 
-## 🛠️ Herramientas Relacionadas (Ecosistema pwnVader)
+## Herramientas Relacionadas (Ecosistema pwnVader)
 
-<aside class="my-6 p-4 rounded-md border-l-4 border-[#cba6f7] bg-[#cba6f7]/5 not-prose">
-  <div class="text-[10px] uppercase tracking-widest text-[#cba6f7] font-bold mb-1">
+<aside class="my-6 p-4 rounded-md border-l-4 border-[#0ea5e9] bg-[#0ea5e9]/5 not-prose">
+  <div class="text-[10px] uppercase tracking-widest text-[#0ea5e9] font-bold mb-1">
     Herramienta · hacking.pwnvader.com
   </div>
   <p class="text-sm text-zinc-300">
-    ¿Estás analizando JSON Web Tokens (JWT) o necesitas codificar/decodificar payloads complejos durante tus pruebas? Evita controles de acceso y manipula firmas con el <a href="https://hacking.pwnvader.com/web/jwt" class="text-[#cba6f7] hover:underline">JWT Attacker</a>, o procesa recetas de codificación avanzadas de manera serverless con el <a href="https://hacking.pwnvader.com/encoders/recipes" class="text-[#cba6f7] hover:underline">Cyber Encoder Lab</a>.
+    ¿Estás analizando JSON Web Tokens (JWT) o necesitas codificar/decodificar payloads complejos durante tus pruebas? Evita controles de acceso y manipula firmas con el <a href="https://hacking.pwnvader.com/web/jwt" class="text-[#0ea5e9] hover:underline">JWT Attacker</a>, o procesa recetas de codificación avanzadas de manera serverless con el <a href="https://hacking.pwnvader.com/encoders/recipes" class="text-[#0ea5e9] hover:underline">Cyber Encoder Lab</a>.
   </p>
 </aside>
 
