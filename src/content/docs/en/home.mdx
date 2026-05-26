@@ -24,18 +24,28 @@ import { Icon } from 'astro-icon/components';
   </p>
 </div>
 
-## 1. Writeups & Labs
+## 1. Main Sections
 
-Technical resolution of controlled environments and machine intrusions in offensive security.
+Quick access to methodological study guides and technical writeups across cybersecurity platforms.
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 not-prose">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6 not-prose">
+
+  <a href="/en/metodologias/fundamentos/penetration-testing-process/" class="group p-5 bg-slate-900/25 border border-slate-800/40 hover:border-[#58a6df]/40 rounded-lg flex gap-4 transition-all duration-300 hover:bg-slate-900/45 hover:shadow-[0_0_15px_rgba(88,166,223,0.05)]">
+    <Icon name="tech-kali" class="w-10 h-10 text-[#58a6df] shrink-0 drop-shadow-[0_0_8px_rgba(88,166,223,0.4)] group-hover:scale-105 transition-transform duration-300" />
+    <div>
+      <h3 class="text-slate-200 font-mono font-semibold text-sm mb-1.5 group-hover:text-[#58a6df] transition-colors">Study Notes</h3>
+      <p class="text-slate-400 text-xs leading-relaxed font-sans">
+        Detailed offensive auditing and pentesting methodologies preparing you for professional certifications like <strong>CPTS</strong> and <strong>CWES</strong>.
+      </p>
+    </div>
+  </a>
 
   <a href="/en/writeups/hackthebox/" class="group p-5 bg-slate-900/25 border border-slate-800/40 hover:border-[#9fef00]/40 rounded-lg flex gap-4 transition-all duration-300 hover:bg-slate-900/45 hover:shadow-[0_0_15px_rgba(159,239,0,0.05)]">
     <Icon name="tech-htb-v2" class="w-10 h-10 text-[#9fef00] shrink-0 drop-shadow-[0_0_8px_rgba(159,239,0,0.4)] group-hover:scale-105 transition-transform duration-300" />
     <div>
       <h3 class="text-slate-200 font-mono font-semibold text-sm mb-1.5 group-hover:text-[#9fef00] transition-colors">HackTheBox</h3>
-      <p class="text-slate-400 text-xs leading-relaxed">
-        Detailed writeups of <strong>HTB Academy (CPTS / COAE)</strong> modules and practical resolution of active/retired machines focused on infrastructure compromise.
+      <p class="text-slate-400 text-xs leading-relaxed font-sans">
+        Detailed writeups of practical resolutions for active/retired HTB machines focused on infrastructure compromise and controlled labs.
       </p>
     </div>
   </a>
@@ -44,8 +54,8 @@ Technical resolution of controlled environments and machine intrusions in offens
     <Icon name="social-thm" class="w-10 h-10 text-red-500 shrink-0 drop-shadow-[0_0_8px_rgba(239,68,68,0.4)] group-hover:scale-105 transition-transform duration-300" />
     <div>
       <h3 class="text-slate-200 font-mono font-semibold text-sm mb-1.5 group-hover:text-red-400 transition-colors">TryHackMe</h3>
-      <p class="text-slate-400 text-xs leading-relaxed">
-        Walkthroughs of thematic rooms focused on the practical understanding of networks and the exploitation of common vulnerabilities.
+      <p class="text-slate-400 text-xs leading-relaxed font-sans">
+        Walkthroughs of thematic rooms focused on the practical understanding of networks and the exploitation of common network vulnerabilities.
       </p>
     </div>
   </a>
@@ -54,7 +64,7 @@ Technical resolution of controlled environments and machine intrusions in offens
 
 ## 2. Methodological Notes
 
-Ordered compilation of key commands, attack vectors, and structured guides based on the main professional certifications in the sector.
+Ordered compilation of key commands, attack vectors, and structured guides based on the main professional certifications in the sector. _(Click on each section to access its study notes)_.
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 font-mono text-xs not-prose">
 
@@ -63,14 +73,14 @@ Ordered compilation of key commands, attack vectors, and structured guides based
       <Icon name="tech-kali" class="w-5 h-5 text-indigo-400 drop-shadow-[0_0_5px_rgba(129,140,248,0.3)]" />
       <span>INITIAL PHASES</span>
     </div>
-    <ul class="text-slate-400 space-y-2 list-none pl-0">
+    <ul class="text-slate-400 space-y-2.5 list-none pl-0">
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><strong>Fundamentals:</strong> Corporate scoping, auditing processes, and technical reporting.</span>
+        <span><a href="/en/metodologias/fundamentos/penetration-testing-process/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Fundamentals:</a> Corporate scoping, auditing processes, and technical reporting.</span>
       </li>
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><strong>Recon & Enumeration:</strong> Active/passive gathering and advanced scanning with Nmap.</span>
+        <span><a href="/en/metodologias/recon/footprinting/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Recon & Enumeration:</a> Active/passive gathering and advanced scanning with Nmap.</span>
       </li>
     </ul>
   </div>
@@ -80,14 +90,14 @@ Ordered compilation of key commands, attack vectors, and structured guides based
       <Icon name="ui-globe" class="w-5 h-5 text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.3)]" />
       <span>WEB APPLICATIONS</span>
     </div>
-    <ul class="text-slate-400 space-y-2 list-none pl-0">
+    <ul class="text-slate-400 space-y-2.5 list-none pl-0">
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><strong>Web Exploitation:</strong> OWASP Top 10, SQL Injection, XSS, APIs, and GraphQL.</span>
+        <span><a href="/en/metodologias/web/api-attacks/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Web Exploitation:</a> OWASP Top 10, SQL Injection, XSS, APIs, and GraphQL.</span>
       </li>
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><strong>Web Services:</strong> CMS analysis, unprotected APIs, and advanced injections.</span>
+        <span><a href="/en/metodologias/servicios/attacking-common-services/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Web Services:</a> CMS analysis, unprotected APIs, and advanced injections.</span>
       </li>
     </ul>
   </div>
@@ -97,16 +107,14 @@ Ordered compilation of key commands, attack vectors, and structured guides based
       <Icon name="tech-bash" class="w-5 h-5 text-amber-400 drop-shadow-[0_0_5px_rgba(251,191,36,0.3)]" />
       <span>EXPLOITATION & SYSTEMS</span>
     </div>
-    <ul class="text-slate-400 space-y-2 list-none pl-0">
+    <ul class="text-slate-400 space-y-2.5 list-none pl-0">
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><strong>Foothold & Payload:</strong> Shell and payload generation, Metasploit, and basic evasion.</span>
+        <span><a href="/en/metodologias/exploitation/metasploit-framework/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Foothold & Payload:</a> Shell and payload generation, Metasploit, and basic evasion.</span>
       </li>
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span>
-          <strong>Privilege Escalation:</strong> Privilege elevation on systems <span class="inline-flex items-center gap-1 text-slate-200"><Icon name="os-linux" class="w-3.5 h-3.5 text-orange-400 inline-block align-text-bottom" /> Linux</span> and <span class="inline-flex items-center gap-1 text-slate-200"><Icon name="os-windows" class="w-3.5 h-3.5 text-[#00adef] inline-block align-text-bottom" /> Windows</span>.
-        </span>
+        <span><strong>Privilege Escalation:</strong> Privilege elevation on systems <a href="/en/metodologias/privesc/linux-privilege-escalation/" class="inline-flex items-center gap-1 text-slate-200 hover:text-[#58a6df] hover:underline transition-colors"><Icon name="os-linux" class="w-3.5 h-3.5 text-orange-400 inline-block align-text-bottom" /> Linux</a> and <a href="/en/metodologias/privesc/windows-privilege-escalation/" class="inline-flex items-center gap-1 text-slate-200 hover:text-[#58a6df] hover:underline transition-colors"><Icon name="os-windows" class="w-3.5 h-3.5 text-[#00adef] inline-block align-text-bottom" /> Windows</a>.</span>
       </li>
     </ul>
   </div>
@@ -114,16 +122,16 @@ Ordered compilation of key commands, attack vectors, and structured guides based
   <div class="p-4 bg-slate-900/15 border border-slate-800/40 rounded-lg">
     <div class="flex items-center gap-2.5 mb-3 text-slate-100 font-semibold border-b border-slate-800/50 pb-2.5">
       <Icon name="ui-flag" class="w-5 h-5 text-rose-400 drop-shadow-[0_0_5px_rgba(251,113,133,0.3)]" />
-      <span>INFRAESTRUCTURA & DOMINIO</span>
+      <span>INFRASTRUCTURE & DOMAIN</span>
     </div>
-    <ul class="text-slate-400 space-y-2 list-none pl-0">
+    <ul class="text-slate-400 space-y-2.5 list-none pl-0">
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><strong>Active Directory:</strong> Offensive auditing of Windows domains, delegation, and ACLs.</span>
+        <span><a href="/en/metodologias/active-directory/active-directory-enumeration-attacks/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Active Directory:</a> Offensive auditing of Windows domains, delegation, and ACLs.</span>
       </li>
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><strong>Pivoting & Tunnels:</strong> Internal routing, port forwarding, and lateral network hops.</span>
+        <span><a href="/en/metodologias/pivoting/pivoting-tunneling-port-forwarding/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Pivoting & Tunnels:</a> Internal routing, port forwarding, and lateral network hops.</span>
       </li>
     </ul>
   </div>
