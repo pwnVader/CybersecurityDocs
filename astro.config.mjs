@@ -164,6 +164,13 @@ export default defineConfig({
       ],
       sidebar: [
         {
+          label: 'Home',
+          translations: {
+            en: 'Home',
+          },
+          link: '/home/',
+        },
+        {
           label: 'Writeups',
           translations: {
             en: 'Writeups',
