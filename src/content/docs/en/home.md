@@ -12,51 +12,124 @@ import { Icon } from 'astro-icon/components';
 
 <div class="cyber-terminal p-6 font-mono text-sm leading-relaxed space-y-4 bg-slate-900/30 backdrop-blur-sm border border-slate-800/50 rounded-xl my-6">
   <div class="text-xs border-b border-slate-800/40 pb-4 flex items-center justify-between">
-    <div><span class="text-slate-500">INDEXED   ·</span> <span class="text-slate-200">System Study Notes & Labs</span></div>
-    <div><span class="text-sky-400 font-semibold animate-pulse">● READY</span></div>
+    <div class="flex items-center gap-2">
+      <Icon name="ui-terminal" class="w-4 h-4 text-sky-400" />
+      <span>SYSTEM INDEX · v1.0.0</span>
+    </div>
+    <div><span class="text-sky-400 font-semibold animate-pulse">● LOADED</span></div>
   </div>
   
-  <p class="text-slate-300 text-[0.85rem]">
-    Welcome to the central documentation hub. Here you will find the general structure of my technical study guides and detailed resolutions of practical labs.
+  <p class="text-slate-300 text-[0.82rem] leading-relaxed">
+    Central documentation hub and tactical study guides. This panel provides a structured overview of solved labs and pentesting methodological frameworks.
   </p>
 </div>
 
-## 📑 Table of Contents
+## 1. Writeups & Labs
 
----
+Technical resolution of controlled environments and machine intrusions in offensive security.
 
-### 🚩 1. Writeups (Lab Walkthroughs)
-Step-by-step documentation of controlled environments and competitive machines focused on practical intrusion solving.
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
 
-*   **HackTheBox (HTB):** 
-    *   **HTB Academy (CPTS):** Structured and technical writeups of the official modules for the *Certified Penetration Testing Specialist* certification.
-    *   **HTB Academy (COAE):** Apuntes and writeups of the practical syllabus on artificial intelligence and LLM Red Teaming (*Certified Out-of-Distribution AI Engineer*).
-    *   **HTB Machines:** Detailed walkthroughs of active and retired machines from the competitive platform.
-*   **TryHackMe (THM):** Resolution of thematic rooms focused on specific networking concepts and exploitation of common vulnerabilities.
-*   **CTFs & Challenges:** Selected writeups of Capture The Flag style competitions.
+  <div class="p-5 bg-slate-900/25 border border-slate-800/40 rounded-lg flex gap-4">
+    <Icon name="tech-htb" class="w-10 h-10 text-sky-400 shrink-0" />
+    <div>
+      <h3 class="text-slate-200 font-mono font-semibold text-sm mb-1.5">HackTheBox</h3>
+      <p class="text-slate-400 text-xs leading-relaxed">
+        Detailed writeups of <strong>HTB Academy (CPTS / COAE)</strong> modules and practical resolution of active/retired machines focused on infrastructure compromise.
+      </p>
+    </div>
+  </div>
 
----
+  <div class="p-5 bg-slate-900/25 border border-slate-800/40 rounded-lg flex gap-4">
+    <Icon name="social-thm" class="w-10 h-10 text-sky-400 shrink-0" />
+    <div>
+      <h3 class="text-slate-200 font-mono font-semibold text-sm mb-1.5">TryHackMe</h3>
+      <p class="text-slate-400 text-xs leading-relaxed">
+        Walkthroughs of thematic rooms focused on the practical understanding of networks and the exploitation of common vulnerabilities.
+      </p>
+    </div>
+  </div>
 
-### 🧠 2. Methodologies (Technical Pentesting Guides)
-Structured compilation of attack vectors, key commands, and corporate intrusion methodologies based on professional certification standards.
+</div>
 
-*   **Fundamentals & Methodology:** Introduction to the pentesting process, corporate scoping, technical reporting, and web application basics.
-*   **Recon & Enumeration:** Advanced passive and active information gathering, advanced scanning with Nmap, web discovery, and JavaScript deobfuscation.
-*   **Web Exploitation:** Analysis and exploitation of OWASP Top 10 vulnerabilities (SQL Injection, XSS, File Inclusion, API Attacks, GraphQL, etc.).
-*   **Common Services:** Enumeration and attacks against standard network services (SMB, FTP, SSH, RDP, DNS, LDAP, etc.).
-*   **Exploitation & Foothold:** Shell and payload generation, basic antivirus evasion, and advanced usage of the Metasploit framework.
-*   **Privilege Escalation:** Vertical movement techniques and privilege elevation on Linux and Windows operating systems.
-*   **Active Directory:** Offensive auditing against Windows domain infrastructures (Kerberoasting, BloodHound, ACL abuses, delegation, etc.).
-*   **Pivoting & Lateral Movement:** Internal routing, tunneling, port forwarding, and lateral movement techniques in corporate networks.
+## 2. Methodological Notes
 
----
+Ordered compilation of key commands, attack vectors, and structured guides based on the main professional certifications in the sector.
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 font-mono text-xs">
+
+  <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
+    <div class="flex items-center gap-2.5 mb-2.5 text-sky-400 font-semibold">
+      <Icon name="ui-book" class="w-4 h-4" />
+      <span>INITIAL PHASES</span>
+    </div>
+    <ul class="text-slate-400 space-y-1.5 list-none pl-0">
+      <li class="flex items-baseline gap-1.5">
+        <span class="text-sky-500 font-bold">></span>
+        <span><strong>Fundamentals:</strong> Corporate scoping, auditing processes, and technical reporting.</span>
+      </li>
+      <li class="flex items-baseline gap-1.5">
+        <span class="text-sky-500 font-bold">></span>
+        <span><strong>Recon & Enumeration:</strong> Active/passive gathering and advanced scanning with Nmap.</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
+    <div class="flex items-center gap-2.5 mb-2.5 text-sky-400 font-semibold">
+      <Icon name="ui-globe" class="w-4 h-4" />
+      <span>WEB APPLICATIONS</span>
+    </div>
+    <ul class="text-slate-400 space-y-1.5 list-none pl-0">
+      <li class="flex items-baseline gap-1.5">
+        <span class="text-sky-500 font-bold">></span>
+        <span><strong>Web Exploitation:</strong> OWASP Top 10, SQL Injection, XSS, APIs, and GraphQL.</span>
+      </li>
+      <li class="flex items-baseline gap-1.5">
+        <span class="text-sky-500 font-bold">></span>
+        <span><strong>Web Services:</strong> CMS analysis, unprotected APIs, and advanced injections.</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
+    <div class="flex items-center gap-2.5 mb-2.5 text-sky-400 font-semibold">
+      <Icon name="ui-terminal" class="w-4 h-4" />
+      <span>EXPLOITATION & SYSTEMS</span>
+    </div>
+    <ul class="text-slate-400 space-y-1.5 list-none pl-0">
+      <li class="flex items-baseline gap-1.5">
+        <span class="text-sky-500 font-bold">></span>
+        <span><strong>Foothold & Payload:</strong> Shell and payload generation, Metasploit, and basic evasion.</span>
+      </li>
+      <li class="flex items-baseline gap-1.5">
+        <span class="text-sky-500 font-bold">></span>
+        <span><strong>Privilege Escalation:</strong> Privilege elevation on Linux (SUID, sudo) and Windows systems.</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
+    <div class="flex items-center gap-2.5 mb-2.5 text-sky-400 font-semibold">
+      <Icon name="ui-flag" class="w-4 h-4" />
+      <span>INFRASTRUCTURE & DOMAIN</span>
+    </div>
+    <ul class="text-slate-400 space-y-1.5 list-none pl-0">
+      <li class="flex items-baseline gap-1.5">
+        <span class="text-sky-500 font-bold">></span>
+        <span><strong>Active Directory:</strong> Offensive auditing of Windows domains, delegation, and ACLs.</span>
+      </li>
+      <li class="flex items-baseline gap-1.5">
+        <span class="text-sky-500 font-bold">></span>
+        <span><strong>Pivoting & Tunnels:</strong> Internal routing, port forwarding, and lateral network hops.</span>
+      </li>
+    </ul>
+  </div>
+
+</div>
 
 <aside class="my-6 p-5 rounded-xl border border-slate-800/50 bg-slate-900/30 backdrop-blur-sm not-prose">
-  <div class="text-[10px] uppercase tracking-widest text-sky-400 font-semibold mb-2 font-mono flex items-center gap-2">
-    <Icon name="ui-terminal" class="w-3 h-3 text-sky-400" />
-    Recommended Command
-  </div>
-  <p class="text-sm text-slate-300 leading-relaxed font-mono">
-    Use the global search (<kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs">Ctrl</kbd> + <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs">K</kbd>) to instantly filter by commands, tools, or specific vulnerability names across the entire hub.
+  <p class="text-xs text-slate-400 leading-relaxed font-mono">
+    Use the global search (<kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300">Ctrl</kbd> + <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300">K</kbd>) to instantly filter by commands, tools, or specific vulnerability names across the entire hub.
   </p>
 </aside>
