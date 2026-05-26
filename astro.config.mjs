@@ -10,6 +10,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'docs.pwnvader.com',
+      favicon: '/favicon.png',
       defaultLocale: 'root',
       locales: {
         root: {
@@ -22,7 +23,7 @@ export default defineConfig({
         },
       },
       logo: {
-        src: './src/assets/logo.svg',
+        src: './src/assets/logo.webp',
       },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/pwnVader' }
@@ -30,11 +31,13 @@ export default defineConfig({
       customCss: [
         './src/styles/custom.css',
         '@fontsource/jetbrains-mono/400.css',
+        '@fontsource/jetbrains-mono/500.css',
         '@fontsource/jetbrains-mono/700.css',
       ],
       components: {
         ThemeSelect: './src/components/ThemeSelect.astro',
         Header: './src/components/Header.astro',
+        Footer: './src/components/Footer.astro',
       },
       head: [
         // ─── CSS crítico inline para eliminar FOUC del header ───────────
