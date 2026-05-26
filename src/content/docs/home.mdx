@@ -28,27 +28,27 @@ import { Icon } from 'astro-icon/components';
 
 Resolución técnica de entornos controlados y de intrusión en máquinas de seguridad ofensiva.
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 not-prose">
 
-  <div class="p-5 bg-slate-900/25 border border-slate-800/40 rounded-lg flex gap-4">
-    <Icon name="tech-htb" class="w-10 h-10 text-sky-400 shrink-0" />
+  <a href="/writeups/hackthebox/" class="group p-5 bg-slate-900/25 border border-slate-800/40 hover:border-[#9fef00]/40 rounded-lg flex gap-4 transition-all duration-300 hover:bg-slate-900/45 hover:shadow-[0_0_15px_rgba(159,239,0,0.05)]">
+    <Icon name="tech-htb" class="w-10 h-10 text-[#9fef00] shrink-0 drop-shadow-[0_0_8px_rgba(159,239,0,0.4)] group-hover:scale-105 transition-transform duration-300" />
     <div>
-      <h3 class="text-slate-200 font-mono font-semibold text-sm mb-1.5">HackTheBox</h3>
+      <h3 class="text-slate-200 font-mono font-semibold text-sm mb-1.5 group-hover:text-[#9fef00] transition-colors">HackTheBox</h3>
       <p class="text-slate-400 text-xs leading-relaxed">
         Writeups detallados de los módulos de <strong>HTB Academy (CPTS / COAE)</strong> y resolución práctica de máquinas activas/retiradas enfocadas en compromiso de infraestructuras.
       </p>
     </div>
-  </div>
+  </a>
 
-  <div class="p-5 bg-slate-900/25 border border-slate-800/40 rounded-lg flex gap-4">
-    <Icon name="social-thm" class="w-10 h-10 text-sky-400 shrink-0" />
+  <a href="/writeups/tryhackme/" class="group p-5 bg-slate-900/25 border border-slate-800/40 hover:border-red-500/40 rounded-lg flex gap-4 transition-all duration-300 hover:bg-slate-900/45 hover:shadow-[0_0_15px_rgba(239,68,68,0.05)]">
+    <Icon name="social-thm" class="w-10 h-10 text-red-500 shrink-0 drop-shadow-[0_0_8px_rgba(239,68,68,0.4)] group-hover:scale-105 transition-transform duration-300" />
     <div>
-      <h3 class="text-slate-200 font-mono font-semibold text-sm mb-1.5">TryHackMe</h3>
+      <h3 class="text-slate-200 font-mono font-semibold text-sm mb-1.5 group-hover:text-red-400 transition-colors">TryHackMe</h3>
       <p class="text-slate-400 text-xs leading-relaxed">
         Guías de resolución de salas temáticas enfocadas en la comprensión práctica de redes y explotación de vulnerabilidades comunes de red.
       </p>
     </div>
-  </div>
+  </a>
 
 </div>
 
@@ -56,71 +56,81 @@ Resolución técnica de entornos controlados y de intrusión en máquinas de seg
 
 Compilación ordenada de comandos clave, vectores de ataque y guías estructuradas basadas en las principales certificaciones profesionales del sector.
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 font-mono text-xs">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 font-mono text-xs not-prose">
 
   <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
-    <div class="flex items-center gap-2.5 mb-2.5 text-sky-400 font-semibold">
-      <Icon name="ui-book" class="w-4 h-4" />
+    <div class="flex items-center gap-2.5 mb-3 text-sky-400 font-semibold border-b border-slate-800/40 pb-2">
+      <Icon name="tech-kali" class="w-5 h-5 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.3)]" />
       <span>FASES INICIALES</span>
     </div>
-    <ul class="text-slate-400 space-y-1.5 list-none pl-0">
-      <li class="flex items-baseline gap-1.5">
-        <span class="text-sky-500 font-bold">></span>
+    <ul class="text-slate-400 space-y-2 list-none pl-0">
+      <li class="flex items-start gap-2">
+        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
         <span><strong>Fundamentos:</strong> Procesos corporativos de auditoría, scoping y documentación técnica.</span>
       </li>
-      <li class="flex items-baseline gap-1.5">
-        <span class="text-sky-500 font-bold">></span>
+      <li class="flex items-start gap-2">
+        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
         <span><strong>Recon & Enumeración:</strong> Recopilación pasiva/activa y escaneo avanzado con Nmap.</span>
       </li>
     </ul>
   </div>
 
   <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
-    <div class="flex items-center gap-2.5 mb-2.5 text-sky-400 font-semibold">
-      <Icon name="ui-globe" class="w-4 h-4" />
+    <div class="flex items-center gap-2.5 mb-3 text-sky-400 font-semibold border-b border-slate-800/40 pb-2">
+      <Icon name="ui-globe" class="w-5 h-5 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.3)]" />
       <span>APLICACIONES WEB</span>
     </div>
-    <ul class="text-slate-400 space-y-1.5 list-none pl-0">
-      <li class="flex items-baseline gap-1.5">
-        <span class="text-sky-500 font-bold">></span>
+    <ul class="text-slate-400 space-y-2 list-none pl-0">
+      <li class="flex items-start gap-2">
+        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
         <span><strong>Web Exploitation:</strong> Vulnerabilidades OWASP Top 10, SQL Injection, XSS, APIs y GraphQL.</span>
       </li>
-      <li class="flex items-baseline gap-1.5">
-        <span class="text-sky-500 font-bold">></span>
+      <li class="flex items-start gap-2">
+        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
         <span><strong>Servicios Web:</strong> Análisis de gestores de contenido, APIs e inyecciones avanzadas.</span>
       </li>
     </ul>
   </div>
 
   <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
-    <div class="flex items-center gap-2.5 mb-2.5 text-sky-400 font-semibold">
-      <Icon name="ui-terminal" class="w-4 h-4" />
+    <div class="flex items-center gap-2.5 mb-3 text-sky-400 font-semibold border-b border-slate-800/40 pb-2">
+      <Icon name="tech-bash" class="w-5 h-5 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.3)]" />
       <span>EXPLOTACIÓN & SISTEMAS</span>
     </div>
-    <ul class="text-slate-400 space-y-1.5 list-none pl-0">
-      <li class="flex items-baseline gap-1.5">
-        <span class="text-sky-500 font-bold">></span>
+    <ul class="text-slate-400 space-y-2 list-none pl-0">
+      <li class="flex items-start gap-2">
+        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
         <span><strong>Foothold & Payload:</strong> Generación de shells y payloads, Metasploit y evasión básica.</span>
       </li>
-      <li class="flex items-baseline gap-1.5">
-        <span class="text-sky-500 font-bold">></span>
-        <span><strong>Escalada de Privilegios:</strong> Elevación de privilegios en sistemas Linux y Windows.</span>
+      <li class="flex items-start gap-2">
+        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
+        <span class="flex items-center gap-1.5 flex-wrap">
+          <strong>Escalada de Privilegios:</strong>
+          <span>Elevación de privilegios en sistemas</span>
+          <span class="inline-flex items-center gap-1 px-1 py-0.5 rounded bg-slate-800/60 border border-slate-700/50 text-[10px] text-slate-300">
+            <Icon name="os-linux" class="w-3.5 h-3.5 text-orange-400" /> Linux
+          </span>
+          <span>y</span>
+          <span class="inline-flex items-center gap-1 px-1 py-0.5 rounded bg-slate-800/60 border border-slate-700/50 text-[10px] text-slate-300">
+            <Icon name="os-windows" class="w-3.5 h-3.5 text-sky-400" /> Windows
+          </span>
+        </span>
       </li>
     </ul>
   </div>
 
   <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
-    <div class="flex items-center gap-2.5 mb-2.5 text-sky-400 font-semibold">
-      <Icon name="ui-flag" class="w-4 h-4" />
+    <div class="flex items-center gap-2.5 mb-3 text-sky-400 font-semibold border-b border-slate-800/40 pb-2">
+      <Icon name="ui-flag" class="w-5 h-5 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.3)]" />
       <span>INFRAESTRUCTURA & DOMINIO</span>
     </div>
-    <ul class="text-slate-400 space-y-1.5 list-none pl-0">
-      <li class="flex items-baseline gap-1.5">
-        <span class="text-sky-500 font-bold">></span>
+    <ul class="text-slate-400 space-y-2 list-none pl-0">
+      <li class="flex items-start gap-2">
+        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
         <span><strong>Active Directory:</strong> Auditoría ofensiva de dominios Windows, delegación y ACLs.</span>
       </li>
-      <li class="flex items-baseline gap-1.5">
-        <span class="text-sky-500 font-bold">></span>
+      <li class="flex items-start gap-2">
+        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
         <span><strong>Pivoting & Túneles:</strong> Enrutamiento interno, port forwarding y saltos laterales de red.</span>
       </li>
     </ul>
