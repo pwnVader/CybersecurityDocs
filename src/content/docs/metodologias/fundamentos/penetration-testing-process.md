@@ -10,7 +10,7 @@ sidebar:
 ---
 
 
-## 1 Pre-Engagement
+## Pre-Engagement
 
 ### Documentos legales obligatorios
 
@@ -52,7 +52,7 @@ sidebar:
 
 ---
 
-## 2 Information Gathering
+## Information Gathering
 
 Cuatro sub-fases. Profundizar en cheatsheets específicos.
 
@@ -67,7 +67,7 @@ Cuatro sub-fases. Profundizar en cheatsheets específicos.
 
 ---
 
-## 3 Vulnerability Assessment
+## Vulnerability Assessment
 
 Dos productos finales:
 
@@ -80,7 +80,7 @@ Ver [Vulnerability Assessment](/metodologias/fundamentos/vulnerability-assessmen
 
 ---
 
-## 4 Exploitation
+## Exploitation
 
 ### Priorización (la pregunta clave: ¿por dónde empiezo?)
 
@@ -100,7 +100,7 @@ Atacar primero lo de **alta probabilidad + bajo ruido**. Guardar lo ruidoso para
 
 ---
 
-## 5 Post-Exploitation
+## Post-Exploitation
 
 Orden recomendado tras el foothold:
 
@@ -117,7 +117,7 @@ Orden recomendado tras el foothold:
 
 ---
 
-## 6 Lateral Movement
+## Lateral Movement
 
 Tras privesc, repites el ciclo desde el nuevo host:
 **Pivoting** → **Info Gathering interno** → **Vuln Assessment** → **Exploitation** → **Post-Ex**.
@@ -126,7 +126,7 @@ Ver [Pivoting, Tunneling, and Port Forwarding](/metodologias/pivoting/pivoting-t
 
 ---
 
-## 7 Proof-of-Concept
+## Proof-of-Concept
 
 El PoC debe ser **reproducible, mínimo y documentado**. Estructura típica:
 
@@ -143,7 +143,7 @@ El PoC debe ser **reproducible, mínimo y documentado**. Estructura típica:
 
 ---
 
-## 8 Post-Engagement
+## Post-Engagement
 
 ### Cleanup checklist
 

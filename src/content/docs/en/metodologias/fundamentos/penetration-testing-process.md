@@ -9,7 +9,7 @@ sidebar:
 
 ---
 
-## 1 Pre-Engagement
+## Pre-Engagement
 
 ### Mandatory Legal Documents
 
@@ -51,7 +51,7 @@ sidebar:
 
 ---
 
-## 2 Information Gathering
+## Information Gathering
 
 Four sub-phases. Deepen in specific cheatsheets.
 
@@ -66,7 +66,7 @@ Four sub-phases. Deepen in specific cheatsheets.
 
 ---
 
-## 3 Vulnerability Assessment
+## Vulnerability Assessment
 
 Two final deliverables:
 
@@ -79,7 +79,7 @@ See [Vulnerability Assessment](/en/metodologias/fundamentos/vulnerability-assess
 
 ---
 
-## 4 Exploitation
+## Exploitation
 
 ### Prioritization (The key question: Where do I start?)
 
@@ -99,7 +99,7 @@ Attack **high probability + low noise** vectors first. Save noisy actions for la
 
 ---
 
-## 5 Post-Exploitation
+## Post-Exploitation
 
 Recommended order after gaining a foothold:
 
@@ -116,7 +116,7 @@ Recommended order after gaining a foothold:
 
 ---
 
-## 6 Lateral Movement
+## Lateral Movement
 
 After privilege escalation, repeat the cycle from the new host:
 **Pivoting** → **Internal Info Gathering** → **Vulnerability Assessment** → **Exploitation** → **Post-Exploitation**.
@@ -125,7 +125,7 @@ See [Pivoting, Tunneling, and Port Forwarding](/en/metodologias/pivoting/pivotin
 
 ---
 
-## 7 Proof-of-Concept
+## Proof-of-Concept
 
 The PoC must be **reproducible, minimal, and well-documented**. Typical structure:
 
@@ -142,7 +142,7 @@ The PoC must be **reproducible, minimal, and well-documented**. Typical structur
 
 ---
 
-## 8 Post-Engagement
+## Post-Engagement
 
 ### Cleanup Checklist
 

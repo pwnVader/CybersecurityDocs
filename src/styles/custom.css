@@ -321,6 +321,15 @@ header.header > div.header {
   padding-inline: 1rem !important;
 }
 
+@media (max-width: 50rem) {
+  header.header > div.header {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto !important;
+    align-items: center !important;
+    gap: var(--sl-nav-gap) !important;
+  }
+}
+
 /* Logo con altura propia — desacoplado de --sl-nav-height para romper el
    bucle (nav-height ↑ → logo ↑ → header ↑ → overlap). */
 header.header .site-title img {
@@ -625,5 +634,71 @@ a.group p {
 }
 a.group strong {
   color: #cbd5e1 !important; /* slate-300 */
+}
+
+/* ==========================================================================
+   Mobile Navigation & Layout Optimization overrides
+   ========================================================================== */
+
+@media (max-width: 50rem) {
+  starlight-menu-button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+    z-index: 100 !important;
+  }
+
+  starlight-menu-button button {
+    position: fixed !important;
+    top: calc(var(--eco-strip-height) + (var(--eco-header-row) - 2.25rem) / 2) !important;
+    inset-inline-end: 1rem !important;
+    z-index: 100 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+    padding: 0 !important;
+    border: 1px solid rgba(14, 165, 233, 0.22) !important;
+    border-radius: 6px !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    color: #cbd5e1 !important; /* slate-300 */
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  starlight-menu-button button:hover,
+  starlight-menu-button button[aria-expanded="true"] {
+    border-color: #3895d3 !important; /* steel blue sutil */
+    color: #58a6df !important;
+    background: rgba(15, 23, 42, 0.85) !important;
+    box-shadow: 0 0 10px rgba(88, 166, 223, 0.18) !important;
+  }
+
+  /* Position the mobile drawer pane perfectly under the nav, matching dark aesthetics */
+  .sidebar-pane {
+    top: var(--sl-nav-height) !important;
+    height: calc(100vh - var(--sl-nav-height)) !important;
+    background-color: #050810 !important; /* deep slate-950 */
+    border-right: 1px solid rgba(14, 165, 233, 0.15) !important;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.85) !important;
+  }
+
+  /* Optimize horizontal space on mobile to avoid empty gaps */
+  .content-panel {
+    padding: 1rem 0.75rem !important;
+  }
+  .sl-container {
+    padding-inline: 0.25rem !important;
+  }
+
+  /* Compact spacing for retro terminal and card content on mobile */
+  .cyber-terminal {
+    padding: 1rem !important;
+  }
+  a.group.p-5 {
+    padding: 1rem !important;
+  }
 }
 
