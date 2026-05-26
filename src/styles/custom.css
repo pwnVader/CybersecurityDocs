@@ -567,7 +567,31 @@ header.header .site-title img {
 .right-sidebar-panel starlight-toc nav > ul {
   display: flex !important;
   flex-direction: column !important;
-  gap: 0.5rem !important;                               /* space-y-2 */
+  gap: 0.3rem !important;                               /* space-y-1.5 compact */
+}
+
+/* Hacer la sección "EN ESTA PÁGINA" (ToC) más compacta */
+.right-sidebar a {
+  font-size: 0.75rem !important;
+  padding-block: 0.15rem !important;
+  line-height: 1.35 !important;
+  color: var(--sl-color-gray-3, #94a3b8) !important;
+  transition: color 0.15s ease !important;
+}
+
+/* Hover de los enlaces del ToC */
+.right-sidebar a:hover {
+  color: #38bdf8 !important; /* sky-400 */
+}
+
+/* Elemento activo en el ToC: Color Blanco en vez de Azul */
+.right-sidebar a[aria-current="true"],
+.right-sidebar a[aria-current="location"],
+.right-sidebar a[data-current="true"],
+.right-sidebar a.current {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.45);
 }
 
 /* (4) Tipografía JetBrains Mono heredada en todo el layout (refuerzo por si
