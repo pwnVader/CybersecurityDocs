@@ -13,7 +13,7 @@ import { Icon } from 'astro-icon/components';
 <div class="cyber-terminal p-6 font-mono text-sm leading-relaxed space-y-4 bg-slate-900/30 backdrop-blur-sm border border-slate-800/50 rounded-xl my-6">
   <div class="text-xs border-b border-slate-800/40 pb-4 flex items-center justify-between">
     <div class="flex items-center gap-2">
-      <Icon name="ui-terminal" class="w-4 h-4 text-sky-400" />
+      <Icon name="ui-terminal" class="w-4 h-4 text-slate-400" />
       <span>SYSTEM INDEX · v1.0.0</span>
     </div>
     <div><span class="text-sky-400 font-semibold animate-pulse">● LOADED</span></div>
@@ -58,80 +58,71 @@ Ordered compilation of key commands, attack vectors, and structured guides based
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 font-mono text-xs not-prose">
 
-  <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
-    <div class="flex items-center gap-2.5 mb-3 text-sky-400 font-semibold border-b border-slate-800/40 pb-2">
-      <Icon name="tech-kali" class="w-5 h-5 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.3)]" />
+  <div class="p-4 bg-slate-900/15 border border-slate-800/40 rounded-lg">
+    <div class="flex items-center gap-2.5 mb-3 text-slate-100 font-semibold border-b border-slate-800/50 pb-2.5">
+      <Icon name="tech-kali" class="w-5 h-5 text-indigo-400 drop-shadow-[0_0_5px_rgba(129,140,248,0.3)]" />
       <span>INITIAL PHASES</span>
     </div>
     <ul class="text-slate-400 space-y-2 list-none pl-0">
       <li class="flex items-start gap-2">
-        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
+        <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
         <span><strong>Fundamentals:</strong> Corporate scoping, auditing processes, and technical reporting.</span>
       </li>
       <li class="flex items-start gap-2">
-        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
+        <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
         <span><strong>Recon & Enumeration:</strong> Active/passive gathering and advanced scanning with Nmap.</span>
       </li>
     </ul>
   </div>
 
-  <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
-    <div class="flex items-center gap-2.5 mb-3 text-sky-400 font-semibold border-b border-slate-800/40 pb-2">
-      <Icon name="ui-globe" class="w-5 h-5 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.3)]" />
+  <div class="p-4 bg-slate-900/15 border border-slate-800/40 rounded-lg">
+    <div class="flex items-center gap-2.5 mb-3 text-slate-100 font-semibold border-b border-slate-800/50 pb-2.5">
+      <Icon name="ui-globe" class="w-5 h-5 text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.3)]" />
       <span>WEB APPLICATIONS</span>
     </div>
     <ul class="text-slate-400 space-y-2 list-none pl-0">
       <li class="flex items-start gap-2">
-        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
+        <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
         <span><strong>Web Exploitation:</strong> OWASP Top 10, SQL Injection, XSS, APIs, and GraphQL.</span>
       </li>
       <li class="flex items-start gap-2">
-        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
+        <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
         <span><strong>Web Services:</strong> CMS analysis, unprotected APIs, and advanced injections.</span>
       </li>
     </ul>
   </div>
 
-  <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
-    <div class="flex items-center gap-2.5 mb-3 text-sky-400 font-semibold border-b border-slate-800/40 pb-2">
-      <Icon name="tech-bash" class="w-5 h-5 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.3)]" />
+  <div class="p-4 bg-slate-900/15 border border-slate-800/40 rounded-lg">
+    <div class="flex items-center gap-2.5 mb-3 text-slate-100 font-semibold border-b border-slate-800/50 pb-2.5">
+      <Icon name="tech-bash" class="w-5 h-5 text-amber-400 drop-shadow-[0_0_5px_rgba(251,191,36,0.3)]" />
       <span>EXPLOITATION & SYSTEMS</span>
     </div>
     <ul class="text-slate-400 space-y-2 list-none pl-0">
       <li class="flex items-start gap-2">
-        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
+        <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
         <span><strong>Foothold & Payload:</strong> Shell and payload generation, Metasploit, and basic evasion.</span>
       </li>
       <li class="flex items-start gap-2">
-        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
-        <span class="flex items-center gap-1.5 flex-wrap">
-          <strong>Privilege Escalation:</strong>
-          <span>Privilege elevation on</span>
-          <span class="inline-flex items-center gap-1 px-1 py-0.5 rounded bg-slate-800/60 border border-slate-700/50 text-[10px] text-slate-300">
-            <Icon name="os-linux" class="w-3.5 h-3.5 text-orange-400" /> Linux
-          </span>
-          <span>and</span>
-          <span class="inline-flex items-center gap-1 px-1 py-0.5 rounded bg-slate-800/60 border border-slate-700/50 text-[10px] text-slate-300">
-            <Icon name="os-windows" class="w-3.5 h-3.5 text-sky-400" /> Windows
-          </span>
-          <span>systems.</span>
+        <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
+        <span>
+          <strong>Privilege Escalation:</strong> Privilege elevation on systems <span class="inline-flex items-center gap-1 text-slate-200"><Icon name="os-linux" class="w-3.5 h-3.5 text-orange-400 inline-block align-text-bottom" /> Linux</span> and <span class="inline-flex items-center gap-1 text-slate-200"><Icon name="os-windows" class="w-3.5 h-3.5 text-[#00adef] inline-block align-text-bottom" /> Windows</span>.
         </span>
       </li>
     </ul>
   </div>
 
-  <div class="p-4 bg-slate-900/15 border border-slate-800/30 rounded-lg">
-    <div class="flex items-center gap-2.5 mb-3 text-sky-400 font-semibold border-b border-slate-800/40 pb-2">
-      <Icon name="ui-flag" class="w-5 h-5 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.3)]" />
-      <span>INFRASTRUCTURE & DOMAIN</span>
+  <div class="p-4 bg-slate-900/15 border border-slate-800/40 rounded-lg">
+    <div class="flex items-center gap-2.5 mb-3 text-slate-100 font-semibold border-b border-slate-800/50 pb-2.5">
+      <Icon name="ui-flag" class="w-5 h-5 text-rose-400 drop-shadow-[0_0_5px_rgba(251,113,133,0.3)]" />
+      <span>INFRAESTRUCTURA & DOMINIO</span>
     </div>
     <ul class="text-slate-400 space-y-2 list-none pl-0">
       <li class="flex items-start gap-2">
-        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
+        <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
         <span><strong>Active Directory:</strong> Offensive auditing of Windows domains, delegation, and ACLs.</span>
       </li>
       <li class="flex items-start gap-2">
-        <span class="text-sky-500 font-bold mt-0.5">&gt;</span>
+        <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
         <span><strong>Pivoting & Tunnels:</strong> Internal routing, port forwarding, and lateral network hops.</span>
       </li>
     </ul>
