@@ -702,29 +702,3 @@ a.group strong {
   }
 }
 
-/* ==========================================================================
-   Transición en Ensueño (Dreamy Page Transitions)
-   ========================================================================== */
-
-/* 1. Transiciones de vista nativas del navegador (soporte moderno cross-document) */
-@view-transition {
-  navigation: auto;
-}
-
-/* 2. Animación GPU-accelerated ultra fluida para la carga de contenido principal */
-@keyframes dreamyFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.main-frame {
-  animation: dreamyFadeIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  will-change: transform, opacity;
-}
-
