@@ -36,7 +36,7 @@
 
   /* Colores de Escala de Grises y Textos */
   --sl-color-text: #94a3b8;         /* slate-400 */
-  --sl-color-text-accent: #0ea5e9;  /* sky-500 */
+  --sl-color-text-accent: #3895d3;  /* steel-blue sutil */
   --sl-color-text-muted: #475569;   /* slate-600 */
 
   --sl-color-gray-1: #e2e8f0;       /* slate-200 */
@@ -48,14 +48,14 @@
   --sl-color-gray-7: #0f172a;       /* slate-900 */
 
   /* Colores de Realce (Accent) */
-  --sl-color-accent: #0ea5e9;       /* sky-500 */
-  --sl-color-accent-high: #38bdf8;  /* sky-400 */
+  --sl-color-accent: #3895d3;       /* steel-blue sutil */
+  --sl-color-accent-high: #58a6df;  /* steel-blue claro sutil */
   --sl-color-accent-low: #0f172a;   /* slate-900 */
 
   /* Botones, Enlaces e Indicadores */
   --sl-color-text-invert: #050810;
-  --sl-color-asides-note: #0ea5e9;  /* sky-500 */
-  --sl-color-asides-tip: #38bdf8;   /* sky-400 */
+  --sl-color-asides-note: #3895d3;  /* steel-blue sutil */
+  --sl-color-asides-tip: #58a6df;   /* steel-blue claro sutil */
   --sl-color-asides-caution: #fbbf24;
   --sl-color-asides-danger: #f87171;
 }
@@ -610,5 +610,20 @@ body,
 starlight-lang-select select {
   width: max-content !important;
   min-width: 7em !important;
+}
+
+/* Card links: prevent Starlight from forcing the accent blue color on the entire card text */
+a.group {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+a.group h3 {
+  color: #e2e8f0 !important; /* slate-200 */
+}
+a.group p {
+  color: #94a3b8 !important; /* slate-400 */
+}
+a.group strong {
+  color: #cbd5e1 !important; /* slate-300 */
 }
 
