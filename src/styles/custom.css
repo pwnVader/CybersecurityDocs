@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-slate-950: #050810;
-  --color-slate-900: #0f172a;
-  --color-slate-800: #1e293b;
-  --color-slate-700: #334155;
-  --color-slate-600: #475569;
-  --color-slate-400: #94a3b8;
-  --color-slate-300: #cbd5e1;
-  --color-slate-200: #e2e8f0;
-  --color-sky-500: #0ea5e9;
-  --color-sky-400: #38bdf8;
+  --color-cat-crust: #11111b;
+  --color-cat-mantle: #181825;
+  --color-cat-surface0: #313244;
+  --color-cat-surface1: #45475a;
+  --color-cat-text: #cdd6f4;
+  --color-cat-subtext: #bac2de;
+  --color-cat-overlay: #7f849c;
+  --color-cat-mauve: #cba6f7;
+  --color-cat-sapphire: #74c7ec;
+  --color-cat-green: #a6e3a1;
 }
 
-/* Imperial Slate oscuro en Starlight sin importar el tema */
+/* Forzar el tema de color Catppuccin Mocha oscuro en Starlight sin importar el tema */
 :root,
 [data-theme="light"],
 [data-theme="dark"] {
@@ -21,52 +21,36 @@
   --sl-font-sans: 'JetBrains Mono', monospace;
   --sl-font-mono: 'JetBrains Mono', monospace;
 
-  /* Colores Principales del Tema Imperial Slate */
-  --sl-color-bg: #050810;           /* bg base (mismo que portfolio) */
-  --sl-color-bg-sidebar: #0f172a;   /* bg-slate-900 */
-  --sl-color-bg-nav: #050810;       /* bg base */
-  --sl-color-border: #1e293b;       /* border-slate-800 */
+  /* Colores Principales del Tema Catppuccin Mocha */
+  --sl-color-bg: #11111b;          /* bg-base (Crust) */
+  --sl-color-bg-sidebar: #181825;  /* bg-surface (Mantle) */
+  --sl-color-bg-nav: #11111b;      /* bg-base (Crust) */
+  --sl-color-border: #45475a;      /* border (Surface1) */
 
   /* Colores de Escala de Grises y Textos */
-  --sl-color-text: #94a3b8;         /* slate-400 */
-  --sl-color-text-accent: #0ea5e9;  /* sky-500 */
-  --sl-color-text-muted: #475569;   /* slate-600 */
-
-  --sl-color-gray-1: #e2e8f0;       /* slate-200 */
-  --sl-color-gray-2: #cbd5e1;       /* slate-300 */
-  --sl-color-gray-3: #94a3b8;       /* slate-400 */
-  --sl-color-gray-4: #475569;       /* slate-600 */
-  --sl-color-gray-5: #334155;       /* slate-700 */
-  --sl-color-gray-6: #1e293b;       /* slate-800 */
-  --sl-color-gray-7: #0f172a;       /* slate-900 */
+  --sl-color-text: #bac2de;        /* text-secondary (Subtext1) */
+  --sl-color-text-accent: #cba6f7; /* text-accent (Mauve) */
+  --sl-color-text-muted: #7f849c;  /* text-muted (Overlay1) */
+  
+  --sl-color-gray-1: #cdd6f4;      /* text-primary (Text) - Más brillante */
+  --sl-color-gray-2: #bac2de;      /* Subtext1 */
+  --sl-color-gray-3: #a6adc8;      /* Subtext0 */
+  --sl-color-gray-4: #585b70;      /* Surface2 */
+  --sl-color-gray-5: #45475a;      /* Surface1 (Bordes e inactivos) */
+  --sl-color-gray-6: #313244;      /* Surface0 (Elevated / Hovers / Background panels) */
+  --sl-color-gray-7: #1e1e2e;      /* Base - Fondo intermedio */
 
   /* Colores de Realce (Accent) */
-  --sl-color-accent: #0ea5e9;       /* sky-500 */
-  --sl-color-accent-high: #38bdf8;  /* sky-400 */
-  --sl-color-accent-low: #0f172a;   /* slate-900 */
-
+  --sl-color-accent: #cba6f7;      /* Catppuccin Mauve (Morado Claro) */
+  --sl-color-accent-high: #ddb6f9; /* Mauve Claro (Brillante) */
+  --sl-color-accent-low: #313244;  /* Surface0 */
+  
   /* Botones, Enlaces e Indicadores */
-  --sl-color-text-invert: #050810;
-  --sl-color-asides-note: #0ea5e9;  /* sky-500 */
-  --sl-color-asides-tip: #38bdf8;   /* sky-400 */
-  --sl-color-asides-caution: #fbbf24;
-  --sl-color-asides-danger: #f87171;
-}
-
-/* Ghost Button Override para el botón principal de Starlight (Hero) */
-.action.primary {
-  background-color: rgba(15, 23, 42, 0.5) !important;
-  border: 1px solid rgba(14, 165, 233, 0.5) !important; /* sky-500/50 */
-  color: #0ea5e9 !important;
-  box-shadow: 0 0 15px rgba(14, 165, 233, 0.05) !important;
-  transition: all 0.3s ease !important;
-}
-
-.action.primary:hover {
-  background-color: rgba(14, 165, 233, 0.1) !important;
-  border-color: rgba(14, 165, 233, 0.8) !important;
-  box-shadow: 0 0 20px rgba(14, 165, 233, 0.2) !important;
-  color: #0ea5e9 !important;
+  --sl-color-text-invert: #11111b; /* Texto sobre fondo accent (Crust) */
+  --sl-color-asides-note: #74c7ec; /* Sapphire para notas informativas */
+  --sl-color-asides-tip: #cba6f7;  /* Mauve para tips */
+  --sl-color-asides-caution: #f9e2af; /* Yellow para advertencias */
+  --sl-color-asides-danger: #f38ba8;  /* Red para peligros */
 }
 
 /* Ajustes globales de scrollbar y contenedor */
@@ -75,21 +59,21 @@
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #050810;
+  background: #11111b;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #313244;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0ea5e9; /* sky-500 */
+  background: #cba6f7;
 }
 
 /* Efecto CRT Monitor de Fósforo Retro */
 body {
   position: relative;
   overflow-x: clip;
-  background-color: #050810 !important;
+  background-color: #11111b !important;
 }
 
 /* Líneas de Escaneo */
@@ -115,31 +99,72 @@ body::after {
   position: fixed;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: rgba(14, 165, 233, 0.06);  /* sky-500 */
-  box-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+  background: rgba(203, 166, 247, 0.06); /* Mauve ultra-translúcido */
+  box-shadow: 0 0 10px rgba(203, 166, 247, 0.2);
   z-index: 99998;
   pointer-events: none;
   animation: scan-beam 8s linear infinite;
-  will-change: transform;
 }
 
 @keyframes scan-beam {
-  0% { transform: translateY(-10px); }
-  100% { transform: translateY(110vh); }
+  0% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(110vh);
+  }
 }
+
+/* Efecto decorativo cyber terminal */
+.cyber-terminal {
+  background-color: #181825;
+  border: 1px solid #45475a;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 0 15px rgba(203, 166, 247, 0.08);
+}
+
+.cyber-terminal-header {
+  background-color: #313244;
+  border-bottom: 1px solid #45475a;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  color: #7f849c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cyber-terminal-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.cyber-terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.cyber-terminal-dot.red { background-color: #f38ba8; }
+.cyber-terminal-dot.yellow { background-color: #f9e2af; }
+.cyber-terminal-dot.green { background-color: #a6e3a1; }
 
 /* ==========================================================================
    Ajustes de Compactación y Espaciado (Hero & Header)
    ========================================================================== */
 
+/* Reducir el espacio vertical arriba/abajo del Hero en la página de inicio (splash) */
 .hero {
   padding-block: clamp(1.5rem, 3.5vw, 2.5rem) !important;
 }
 
+/* Reducir la separación interna entre texto e imagen en el Hero */
 .hero > .sl-flex {
   gap: 1.5rem !important;
 }
 
+/* Reducir el tamaño máximo de la imagen del Hero para que sea más compacta */
 .hero img {
   max-height: 220px !important;
   margin: 0 auto !important;
@@ -165,21 +190,25 @@ header.header {
   min-height: var(--sl-nav-height) !important;
 }
 
+/* El inner `<div class="header">` mantiene la rejilla original de Starlight
+   — aseguramos que ocupe el espacio restante bajo la strip. */
 header.header > div.header {
   flex: 1 !important;
   width: 100% !important;
 }
 
+/* Centrar el header interno y la ecosystem-strip de forma global y consistente.
+   Esto alinea visualmente el encabezado de Docs con el resto del ecosistema de pwnvader.com,
+   tanto en la página de inicio (splash) como en las páginas interiores con sidebar. */
 header.header > div.header {
   max-width: 72rem !important;
   margin-inline: auto !important;
   padding-inline: 1rem !important;
-  padding-block: 1rem !important;
 }
 
-/* Altura total reservada: 26px (strip) + 80px (header nativo con padding) ≈ 6.5rem */
+/* Altura total reservada: 26px (strip) + 56px (header nativo) ≈ 5.25rem */
 :root {
-  --sl-nav-height: 6.5rem !important;
+  --sl-nav-height: 5.25rem !important;
 }
 
 /* ==========================================================================
@@ -190,14 +219,16 @@ header.header > div.header {
 .sidebar-content ul ul {
   margin-left: 0.8rem !important;
   padding-left: 0.4rem !important;
-  border-left: 1px dashed rgba(14, 165, 233, 0.15) !important; /* sky-500 */
+  border-left: 1px dashed rgba(203, 166, 247, 0.15) !important; /* Mauve translúcido */
   transition: border-color 0.25s ease;
 }
 
+/* Al hacer hover en un contenedor de la barra lateral, resaltamos sutilmente sus líneas guía */
 .sidebar-content li:hover > ul {
-  border-left-color: rgba(14, 165, 233, 0.4) !important;
+  border-left-color: rgba(203, 166, 247, 0.4) !important;
 }
 
+/* Estilos de enlaces para que se sientan como entradas de consola interactivas */
 .sidebar-content a {
   padding-left: 0.6rem !important;
   border-radius: 4px !important;
@@ -205,18 +236,20 @@ header.header > div.header {
   position: relative;
 }
 
+/* Desplazamiento a la derecha y color brillante en hover */
 .sidebar-content a:hover {
-  background-color: rgba(14, 165, 233, 0.06) !important;
-  color: #38bdf8 !important; /* sky-400 */
+  background-color: rgba(203, 166, 247, 0.06) !important; /* Mauve hover bg */
+  color: #ddb6f9 !important; /* Mauve brillante */
   padding-left: 0.9rem !important;
 }
 
+/* Cursor interactivo de terminal (">") que se desliza al hacer hover */
 .sidebar-content a::before {
   content: ">";
   position: absolute;
   left: 0px;
   opacity: 0;
-  color: #0ea5e9; /* sky-500 */
+  color: #cba6f7;
   font-weight: 700;
   transition: all 0.2s ease;
 }
@@ -226,14 +259,15 @@ header.header > div.header {
   left: 5px;
 }
 
+/* Destacado activo con glow de neón en el enlace actualmente abierto */
 .sidebar-content a[aria-current="page"] {
-  background-color: rgba(14, 165, 233, 0.12) !important;
-  color: #38bdf8 !important; /* sky-400 */
+  background-color: rgba(203, 166, 247, 0.12) !important;
+  color: #cba6f7 !important;
   font-weight: 700 !important;
-  border-left: 3px solid #0ea5e9 !important;
+  border-left: 3px solid #cba6f7 !important;
   border-radius: 0 4px 4px 0 !important;
   padding-left: 0.9rem !important;
-  box-shadow: inset 4px 0 10px rgba(14, 165, 233, 0.08);
+  box-shadow: inset 4px 0 10px rgba(203, 166, 247, 0.08);
 }
 
 .sidebar-content a[aria-current="page"]::before {
@@ -241,6 +275,7 @@ header.header > div.header {
   left: 5px;
 }
 
+/* Diseño premium de títulos colapsables (details / summary) */
 .sidebar-content details summary {
   padding: 0.35rem 0.5rem !important;
   border-radius: 4px !important;
@@ -249,52 +284,65 @@ header.header > div.header {
 }
 
 .sidebar-content details summary:hover {
-  background-color: rgba(30, 41, 59, 0.6) !important;
-  color: #38bdf8 !important; /* sky-400 */
+  background-color: rgba(49, 50, 68, 0.6) !important; /* Surface0 */
+  color: #cba6f7 !important;
 }
 
+/* Títulos de Categoría Superior en mayúsculas cibernéticas */
 .sidebar-content > ul > li > details > summary {
   font-weight: 700 !important;
   font-size: 0.85rem !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
-  color: #cbd5e1 !important;
-  border-bottom: 1px solid rgba(30, 41, 59, 0.4) !important;
+  color: #cdd6f4 !important; /* Text */
+  border-bottom: 1px solid rgba(69, 71, 90, 0.4) !important; /* Surface1 */
   margin-bottom: 0.3rem !important;
   padding-bottom: 0.4rem !important;
 }
 
 /* ==========================================================================
    Responsive — Tablet & Mobile
+   --------------------------------------------------------------------------
+   Las cheatsheets contienen ~150 tablas Markdown que Starlight renderiza
+   como `<table>` plano (sin wrapper de scroll). En viewport <768px desbordan
+   el ancho y rompen el layout. Estos bloques aplican scroll horizontal
+   contenido a tablas + ajustes de header/hero para móvil.
    ========================================================================== */
 
 @media (max-width: 768px) {
+  /* Tablas: scroll horizontal dentro del propio elemento, sin reventar viewport */
   .sl-markdown-content table {
     display: block;
     max-width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    /* Indicador visual sutil de scroll en el borde derecho */
     background:
-      linear-gradient(to right, var(--sl-color-bg) 30%, rgba(5,8,16,0)),
-      linear-gradient(to right, rgba(5,8,16,0), var(--sl-color-bg) 70%) 100% 0,
-      radial-gradient(farthest-side at 0 50%, rgba(14,165,233,0.18), rgba(0,0,0,0)),
-      radial-gradient(farthest-side at 100% 50%, rgba(14,165,233,0.18), rgba(0,0,0,0)) 100% 0;
+      linear-gradient(to right, var(--sl-color-bg) 30%, rgba(17,17,27,0)),
+      linear-gradient(to right, rgba(17,17,27,0), var(--sl-color-bg) 70%) 100% 0,
+      radial-gradient(farthest-side at 0 50%, rgba(203,166,247,0.18), rgba(0,0,0,0)),
+      radial-gradient(farthest-side at 100% 50%, rgba(203,166,247,0.18), rgba(0,0,0,0)) 100% 0;
     background-repeat: no-repeat;
     background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
     background-attachment: local, local, scroll, scroll;
   }
 
+  /* Cuerpo y celdas: padding más compacto, código no fuerza nowrap a la fila */
   .sl-markdown-content table th,
   .sl-markdown-content table td {
     padding: 0.4rem 0.6rem !important;
     font-size: 0.85rem !important;
   }
 
+  /* Cyber-terminal de la home: scroll horizontal si alguna línea de prompt
+     no cabe (paths largos, URLs, etc.) — el contenedor mantiene su look */
   .cyber-terminal {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
 
+  /* Hero del splash: reducir imagen y padding vertical para no monopolizar
+     el fold inicial en móvil */
   .hero {
     padding-block: 1rem !important;
   }
@@ -307,14 +355,19 @@ header.header > div.header {
 }
 
 @media (max-width: 480px) {
+  /* Header total más bajo en pantallas muy pequeñas (≤iPhone SE) para
+     liberar verticales al contenido principal */
   :root {
     --sl-nav-height: 4.5rem !important;
   }
 
+  /* Asides de "Ecosistema pwnVader" en el body de las metodologías:
+     reducir padding y forzar que el contenido respire en columnas únicas */
   .sl-markdown-content aside {
     padding: 0.75rem !important;
   }
 
+  /* Cyber-terminal: tipografía ligeramente menor para que quepa más prompt */
   .cyber-terminal {
     font-size: 0.78rem;
   }
@@ -324,3 +377,5 @@ header.header > div.header {
 .sl-lang-select {
   display: none !important;
 }
+
+
