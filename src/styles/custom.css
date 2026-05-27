@@ -65,18 +65,18 @@
 [data-theme] .action.primary,
 .action.primary {
   background-color: transparent !important; /* bg-transparent */
-  border: 1px solid #38bdf8 !important; /* border-sky-400 */
-  color: #38bdf8 !important; /* text-sky-400 */
+  border: 1px solid #475569 !important; /* border-slate-600 */
+  color: #e2e8f0 !important; /* text-slate-200 */
   box-shadow: none !important;
-  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out !important; /* transition-colors */
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
 }
 
 :root .action.primary:hover,
 [data-theme] .action.primary:hover,
 .action.primary:hover {
-  background-color: rgba(56, 189, 248, 0.1) !important; /* hover:bg-sky-400/10 */
-  border-color: #38bdf8 !important; /* border-sky-400 */
-  color: #38bdf8 !important; /* text-sky-400 */
+  background-color: #1e293b !important; /* hover:bg-slate-800 */
+  border-color: #475569 !important; /* border-slate-600 */
+  color: #ffffff !important; /* text-white */
 }
 
 /* Ajustes globales de scrollbar y contenedor */
