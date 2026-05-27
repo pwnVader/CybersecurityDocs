@@ -690,6 +690,21 @@ a.group strong {
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.85) !important;
   }
 
+  /* FIX "contenido fantasma" al cerrar el menú móvil.
+     ─────────────────────────────────────────────────────────────────
+     Starlight oculta el drawer SOLO con `visibility: hidden`, lo que lo
+     deja en el árbol de render. Como este panel está promovido a su propia
+     capa de composición GPU (por el `box-shadow` grande + `backdrop-filter`
+     del contenido), algunos navegadores móviles NO invalidan esa capa al
+     cerrar → queda un "fantasma" pintado 1-2s sobre la página.
+     Solución: cuando el menú está cerrado (body sin el atributo que pone
+     el botón hamburguesa) lo sacamos por completo con `display: none`,
+     forzando que la capa se descarte de inmediato. Al abrir, el atributo
+     existe, esta regla no aplica y vuelve el comportamiento normal. */
+  body:not([data-mobile-menu-expanded]) .sidebar-pane {
+    display: none !important;
+  }
+
   /* Optimize horizontal space on mobile to avoid empty gaps */
   .content-panel {
     padding: 0.5rem !important;
