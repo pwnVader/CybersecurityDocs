@@ -13,8 +13,8 @@ const socialLinks = [
 ];
 ---
 
-<div class="sidebar-wrapper flex flex-col h-full">
-  <div class="flex-1 min-h-0 overflow-y-auto">
+<div class="sidebar-wrapper">
+  <div class="sidebar-scroll-area">
     <Default {...Astro.props} />
   </div>
 
@@ -52,7 +52,27 @@ const socialLinks = [
 <style>
   /* Ensure the sidebar wrapper takes full height to push social links to the bottom if content is short */
   .sidebar-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     min-height: 100%;
+  }
+
+  .sidebar-scroll-area {
+    flex: 1 1 0%;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  /* On mobile, Starlight's drawer should scroll natively. We disable the flex layout to prevent 0-height collapse. */
+  @media (max-width: 50rem) {
+    .sidebar-wrapper {
+      display: block;
+      height: auto;
+    }
+    .sidebar-scroll-area {
+      overflow-y: visible;
+    }
   }
 
   /* TryHackMe viene sin atributo `fill` (se veía negro/invisible). Hereda el
