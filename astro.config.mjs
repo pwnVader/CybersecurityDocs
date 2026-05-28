@@ -91,18 +91,8 @@ export default defineConfig({
               min-height: 0 !important;
               padding-block: 0 !important;
               padding-inline: var(--sl-nav-pad-x) !important;
-            }
-            @media (min-width: 50rem) {
-              header.header > div.header {
-                grid-template-columns: 
-                  minmax(calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))), auto)
-                  1fr
-                  auto
-                  calc(var(--__main-column-fr) + var(--__toc-width, var(--sl-sidebar-width))) !important;
-              }
-              header.header > div.header::after {
-                content: "";
-              }
+              max-width: 90rem !important;
+              margin-inline: auto !important;
             }
             header.header .site-title img {
               height: var(--eco-logo-height) !important;
