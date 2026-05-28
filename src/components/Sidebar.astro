@@ -14,38 +14,40 @@ const socialLinks = [
 ---
 
 <div class="sidebar-wrapper flex flex-col h-full">
-  <div class="flex-1 min-h-0 overflow-y-auto">
-    <Default {...Astro.props} />
-  </div>
+  <div class="flex-1 min-h-0 overflow-y-auto flex flex-col">
+    <div class="flex-1">
+      <Default {...Astro.props} />
+    </div>
 
-  <div class="sidebar-extras flex flex-col gap-0.5 mt-2 pt-2 pb-2 border-t border-slate-800/50 font-mono shrink-0">
-    <!-- Certificaciones: icono + título, enlazadas a su verificación -->
-    <ul class="cert-list flex flex-col px-2">
-      <li>
-        <a href="https://certs.ine.com/a3d19feb-3d6e-4102-ba75-75e6013bfeee#acc.SaZlAfnt" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 text-slate-300 hover:text-sky-400 transition-colors text-[0.65rem]" style="padding-block: 0.15rem !important;">
-          <Icon name="cert-ejpt" class="w-3.5 h-3.5 shrink-0" />
-          eJPTv2
-        </a>
-      </li>
-      <li>
-        <a href="https://academy.hackthebox.com/achievement/badge/847979fe-4aca-11f1-82d1-bea50ffe6cb4" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 text-slate-300 hover:text-sky-400 transition-colors text-[0.65rem]" style="padding-block: 0.15rem !important;">
-          <img src={coaeBadge.src} alt="COAE" class="w-3.5 h-3.5 shrink-0 object-contain" />
-          COAE
-        </a>
-      </li>
-    </ul>
-
-    <!-- Redes sociales (compactas) -->
-    <ul class="social-list flex flex-col px-2 pt-1.5 border-t border-slate-800/40">
-      {socialLinks.map((link) => (
+    <div class="sidebar-extras flex flex-col gap-1.5 mt-4 pt-4 pb-4 border-t border-slate-800/50 font-mono shrink-0">
+      <!-- Certificaciones: icono + título, enlazadas a su verificación -->
+      <ul class="cert-list flex flex-col gap-0.5 px-2">
         <li>
-          <a href={link.url} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 text-slate-300 hover:text-sky-400 transition-colors text-[0.65rem]" style="padding-block: 0.15rem !important;">
-            <Icon name={link.icon} class="social-icon w-3.5 h-3.5 transition-transform group-hover:scale-110" style={link.name === 'HackTheBox' ? 'color: #9fef00;' : (link.name === 'TryHackMe' ? 'color: #ffffff;' : '')} />
-            {link.name}
+          <a href="https://certs.ine.com/a3d19feb-3d6e-4102-ba75-75e6013bfeee#acc.SaZlAfnt" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 py-0.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.68rem]">
+            <Icon name="cert-ejpt" class="w-4 h-4 shrink-0" />
+            eJPTv2
           </a>
         </li>
-      ))}
-    </ul>
+        <li>
+          <a href="https://academy.hackthebox.com/achievement/badge/847979fe-4aca-11f1-82d1-bea50ffe6cb4" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 py-0.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.68rem]">
+            <img src={coaeBadge.src} alt="COAE" class="w-4 h-4 shrink-0 object-contain" />
+            COAE
+          </a>
+        </li>
+      </ul>
+
+      <!-- Redes sociales (compactas) -->
+      <ul class="social-list flex flex-col gap-0.5 px-2 pt-1.5 border-t border-slate-800/40">
+        {socialLinks.map((link) => (
+          <li>
+            <a href={link.url} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 py-0.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.68rem]">
+              <Icon name={link.icon} class="social-icon w-4 h-4 transition-transform group-hover:scale-110" style={link.name === 'HackTheBox' ? 'color: #9fef00;' : (link.name === 'TryHackMe' ? 'color: #ffffff;' : '')} />
+              {link.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </div>
 
