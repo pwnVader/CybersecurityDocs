@@ -55,6 +55,7 @@ export default defineConfig({
               --eco-header-row: 3.5rem;
               --eco-logo-height: 2.25rem;
               --sl-nav-height: calc(var(--eco-strip-height) + var(--eco-header-row) + 1px) !important;
+              --sl-content-width: 56rem !important;
             }
             html {
               background-color: #050810 !important;
@@ -89,9 +90,19 @@ export default defineConfig({
               height: var(--eco-header-row) !important;
               min-height: 0 !important;
               padding-block: 0 !important;
-              max-width: 56rem !important;
-              margin-inline: auto !important;
-              padding-inline: 1.5rem !important;
+              padding-inline: var(--sl-nav-pad-x) !important;
+            }
+            @media (min-width: 50rem) {
+              header.header > div.header {
+                grid-template-columns: 
+                  minmax(calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))), auto)
+                  1fr
+                  auto
+                  calc(var(--__main-column-fr) + var(--__toc-width, var(--sl-sidebar-width))) !important;
+              }
+              header.header > div.header::after {
+                content: "";
+              }
             }
             header.header .site-title img {
               height: var(--eco-logo-height) !important;
