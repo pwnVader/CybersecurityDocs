@@ -386,21 +386,31 @@ header.header .site-title img {
 }
 
 /* (Rule 1) Jerarquía Tipográfica (Estilo System Directories) para la raíz */
-.sidebar-content > ul > li > details > summary,
-.sidebar-content > ul > li > a {
+/* Seleccionamos exactamente el span .large que Starlight usa en las carpetas */
+.sidebar-content details summary .large {
   font-weight: 600 !important;
   font-size: 0.75rem !important; /* Reducido (text-xs) */
-  letter-spacing: 0.1em !important; /* Espaciado de letras aumentado */
+  letter-spacing: 0.08em !important; /* Espaciado de letras aumentado */
   text-transform: uppercase !important; /* Mayúsculas */
   color: #64748b !important; /* Gris mutado (slate-500) */
-  border-bottom: none !important;
-  margin-bottom: 0.2rem !important;
-  padding-bottom: 0.3rem !important;
 }
 
-.sidebar-content > ul > li > details > summary:hover,
-.sidebar-content > ul > li > a:hover {
-  color: #94a3b8 !important; /* hover sutil para la raíz */
+/* Hover pasivo para las carpetas principales (separadores visuales) */
+.sidebar-content details summary:hover .large {
+  color: #94a3b8 !important; /* Gris intermedio (slate-400), sin llegar a blanco puro */
+}
+
+/* Normalización de enlaces directos top-level (como Home) para anular el estilo .large nativo */
+.sidebar-content a.large {
+  font-weight: 400 !important; /* Peso normal */
+  font-size: 0.85rem !important; /* Tamaño normal de enlace */
+  text-transform: none !important; /* Sin mayúsculas */
+  letter-spacing: normal !important;
+  color: #94a3b8 !important; /* Gris intermedio (slate-400) */
+}
+
+.sidebar-content a.large:hover {
+  color: #ffffff !important; /* Iluminar a blanco puro */
 }
 
 /* ==========================================================================
