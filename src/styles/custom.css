@@ -527,9 +527,18 @@ header.header .site-title img {
     --eco-logo-height: 1.75rem !important;
   }
 
-  /* Reducir tamaño del título en móviles para evitar que choque con los iconos de búsqueda y menú */
+  /* Reducir tamaño del título en móviles y prevenir solapamiento */
+  .site-title-wrapper {
+    max-width: calc(100vw - 7.5rem) !important; /* Espacio para search y menu */
+  }
+
   .site-title {
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: inline-block !important;
+    width: 100% !important;
   }
 
   .sl-markdown-content aside {
@@ -697,16 +706,23 @@ a.group strong {
     z-index: 100 !important;
   }
 
-  starlight-menu-button {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    height: 100% !important;
+  /* Fijar posición exacta de buscador y menú para evitar desalineaciones verticales */
+  site-search {
+    position: fixed !important;
+    top: calc(var(--eco-strip-height) + (var(--eco-header-row) - 2.25rem) / 2) !important;
+    inset-inline-end: 3.75rem !important;
     z-index: 100 !important;
-    margin-left: 0.5rem !important; /* Espacio entre buscar y el menú */
+  }
+
+  starlight-menu-button {
+    display: block !important;
   }
 
   starlight-menu-button button {
+    position: fixed !important;
+    top: calc(var(--eco-strip-height) + (var(--eco-header-row) - 2.25rem) / 2) !important;
+    inset-inline-end: 1rem !important;
+    z-index: 100 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
