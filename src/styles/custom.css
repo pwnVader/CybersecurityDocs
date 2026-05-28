@@ -97,32 +97,40 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #475569; /* slate-600 neutral */
-}
-
-/* Fondo base — Slate oscuro limpio con Efecto CRT Restaurado */
+/* Fondo base — Slate oscuro limpio */
 body {
   position: relative;
   overflow-x: clip;
   background-color: #050810 !important;
 }
 
-/* El Haz Móvil (.scan-beam::before) */
+/* El Haz Móvil (body::before actúa como .scan-beam::before) */
+:root {
+  --color-accent: #a78bfa; /* Lila/violeta base para el haz */
+}
+
 body::before {
-  content: "";
+  content: '';
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 2px;
-  background: linear-gradient(to right, transparent, rgba(167, 139, 250, 0.15), transparent); /* Acento violeta tenue */
-  z-index: 9999;
-  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-accent) 10%, transparent),
+    transparent
+  );
   animation: scan 8s linear infinite;
+  pointer-events: none;
+  z-index: 9998;
+  will-change: transform;
 }
 
-/* La Rejilla de Monitor CRT (.scanlines::after) */
+/* La Rejilla de Monitor CRT (body::after actúa como .scanlines::after) */
 body::after {
-  content: "";
+  content: '';
   position: fixed;
   top: 0;
   left: 0;
@@ -135,7 +143,7 @@ body::after {
     rgba(0, 0, 0, 0.04) 2px,
     rgba(0, 0, 0, 0.04) 4px
   );
-  z-index: 9998;
+  z-index: 9999;
   pointer-events: none;
 }
 
