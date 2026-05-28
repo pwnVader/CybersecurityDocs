@@ -48,21 +48,23 @@ import { Icon } from 'astro-icon/components';
 </div>
 
   {/* ──── DESTACADO · Punto de partida del sitio ──── */}
-  <div class="group not-content w-full p-6 rounded-xl bg-gradient-to-br from-slate-800/40 to-slate-900/20 backdrop-blur-sm border border-slate-600 hover:border-slate-500 transition-all duration-300 relative overflow-hidden">
-    <div class="absolute -top-4 -right-4 p-6 opacity-[0.06] group-hover:opacity-[0.1] transition-opacity duration-300 pointer-events-none">
+  <a href="/metodologias/fundamentos/penetration-testing-process/" class="block group not-content w-full p-6 rounded-xl bg-gradient-to-br from-slate-800/40 to-slate-900/20 backdrop-blur-sm border border-slate-600 hover:border-teal-700/60 transition-all duration-300 relative overflow-hidden hover:shadow-xl hover:shadow-black/50 hover:-translate-y-1">
+    <div class="absolute -top-4 -right-4 p-6 opacity-[0.06] group-hover:opacity-[0.15] transition-opacity duration-300 pointer-events-none">
       <Icon name="tech-kali" class="w-32 h-32 text-white" />
     </div>
-    <span class="inline-block text-[10px] font-mono font-bold text-teal-700/80 border border-teal-800/40 px-2 py-1 rounded tracking-[0.2em] uppercase mb-4">
+    <span class="inline-block text-[10px] font-mono font-bold text-teal-700/80 border border-teal-800/40 px-2 py-1 rounded tracking-[0.2em] uppercase mb-4 group-hover:border-teal-700/80 group-hover:text-teal-600 transition-colors">
       ▸ Empieza aquí · Study Guide
     </span>
-    <h2 class="font-mono font-bold text-2xl md:text-3xl leading-tight mb-4 text-slate-100">
+    <h2 class="font-mono font-bold text-2xl md:text-3xl leading-tight mb-4 text-slate-100 group-hover:text-white transition-colors">
       Cybersecurity Notes — Guía de Estudio Principal
     </h2>
     <p class="text-slate-400 text-sm md:text-base leading-relaxed">
-      El corazón de esta documentación. Mis notas completas de preparación para las certificaciones <span class="text-slate-200">CPTS</span> y <span class="text-slate-200">CWES</span>, estructuradas como una metodología de ataque de principio a fin: reconocimiento, explotación web, Active Directory, escalada de privilegios y pivoting. Si es tu primera vez aquí, <span class="text-slate-200">este es tu punto de partida</span>.
+      El corazón de esta documentación. Mis notas completas de preparación para las certificaciones <span class="text-slate-200 group-hover:text-white transition-colors">CPTS</span> y <span class="text-slate-200 group-hover:text-white transition-colors">CWES</span>, estructuradas como una metodología de ataque de principio a fin: reconocimiento, explotación web, Active Directory, escalada de privilegios y pivoting. Si es tu primera vez aquí, <span class="text-slate-200 group-hover:text-white transition-colors">este es tu punto de partida</span>.
     </p>
-    <a href="/metodologias/fundamentos/penetration-testing-process/" class="mt-4 inline-block text-slate-400 hover:text-white transition-colors font-mono text-sm font-semibold">Acceder a las notas →</a>
-  </div>
+    <div class="mt-4 inline-flex items-center text-teal-600 group-hover:text-[#9fef00] transition-colors font-mono text-sm font-bold uppercase tracking-wider">
+      Acceder a las notas <span class="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
+    </div>
+  </a>
 
   {/* ──── Ecosistema pwnVader ──── */}
   <aside class="not-content w-full p-6 rounded-xl border border-slate-800/50 bg-slate-900/30 backdrop-blur-sm shadow-lg">
