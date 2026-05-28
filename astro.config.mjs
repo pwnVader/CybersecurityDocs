@@ -89,9 +89,9 @@ export default defineConfig({
               height: var(--eco-header-row) !important;
               min-height: 0 !important;
               padding-block: 0 !important;
-              max-width: 72rem !important;
+              max-width: 56rem !important;
               margin-inline: auto !important;
-              padding-inline: 1rem !important;
+              padding-inline: 1.5rem !important;
             }
             header.header .site-title img {
               height: var(--eco-logo-height) !important;

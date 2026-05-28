@@ -40,7 +40,7 @@ const socialLinks = [
       {socialLinks.map((link) => (
         <li>
           <a href={link.url} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.78rem]">
-            <Icon name={link.icon} class="social-icon w-4 h-4 transition-transform group-hover:scale-110" />
+            <Icon name={link.icon} class="social-icon w-5 h-5 transition-transform group-hover:scale-110" style={link.name === 'HackTheBox' ? 'color: #9fef00;' : (link.name === 'TryHackMe' ? 'color: #ffffff;' : '')} />
             {link.name}
           </a>
         </li>
