@@ -121,7 +121,7 @@ body::before {
   background: linear-gradient(
     90deg,
     transparent,
-    color-mix(in srgb, var(--color-accent) 10%, transparent),
+    color-mix(in srgb, var(--color-accent) 50%, transparent),
     transparent
   );
   animation: scan 8s linear infinite;
