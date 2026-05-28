@@ -55,7 +55,6 @@ export default defineConfig({
               --eco-header-row: 3.5rem;
               --eco-logo-height: 2.25rem;
               --sl-nav-height: calc(var(--eco-strip-height) + var(--eco-header-row) + 1px) !important;
-              --sl-content-width: 56rem !important;
             }
             html {
               background-color: #050810 !important;
