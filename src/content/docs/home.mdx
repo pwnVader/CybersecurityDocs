@@ -16,7 +16,7 @@ import { Icon } from 'astro-icon/components';
       <Icon name="ui-terminal" class="w-4 h-4 text-slate-400" />
       <span>SYSTEM INDEX · v1.0.0</span>
     </div>
-    <div><span class="text-sky-400 font-semibold animate-pulse">● LOADED</span></div>
+    <div><span class="text-slate-300 font-semibold animate-pulse">● LOADED</span></div>
   </div>
   
   <p class="text-slate-300 text-[0.82rem] leading-relaxed">
@@ -28,11 +28,11 @@ import { Icon } from 'astro-icon/components';
 
 Acceso rápido a las guías de estudio metodológicas y writeups técnicos de plataformas de ciberseguridad.
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6 not-prose">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-6 not-prose">
 
-  <a href="/metodologias/fundamentos/penetration-testing-process/" class="group p-5 bg-slate-900/25 border border-slate-800/40 hover:border-[#58a6df]/40 rounded-lg block transition-all duration-300 hover:bg-slate-900/45 hover:shadow-[0_0_15px_rgba(88,166,223,0.05)]">
-    <h3 class="flex items-center gap-2.5 mb-2.5 text-slate-200 font-mono font-semibold text-sm group-hover:text-[#58a6df] transition-colors">
-      <Icon name="tech-kali" class="w-5 h-5 text-[#58a6df] shrink-0 drop-shadow-[0_0_8px_rgba(88,166,223,0.4)] group-hover:scale-105 transition-transform duration-300" />
+  <a href="/metodologias/fundamentos/penetration-testing-process/" class="group p-5 bg-slate-900/25 border border-slate-800/40 hover:border-slate-600 rounded-lg block transition-all duration-300 hover:bg-slate-900/45 hover:shadow-lg hover:shadow-black/40">
+    <h3 class="flex items-center gap-2.5 mb-2.5 text-slate-200 font-mono font-semibold text-sm group-hover:text-white transition-colors">
+      <Icon name="tech-kali" class="w-5 h-5 text-white shrink-0 group-hover:scale-105 transition-transform duration-300" />
       Notas de Estudio
     </h3>
     <p class="text-slate-400 text-xs leading-relaxed font-sans">
@@ -40,9 +40,9 @@ Acceso rápido a las guías de estudio metodológicas y writeups técnicos de pl
     </p>
   </a>
 
-  <a href="/writeups/hackthebox/" class="group p-5 bg-slate-900/25 border border-slate-800/40 hover:border-[#9fef00]/40 rounded-lg block transition-all duration-300 hover:bg-slate-900/45 hover:shadow-[0_0_15px_rgba(159,239,0,0.05)]">
-    <h3 class="flex items-center gap-2.5 mb-2.5 text-slate-200 font-mono font-semibold text-sm group-hover:text-[#9fef00] transition-colors">
-      <Icon name="tech-htb-v2" class="w-5 h-5 text-[#9fef00] shrink-0 drop-shadow-[0_0_8px_rgba(159,239,0,0.4)] group-hover:scale-105 transition-transform duration-300" />
+  <a href="/writeups/hackthebox/" class="group p-5 bg-slate-900/25 border border-slate-800/40 hover:border-slate-600 rounded-lg block transition-all duration-300 hover:bg-slate-900/45 hover:shadow-lg hover:shadow-black/40">
+    <h3 class="flex items-center gap-2.5 mb-2.5 text-slate-200 font-mono font-semibold text-sm group-hover:text-white transition-colors">
+      <Icon name="tech-htb-v2" class="w-5 h-5 shrink-0 group-hover:scale-105 transition-transform duration-300" style="color: #9fef00;" />
       HackTheBox
     </h3>
     <p class="text-slate-400 text-xs leading-relaxed font-sans">
@@ -50,9 +50,9 @@ Acceso rápido a las guías de estudio metodológicas y writeups técnicos de pl
     </p>
   </a>
 
-  <a href="/writeups/tryhackme/" class="group p-5 bg-slate-900/25 border border-slate-800/40 hover:border-red-500/40 rounded-lg block transition-all duration-300 hover:bg-slate-900/45 hover:shadow-[0_0_15px_rgba(239,68,68,0.05)]">
-    <h3 class="flex items-center gap-2.5 mb-2.5 text-slate-200 font-mono font-semibold text-sm group-hover:text-red-400 transition-colors">
-      <Icon name="social-thm" class="w-5 h-5 text-red-500 shrink-0 drop-shadow-[0_0_8px_rgba(239,68,68,0.4)] group-hover:scale-105 transition-transform duration-300" />
+  <a href="/writeups/tryhackme/" class="group p-5 bg-slate-900/25 border border-slate-800/40 hover:border-slate-600 rounded-lg block transition-all duration-300 hover:bg-slate-900/45 hover:shadow-lg hover:shadow-black/40">
+    <h3 class="flex items-center gap-2.5 mb-2.5 text-slate-200 font-mono font-semibold text-sm group-hover:text-white transition-colors">
+      <Icon name="social-thm" class="w-5 h-5 text-white shrink-0 group-hover:scale-105 transition-transform duration-300" />
       TryHackMe
     </h3>
     <p class="text-slate-400 text-xs leading-relaxed font-sans">
@@ -70,68 +70,68 @@ Compilación ordenada de comandos clave, vectores de ataque y guías estructurad
 
   <div class="p-4 bg-slate-900/15 border border-slate-800/40 rounded-lg">
     <div class="flex items-center gap-2.5 mb-3 text-slate-100 font-semibold border-b border-slate-800/50 pb-2.5">
-      <Icon name="tech-kali" class="w-5 h-5 text-indigo-400 drop-shadow-[0_0_5px_rgba(129,140,248,0.3)]" />
+      <Icon name="tech-kali" class="w-5 h-5 text-slate-400" />
       <span>FASES INICIALES</span>
     </div>
     <ul class="text-slate-400 space-y-2.5 list-none pl-0">
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><a href="/metodologias/fundamentos/penetration-testing-process/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Fundamentos:</a> Procesos corporativos de auditoría, scoping y documentación técnica.</span>
+        <span><a href="/metodologias/fundamentos/penetration-testing-process/" class="text-slate-200 hover:text-white hover:underline transition-colors font-bold">Fundamentos:</a> Procesos corporativos de auditoría, scoping y documentación técnica.</span>
       </li>
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><a href="/metodologias/recon/footprinting/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Recon & Enumeración:</a> Recopilación pasiva/activa y escaneo avanzado con Nmap.</span>
+        <span><a href="/metodologias/recon/footprinting/" class="text-slate-200 hover:text-white hover:underline transition-colors font-bold">Recon & Enumeración:</a> Recopilación pasiva/activa y escaneo avanzado con Nmap.</span>
       </li>
     </ul>
   </div>
 
   <div class="p-4 bg-slate-900/15 border border-slate-800/40 rounded-lg">
     <div class="flex items-center gap-2.5 mb-3 text-slate-100 font-semibold border-b border-slate-800/50 pb-2.5">
-      <Icon name="ui-globe" class="w-5 h-5 text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.3)]" />
+      <Icon name="ui-globe" class="w-5 h-5 text-slate-400" />
       <span>APLICACIONES WEB</span>
     </div>
     <ul class="text-slate-400 space-y-2.5 list-none pl-0">
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><a href="/metodologias/web/api-attacks/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Web Exploitation:</a> Vulnerabilidades OWASP Top 10, SQL Injection, XSS, APIs y GraphQL.</span>
+        <span><a href="/metodologias/web/api-attacks/" class="text-slate-200 hover:text-white hover:underline transition-colors font-bold">Web Exploitation:</a> Vulnerabilidades OWASP Top 10, SQL Injection, XSS, APIs y GraphQL.</span>
       </li>
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><a href="/metodologias/servicios/attacking-common-services/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Servicios Web:</a> Análisis de gestores de contenido, APIs e inyecciones avanzadas.</span>
+        <span><a href="/metodologias/servicios/attacking-common-services/" class="text-slate-200 hover:text-white hover:underline transition-colors font-bold">Servicios Web:</a> Análisis de gestores de contenido, APIs e inyecciones avanzadas.</span>
       </li>
     </ul>
   </div>
 
   <div class="p-4 bg-slate-900/15 border border-slate-800/40 rounded-lg">
     <div class="flex items-center gap-2.5 mb-3 text-slate-100 font-semibold border-b border-slate-800/50 pb-2.5">
-      <Icon name="tech-bash" class="w-5 h-5 text-amber-400 drop-shadow-[0_0_5px_rgba(251,191,36,0.3)]" />
+      <Icon name="tech-bash" class="w-5 h-5 text-slate-400" />
       <span>EXPLOTACIÓN & SISTEMAS</span>
     </div>
     <ul class="text-slate-400 space-y-2.5 list-none pl-0">
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><a href="/metodologias/exploitation/metasploit-framework/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Foothold & Payload:</a> Generación de shells y payloads, Metasploit y evasión básica.</span>
+        <span><a href="/metodologias/exploitation/metasploit-framework/" class="text-slate-200 hover:text-white hover:underline transition-colors font-bold">Foothold & Payload:</a> Generación de shells y payloads, Metasploit y evasión básica.</span>
       </li>
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><strong>Escalada de Privilegios:</strong> Elevación de privilegios en sistemas <a href="/metodologias/privesc/linux-privilege-escalation/" class="inline-flex items-center gap-1 text-slate-200 hover:text-[#58a6df] hover:underline transition-colors"><Icon name="os-linux" class="w-3.5 h-3.5 text-orange-400 inline-block align-text-bottom" /> Linux</a> y <a href="/metodologias/privesc/windows-privilege-escalation/" class="inline-flex items-center gap-1 text-slate-200 hover:text-[#58a6df] hover:underline transition-colors"><Icon name="os-windows" class="w-3.5 h-3.5 text-[#00adef] inline-block align-text-bottom" /> Windows</a>.</span>
+        <span><strong>Escalada de Privilegios:</strong> Elevación de privilegios en sistemas <a href="/metodologias/privesc/linux-privilege-escalation/" class="inline-flex items-center gap-1 text-slate-200 hover:text-white hover:underline transition-colors"><Icon name="os-linux" class="w-3.5 h-3.5 text-slate-400 inline-block align-text-bottom" /> Linux</a> y <a href="/metodologias/privesc/windows-privilege-escalation/" class="inline-flex items-center gap-1 text-slate-200 hover:text-white hover:underline transition-colors"><Icon name="os-windows" class="w-3.5 h-3.5 text-slate-400 inline-block align-text-bottom" /> Windows</a>.</span>
       </li>
     </ul>
   </div>
 
   <div class="p-4 bg-slate-900/15 border border-slate-800/40 rounded-lg">
     <div class="flex items-center gap-2.5 mb-3 text-slate-100 font-semibold border-b border-slate-800/50 pb-2.5">
-      <Icon name="ui-flag" class="w-5 h-5 text-rose-400 drop-shadow-[0_0_5px_rgba(251,113,133,0.3)]" />
+      <Icon name="ui-flag" class="w-5 h-5 text-slate-400" />
       <span>INFRAESTRUCTURA & DOMINIO</span>
     </div>
     <ul class="text-slate-400 space-y-2.5 list-none pl-0">
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><a href="/metodologias/active-directory/active-directory-enumeration-attacks/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Active Directory:</a> Auditoría ofensiva de dominios Windows, delegación y ACLs.</span>
+        <span><a href="/metodologias/active-directory/active-directory-enumeration-attacks/" class="text-slate-200 hover:text-white hover:underline transition-colors font-bold">Active Directory:</a> Auditoría ofensiva de dominios Windows, delegación y ACLs.</span>
       </li>
       <li class="flex items-start gap-2">
         <span class="text-slate-600 font-bold mt-0.5">&gt;</span>
-        <span><a href="/metodologias/pivoting/pivoting-tunneling-port-forwarding/" class="text-slate-200 hover:text-[#58a6df] hover:underline transition-colors font-bold">Pivoting & Túneles:</a> Enrutamiento interno, port forwarding y saltos laterales de red.</span>
+        <span><a href="/metodologias/pivoting/pivoting-tunneling-port-forwarding/" class="text-slate-200 hover:text-white hover:underline transition-colors font-bold">Pivoting & Túneles:</a> Enrutamiento interno, port forwarding y saltos laterales de red.</span>
       </li>
     </ul>
   </div>
