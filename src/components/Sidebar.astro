@@ -22,14 +22,14 @@ const socialLinks = [
     <!-- Certificaciones: icono + título, enlazadas a su verificación -->
     <ul class="cert-list grid grid-cols-2 gap-x-1 gap-y-1 px-2">
       <li>
-        <a href="https://certs.ine.com/a3d19feb-3d6e-4102-ba75-75e6013bfeee#acc.SaZlAfnt" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1.5 py-0.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.68rem] truncate">
-          <Icon name="cert-ejpt" class="w-4 h-4 shrink-0" />
+        <a href="https://certs.ine.com/a3d19feb-3d6e-4102-ba75-75e6013bfeee#acc.SaZlAfnt" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1.5 py-0.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.62rem] truncate">
+          <Icon name="cert-ejpt" class="w-3.5 h-3.5 shrink-0" />
           <span class="truncate">eJPTv2</span>
         </a>
       </li>
       <li>
-        <a href="https://academy.hackthebox.com/achievement/badge/847979fe-4aca-11f1-82d1-bea50ffe6cb4" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1.5 py-0.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.68rem] truncate">
-          <img src={coaeBadge.src} alt="COAE" class="w-4 h-4 shrink-0 object-contain" />
+        <a href="https://academy.hackthebox.com/achievement/badge/847979fe-4aca-11f1-82d1-bea50ffe6cb4" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1.5 py-0.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.62rem] truncate">
+          <img src={coaeBadge.src} alt="COAE" class="w-3.5 h-3.5 shrink-0 object-contain" />
           <span class="truncate">COAE</span>
         </a>
       </li>
@@ -39,8 +39,8 @@ const socialLinks = [
     <ul class="social-list grid grid-cols-2 gap-x-1 gap-y-1 px-2 pt-1.5 border-t border-slate-800/40">
       {socialLinks.map((link) => (
         <li>
-          <a href={link.url} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1.5 py-0.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.68rem] truncate">
-            <Icon name={link.icon} class="social-icon w-4 h-4 shrink-0 transition-transform group-hover:scale-110" style={link.name === 'HackTheBox' ? 'color: #9fef00;' : (link.name === 'TryHackMe' ? 'color: #ffffff;' : '')} />
+          <a href={link.url} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-1.5 py-0.5 text-slate-300 hover:text-sky-400 transition-colors text-[0.62rem] truncate">
+            <Icon name={link.icon} class="social-icon w-3.5 h-3.5 shrink-0 transition-transform group-hover:scale-110" style={link.name === 'HackTheBox' ? 'color: #9fef00;' : (link.name === 'TryHackMe' ? 'color: #ffffff;' : '')} />
             <span class="truncate">{link.name}</span>
           </a>
         </li>

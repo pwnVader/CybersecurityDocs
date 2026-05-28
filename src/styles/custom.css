@@ -706,23 +706,16 @@ a.group strong {
     z-index: 100 !important;
   }
 
-  /* Fijar posición exacta de buscador y menú para evitar desalineaciones verticales */
-  site-search {
-    position: fixed !important;
-    top: calc(var(--eco-strip-height) + (var(--eco-header-row) - 2.25rem) / 2) !important;
-    inset-inline-end: 3.75rem !important;
-    z-index: 100 !important;
-  }
-
+  /* Revertir botones a su flujo normal para que Flexbox los alinee perfectamente */
   starlight-menu-button {
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 100 !important;
+    margin-left: 0.5rem !important; 
   }
 
   starlight-menu-button button {
-    position: fixed !important;
-    top: calc(var(--eco-strip-height) + (var(--eco-header-row) - 2.25rem) / 2) !important;
-    inset-inline-end: 1rem !important;
-    z-index: 100 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
