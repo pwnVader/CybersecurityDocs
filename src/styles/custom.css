@@ -704,6 +704,11 @@ a.group strong {
    ========================================================================== */
 
 @media (max-width: 50rem) {
+  /* Dar más espacio de respiración en móviles (márgenes laterales globales) */
+  :root {
+    --sl-content-pad-x: 1.5rem !important;
+  }
+
   /* Fix: Make sure the sidebar container is above the header so the menu button is clickable */
   nav.sidebar {
     z-index: 100 !important;
