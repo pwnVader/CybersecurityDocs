@@ -350,10 +350,11 @@ header.header > div.header {
 
 @media (max-width: 50rem) {
   header.header > div.header {
-    display: grid !important;
-    grid-template-columns: auto 1fr auto !important;
+    display: flex !important;
+    justify-content: space-between !important;
     align-items: center !important;
     gap: var(--sl-nav-gap) !important;
+    padding-right: 3.5rem !important; /* Espacio para el menú fijo a la derecha */
   }
 }
 
@@ -706,13 +707,16 @@ a.group strong {
     z-index: 100 !important;
   }
 
-  /* Revertir botones a su flujo normal para que Flexbox los alinee perfectamente */
+  /* Fijar el menu flotando sobre la barra de navegacion para que no desborde hacia abajo */
   starlight-menu-button {
+    position: absolute !important;
+    top: var(--eco-strip-height) !important;
+    inset-inline-end: 0.5rem !important;
+    height: var(--eco-header-row) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     z-index: 100 !important;
-    margin-left: 0.5rem !important; 
   }
 
   starlight-menu-button button {
