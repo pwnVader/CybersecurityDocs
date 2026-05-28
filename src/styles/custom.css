@@ -346,10 +346,12 @@ header.header .site-title img {
 
 /* (Rule 4) Limpieza de los Enlaces Inactivos */
 .sidebar-content a {
+  padding-block: 0.4rem !important; /* Mayor respiración vertical */
   padding-left: 0.6rem !important;
   border-radius: 4px !important;
   background-color: transparent !important;
   color: #94a3b8 !important; /* slate-400 */
+  font-size: 0.95rem !important; /* Tamaño estándar de lectura */
   transition: all 0.2s ease !important;
 }
 
@@ -363,6 +365,7 @@ header.header .site-title img {
   background-color: rgba(17, 94, 89, 0.1) !important; /* teal-900 muy sutil */
   color: #ffffff !important; /* Texto en blanco puro */
   font-weight: 600 !important;
+  font-size: 0.95rem !important;
   border-left: 2px solid #0f766e !important; /* Borde táctico oscuro teal-700 */
   border-radius: 0 4px 4px 0 !important;
   padding-left: 0.8rem !important;
@@ -372,10 +375,11 @@ header.header .site-title img {
 
 /* Detalles (carpetas) y Limpieza de Hover */
 .sidebar-content details summary {
-  padding: 0.35rem 0.5rem !important;
+  padding: 0.45rem 0.5rem !important; /* Mayor respiración vertical */
   border-radius: 4px !important;
   background-color: transparent !important;
   color: #64748b !important; /* Carpetas anidadas cerradas (slate-500) */
+  font-size: 0.9rem !important; /* Escala para carpetas anidadas */
   transition: all 0.2s ease !important;
   cursor: pointer;
 }
@@ -394,7 +398,7 @@ header.header .site-title img {
 /* Seleccionamos exactamente el span .large que Starlight usa en las carpetas */
 .sidebar-content details summary .large {
   font-weight: 600 !important;
-  font-size: 0.75rem !important; /* Reducido (text-xs) */
+  font-size: 0.85rem !important; /* Aumentado a un tamaño más legible (text-sm) */
   letter-spacing: 0.08em !important; /* Espaciado de letras aumentado */
   text-transform: uppercase !important; /* Mayúsculas */
   color: #64748b !important; /* Gris mutado (slate-500) */
@@ -413,7 +417,7 @@ header.header .site-title img {
 /* Normalización de enlaces directos top-level (como Home) para anular el estilo .large nativo */
 .sidebar-content a.large {
   font-weight: 400 !important; /* Peso normal */
-  font-size: 0.85rem !important; /* Tamaño normal de enlace */
+  font-size: 0.95rem !important; /* Tamaño normal de enlace */
   text-transform: none !important; /* Sin mayúsculas */
   letter-spacing: normal !important;
   color: #94a3b8 !important; /* Gris intermedio (slate-400) */
