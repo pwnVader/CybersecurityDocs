@@ -9,7 +9,7 @@
     const ctx = canvas.getContext('2d');
     
     // Configuración Base
-    const A_SHAPE = 0.014;
+    const A_SHAPE = 0.025; // Opacidad aumentada
     const COLOR_SHAPE = `rgba(210, 225, 240, ${A_SHAPE})`;
     
     // Proporción Áurea para Icosaedro
@@ -105,8 +105,9 @@
           if (count >= N) break;
           const poly = polyhedra[Math.floor(Math.random() * polyhedra.length)];
           
-          // Escala proporcional más pequeña según lo solicitado
-          const scale = Math.min(W, H) * (0.04 + Math.random() * 0.04);
+          // Escala proporcional: más grandes en móviles para que se perciban
+          const baseScale = Math.min(W, H) < 768 ? 0.08 : 0.04;
+          const scale = Math.min(W, H) * (baseScale + Math.random() * 0.04);
           
           figures.push({
             poly: poly,
