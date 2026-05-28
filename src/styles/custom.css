@@ -535,11 +535,13 @@ header.header .site-title img {
 
   .site-title {
     font-size: 0.95rem !important;
+  }
+
+  /* Truncamiento aplicado al texto interno para no quebrar la alineación Flex del logo */
+  .site-title > span {
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    display: inline-block !important;
-    width: 100% !important;
   }
 
   .sl-markdown-content aside {
@@ -707,19 +709,18 @@ a.group strong {
     z-index: 100 !important;
   }
 
-  /* Fijar el menu flotando sobre la barra de navegacion para que no desborde hacia abajo */
+  /* Limpiamos estilos de nuestro wrapper, Starlight maneja el toggle a traves de position: fixed en el botón interno */
   starlight-menu-button {
-    position: absolute !important;
-    top: var(--eco-strip-height) !important;
-    inset-inline-end: 0.5rem !important;
-    height: var(--eco-header-row) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    z-index: 100 !important;
+    display: block !important;
+    position: static !important;
+    height: 0 !important;
   }
 
   starlight-menu-button button {
+    position: fixed !important;
+    top: calc(var(--eco-strip-height) + (var(--eco-header-row) - 2.25rem) / 2) !important;
+    inset-inline-end: 1rem !important;
+    z-index: 100 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
