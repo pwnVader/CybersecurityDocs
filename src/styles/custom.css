@@ -36,7 +36,7 @@
 
   /* Colores de Escala de Grises y Textos */
   --sl-color-text: #94a3b8;         /* slate-400 */
-  --sl-color-text-accent: #3895d3;  /* steel-blue sutil */
+  --sl-color-text-accent: #94a3b8;  /* slate-400 — neutralizado */
   --sl-color-text-muted: #475569;   /* slate-600 */
 
   --sl-color-gray-1: #e2e8f0;       /* slate-200 */
@@ -47,36 +47,40 @@
   --sl-color-gray-6: #1e293b;       /* slate-800 */
   --sl-color-gray-7: #0f172a;       /* slate-900 */
 
-  /* Colores de Realce (Accent) */
-  --sl-color-accent: #3895d3;       /* steel-blue sutil */
-  --sl-color-accent-high: #58a6df;  /* steel-blue claro sutil */
+  /* Colores de Realce (Accent) neutralizados */
+  --sl-color-accent: #94a3b8;       /* slate-400 */
+  --sl-color-accent-high: #e2e8f0;  /* slate-200 */
   --sl-color-accent-low: #0f172a;   /* slate-900 */
 
   /* Botones, Enlaces e Indicadores */
   --sl-color-text-invert: #050810;
-  --sl-color-asides-note: #3895d3;  /* steel-blue sutil */
-  --sl-color-asides-tip: #58a6df;   /* steel-blue claro sutil */
+  --sl-color-asides-note: #94a3b8;  /* slate-400 */
+  --sl-color-asides-tip: #e2e8f0;   /* slate-200 */
   --sl-color-asides-caution: #fbbf24;
   --sl-color-asides-danger: #f87171;
 }
 
-/* Ghost Button Override para el botón principal de Starlight (Hero) */
-:root .action.primary,
-[data-theme] .action.primary,
-.action.primary {
-  background-color: transparent !important; /* bg-transparent */
-  border: 1px solid #475569 !important; /* border-slate-600 */
-  color: #e2e8f0 !important; /* text-slate-200 */
+/* Ghost Button Override para el botón principal del Hero — Stealth monocromático.
+   Starlight 0.39 renderiza el CTA como `.sl-link-button.primary` (NO `.action`),
+   con `background: var(--sl-color-text-accent)` (steel-blue). Lo neutralizamos:
+   sin fondo sólido, borde slate-600, texto slate-200 y hover slate-800. */
+:root .sl-link-button.primary,
+[data-theme] .sl-link-button.primary,
+.sl-link-button.primary {
+  background: transparent !important;        /* bg-transparent */
+  background-color: transparent !important;
+  border: 1px solid #475569 !important;      /* border border-slate-600 */
+  color: #e2e8f0 !important;                  /* text-slate-200 */
   box-shadow: none !important;
-  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out !important; /* transition-colors */
 }
 
-:root .action.primary:hover,
-[data-theme] .action.primary:hover,
-.action.primary:hover {
-  background-color: #1e293b !important; /* hover:bg-slate-800 */
-  border-color: #475569 !important; /* border-slate-600 */
-  color: #ffffff !important; /* text-white */
+:root .sl-link-button.primary:hover,
+[data-theme] .sl-link-button.primary:hover,
+.sl-link-button.primary:hover {
+  background-color: #1e293b !important;       /* hover:bg-slate-800 */
+  border-color: #115e59 !important;           /* teal-800 — acento táctico Stealth en hover */
+  color: #ffffff !important;                   /* text-white */
 }
 
 /* Ajustes globales de scrollbar y contenedor */
@@ -92,50 +96,19 @@
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0ea5e9; /* sky-500 */
+  background: #475569; /* slate-600 neutral */
 }
 
-/* Efecto CRT Monitor de Fósforo Retro */
+/* Fondo base — Slate oscuro limpio.
+   PURGADO el efecto CRT: el scanline `body::before` (repeating-linear-gradient)
+   pintaba rayas horizontales tenues sobre TODA la pantalla (z-index 99999, por
+   encima del texto) y `body::after` un haz de barrido azul de 2px que cruzaba
+   el contenido. Ambos + su @keyframes eran los responsables de las líneas
+   horizontales que atravesaban la terminal y las tarjetas. */
 body {
   position: relative;
   overflow-x: clip;
   background-color: #050810 !important;
-}
-
-/* Líneas de Escaneo */
-body::before {
-  content: " ";
-  display: block;
-  position: fixed;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background: repeating-linear-gradient(
-    rgba(18, 16, 16, 0) 0px,
-    rgba(18, 16, 16, 0) 2px,
-    rgba(0, 0, 0, 0.04) 2px,
-    rgba(0, 0, 0, 0.04) 4px
-  );
-  z-index: 99999;
-  pointer-events: none;
-}
-
-/* Haz de Radar (Línea de barrido vertical) */
-body::after {
-  content: " ";
-  display: block;
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: rgba(14, 165, 233, 0.06);  /* sky-500 */
-  box-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
-  z-index: 99998;
-  pointer-events: none;
-  animation: scan-beam 8s linear infinite;
-  will-change: transform;
-}
-
-@keyframes scan-beam {
-  0% { transform: translateY(-10px); }
-  100% { transform: translateY(110vh); }
 }
 
 /* ==========================================================================
@@ -153,7 +126,7 @@ header.header a[href*="github.com"] {
   color: #f1f5f9 !important;
 }
 header.header a[href*="github.com"]:hover {
-  color: #0ea5e9 !important; /* sky-500 hover */
+  color: #94a3b8 !important; /* slate-400 — navbar neutralizado */
 }
 
 .cyber-terminal {
@@ -163,7 +136,7 @@ header.header a[href*="github.com"]:hover {
   border: 1px solid rgba(30, 41, 59, 0.5); /* slate-800/50 */
   border-radius: 8px;
   font-family: 'JetBrains Mono', monospace;
-  box-shadow: 0 0 20px rgba(14, 165, 233, 0.06), 0 4px 24px rgba(0,0,0,0.4);
+  box-shadow: 0 0 20px rgba(148, 163, 184, 0.06), 0 4px 24px rgba(0,0,0,0.4);
 }
 
 /* ==========================================================================
@@ -211,7 +184,7 @@ html {
 }
 
 .sl-markdown-content table th {
-  color: #38bdf8 !important;        /* text-sky-400 técnico */
+  color: #e2e8f0 !important;        /* text-slate-200 neutralizado */
   font-weight: 600 !important;      /* font-semibold */
   text-align: left !important;
   background: transparent !important;
@@ -291,9 +264,9 @@ header.header {
   min-height: var(--sl-nav-height) !important;
   z-index: 50 !important;
   /* El nav debe leerse como una barra distinta del contenido (#050810):
-     fondo slate-900 elevado + borde inferior con tinte sky + sombra. */
+     fondo slate-900 elevado + borde inferior con tinte slate + sombra. */
   background-color: var(--sl-color-bg-nav) !important;
-  border-bottom: 1px solid rgba(14, 165, 233, 0.18) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15) !important;
   box-shadow: 0 2px 24px rgba(0, 0, 0, 0.55) !important;
 }
 
@@ -306,6 +279,9 @@ header.header > .ecosystem-strip {
 header.header > .ecosystem-strip .ecosystem-strip-inner {
   padding-block: 0 !important;
   width: 100% !important;
+  max-width: 56rem !important;      /* misma caja que la columna central (max-w-4xl) */
+  margin-inline: auto !important;
+  padding-inline: 1rem !important;
 }
 
 /* Fila interna nativa: altura fija (no depende del contenido) y sin
@@ -316,7 +292,7 @@ header.header > div.header {
   height: var(--eco-header-row) !important;
   min-height: 0 !important;
   padding-block: 0 !important;
-  max-width: 72rem !important;
+  max-width: 56rem !important;     /* = max-w-4xl: alineado con la columna central y el fastfetch */
   margin-inline: auto !important;
   padding-inline: 1rem !important;
 }
@@ -359,12 +335,12 @@ header.header .site-title img {
 .sidebar-content ul ul {
   margin-left: 0.8rem !important;
   padding-left: 0.4rem !important;
-  border-left: 1px dashed rgba(14, 165, 233, 0.15) !important; /* sky-500 */
+  border-left: 1px dashed rgba(148, 163, 184, 0.12) !important; /* slate-400 */
   transition: border-color 0.25s ease;
 }
 
 .sidebar-content li:hover > ul {
-  border-left-color: rgba(14, 165, 233, 0.4) !important;
+  border-left-color: rgba(148, 163, 184, 0.35) !important;
 }
 
 .sidebar-content a {
@@ -375,8 +351,8 @@ header.header .site-title img {
 }
 
 .sidebar-content a:hover {
-  background-color: rgba(14, 165, 233, 0.06) !important;
-  color: #38bdf8 !important; /* sky-400 */
+  background-color: rgba(148, 163, 184, 0.06) !important;
+  color: #e2e8f0 !important; /* slate-200 */
   padding-left: 0.9rem !important;
 }
 
@@ -385,7 +361,7 @@ header.header .site-title img {
   position: absolute;
   left: 0px;
   opacity: 0;
-  color: #0ea5e9; /* sky-500 */
+  color: #94a3b8; /* slate-400 */
   font-weight: 700;
   transition: all 0.2s ease;
 }
@@ -396,13 +372,13 @@ header.header .site-title img {
 }
 
 .sidebar-content a[aria-current="page"] {
-  background-color: rgba(14, 165, 233, 0.12) !important;
-  color: #38bdf8 !important; /* sky-400 */
+  background-color: rgba(148, 163, 184, 0.12) !important;
+  color: #f1f5f9 !important; /* slate-100 — activo destacado en gris (sin azul) */
   font-weight: 700 !important;
-  border-left: 3px solid #0ea5e9 !important;
+  border-left: 3px solid #94a3b8 !important;
   border-radius: 0 4px 4px 0 !important;
   padding-left: 0.9rem !important;
-  box-shadow: inset 4px 0 10px rgba(14, 165, 233, 0.08);
+  box-shadow: inset 4px 0 10px rgba(148, 163, 184, 0.08);
   transition: none !important;
 }
 
@@ -421,7 +397,7 @@ header.header .site-title img {
 
 .sidebar-content details summary:hover {
   background-color: rgba(30, 41, 59, 0.6) !important;
-  color: #38bdf8 !important; /* sky-400 */
+  color: #e2e8f0 !important; /* slate-200 */
 }
 
 .sidebar-content > ul > li > details > summary {
@@ -448,8 +424,8 @@ header.header .site-title img {
     background:
       linear-gradient(to right, var(--sl-color-bg) 30%, rgba(5,8,16,0)),
       linear-gradient(to right, rgba(5,8,16,0), var(--sl-color-bg) 70%) 100% 0,
-      radial-gradient(farthest-side at 0 50%, rgba(14,165,233,0.18), rgba(0,0,0,0)),
-      radial-gradient(farthest-side at 100% 50%, rgba(14,165,233,0.18), rgba(0,0,0,0)) 100% 0;
+      radial-gradient(farthest-side at 0 50%, rgba(148,163,184,0.18), rgba(0,0,0,0)),
+      radial-gradient(farthest-side at 100% 50%, rgba(148,163,184,0.18), rgba(0,0,0,0)) 100% 0;
     background-repeat: no-repeat;
     background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
     background-attachment: local, local, scroll, scroll;
@@ -590,7 +566,7 @@ header.header .site-title img {
 
 /* Hover de los enlaces del ToC */
 .right-sidebar a:hover {
-  color: #38bdf8 !important; /* sky-400 */
+  color: #e2e8f0 !important; /* slate-200 neutralizado */
 }
 
 /* Elemento activo en el ToC: Color Blanco en vez de Azul */
@@ -625,6 +601,9 @@ starlight-lang-select select {
 a.group {
   color: inherit !important;
   text-decoration: none !important;
+}
+a.group h2 {
+  color: #f1f5f9 !important; /* slate-100 — título del bloque destacado, más brillante */
 }
 a.group h3 {
   color: #e2e8f0 !important; /* slate-200 */
@@ -665,7 +644,7 @@ a.group strong {
     width: 2.25rem !important;
     height: 2.25rem !important;
     padding: 0 !important;
-    border: 1px solid rgba(14, 165, 233, 0.22) !important;
+    border: 1px solid rgba(148, 163, 184, 0.22) !important;
     border-radius: 6px !important;
     background: rgba(15, 23, 42, 0.6) !important;
     color: #cbd5e1 !important; /* slate-300 */
@@ -675,10 +654,10 @@ a.group strong {
 
   starlight-menu-button button:hover,
   starlight-menu-button button[aria-expanded="true"] {
-    border-color: #3895d3 !important; /* steel blue sutil */
-    color: #58a6df !important;
+    border-color: #64748b !important; /* slate-500 */
+    color: #e2e8f0 !important; /* slate-200 */
     background: rgba(15, 23, 42, 0.85) !important;
-    box-shadow: 0 0 10px rgba(88, 166, 223, 0.18) !important;
+    box-shadow: 0 0 10px rgba(148, 163, 184, 0.12) !important;
   }
 
   /* Position the mobile drawer pane perfectly under the nav, matching dark aesthetics */
@@ -686,7 +665,7 @@ a.group strong {
     top: var(--sl-nav-height) !important;
     height: calc(100vh - var(--sl-nav-height)) !important;
     background-color: #050810 !important; /* deep slate-950 */
-    border-right: 1px solid rgba(14, 165, 233, 0.15) !important;
+    border-right: 1px solid rgba(148, 163, 184, 0.15) !important;
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.85) !important;
   }
 

@@ -20,16 +20,19 @@ hero:
 
 import { Icon } from 'astro-icon/components';
 
-<div class="cyber-terminal my-8 p-6 font-mono text-sm leading-relaxed space-y-4 bg-slate-900/30 backdrop-blur-sm border border-slate-800/50 rounded-xl">
+{/* ════════════ Unified central column · Terminal + Card + Banner + Grid ════════════ */}
+<div class="w-full max-w-4xl mx-auto flex flex-col gap-6 my-12">
+
+<div class="cyber-terminal w-full p-6 font-mono text-sm leading-relaxed space-y-4 bg-slate-900/30 backdrop-blur-sm border border-slate-800/50 rounded-xl">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-1.5 text-xs border-b border-slate-800/40 pb-4">
     <div><span class="text-slate-500">SYSTEM   ·</span> <span class="text-slate-200">PwnVader Tactical Documentation v1.0.0</span></div>
     <div><span class="text-slate-500">DATABASE ·</span> <span class="text-slate-200">OffSec Writeups & Cheatsheets</span></div>
-    <div><span class="text-slate-500">STATUS   ·</span> <span class="text-slate-400 font-semibold animate-pulse">● OPERATIONAL</span></div>
+    <div><span class="text-slate-500">STATUS   ·</span> <span class="text-slate-200 font-semibold animate-pulse">● OPERATIONAL</span></div>
     <div><span class="text-slate-500">TARGETS  ·</span> <span class="text-slate-200">HackTheBox · TryHackMe · AD · CTFs</span></div>
   </div>
 
     <div class="pt-1">
-      <span class="text-slate-400 font-semibold">root@pwnvader</span><span class="text-slate-600">:</span><span class="text-slate-600">~</span><span class="text-slate-600"># </span><span class="text-slate-300">cat welcome.txt</span>
+      <span class="text-slate-300 font-semibold">root@pwnvader</span><span class="text-slate-600">:</span><span class="text-slate-600">~</span><span class="text-slate-600"># </span><span class="text-slate-300">cat welcome.txt</span>
     </div>
 
     <div class="text-slate-300 pl-4 space-y-2 text-[0.82rem] leading-relaxed">
@@ -39,64 +42,88 @@ import { Icon } from 'astro-icon/components';
     </div>
 
     <div class="pt-1 flex items-center gap-1">
-      <span class="text-slate-400 font-semibold">root@pwnvader</span><span class="text-slate-600">:~# </span>
+      <span class="text-slate-300 font-semibold">root@pwnvader</span><span class="text-slate-600">:~# </span>
       <span class="w-2 h-4 bg-slate-400/70 animate-[pulse_1s_infinite]"></span>
     </div>
 </div>
 
-<div class="w-full max-w-4xl mx-auto mt-12 mb-8">
-  <a href="/en/metodologias/fundamentos/penetration-testing-process/" class="group block p-8 bg-slate-800/20 backdrop-blur-sm border border-slate-600 rounded-xl hover:bg-slate-800/40 hover:border-slate-500 transition-all duration-300 relative overflow-hidden shadow-lg shadow-slate-900/50">
-    <div class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
-      <Icon name="tech-kali" class="w-24 h-24 text-slate-300" />
+  {/* ──── FEATURED · Site starting point ──── */}
+  <div class="group not-content w-full p-8 md:p-10 rounded-xl bg-gradient-to-br from-slate-800/40 to-slate-900/20 backdrop-blur-sm border border-slate-600 hover:border-slate-500 transition-all duration-300 relative overflow-hidden">
+    <div class="absolute -top-4 -right-4 p-6 opacity-[0.06] group-hover:opacity-[0.1] transition-opacity duration-300 pointer-events-none">
+      <Icon name="tech-kali" class="w-32 h-32 text-white" />
     </div>
-    <div class="flex flex-col md:flex-row md:items-center gap-3 mb-4">
-      <h2 class="text-slate-100 font-mono font-bold text-xl md:text-2xl group-hover:text-white transition-colors">📖 Cybersecurity Notes - Main Study Guide</h2>
-      <span class="text-[10px] md:ml-auto font-mono font-bold text-slate-300 border border-slate-500/50 px-2 py-1 rounded tracking-wider bg-slate-800/50 w-fit">[ STUDY GUIDE ]</span>
-    </div>
-    <p class="!text-slate-300 text-sm md:text-base leading-relaxed max-w-3xl">
-      The starting point of the site. My detailed preparation notes for professional certifications (CPTS, CWES). A tactical wiki covering everything from reconnaissance and Active Directory to advanced web exploitation, privilege escalation, and pivoting. Designed as a quick reference for real audits.
+    <span class="inline-block text-[10px] font-mono font-bold text-teal-700/80 border border-teal-800/40 px-2 py-1 rounded tracking-[0.2em] uppercase mb-4">
+      ▸ Start here · Study Guide
+    </span>
+    <h2 class="font-mono font-bold text-2xl md:text-3xl leading-tight mb-4 text-slate-100">
+      Cybersecurity Notes — Main Study Guide
+    </h2>
+    <p class="text-slate-400 text-sm md:text-base leading-relaxed">
+      The heart of this documentation. My complete preparation notes for the <span class="text-slate-200">CPTS</span> and <span class="text-slate-200">CWES</span> certifications, structured as an end-to-end attack methodology: reconnaissance, web exploitation, Active Directory, privilege escalation, and pivoting. If this is your first time here, <span class="text-slate-200">this is your starting point</span>.
     </p>
-  </a>
-</div>
+    <a href="/en/metodologias/fundamentos/penetration-testing-process/" class="mt-4 inline-block text-slate-400 hover:text-white transition-colors font-mono text-sm font-semibold">Open the notes →</a>
+  </div>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
-
-  <a href="/en/writeups/" class="group block p-6 bg-slate-900/20 backdrop-blur-sm border border-slate-800 rounded-xl hover:bg-slate-900/40 hover:border-slate-700 transition-all duration-300 relative overflow-hidden">
-    <div class="flex items-center gap-2.5 mb-3">
-      <Icon name="ui-flag" class="w-4 h-4 text-slate-400 flex-shrink-0 group-hover:text-slate-300 transition-colors" />
-      <h3 class="text-slate-200 font-mono font-semibold text-base group-hover:text-white transition-colors">HTB / THM Writeups</h3>
+  {/* ──── pwnVader Ecosystem ──── */}
+  <aside class="not-content w-full p-6 rounded-xl border border-slate-800/50 bg-slate-900/30 backdrop-blur-sm shadow-lg">
+    <div class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-2 font-mono flex items-center gap-2">
+      <Icon name="ui-globe" class="w-3 h-3 text-slate-400" />
+      pwnVader Ecosystem — Live Web Tools
     </div>
-    <p class="!text-slate-400 text-sm leading-relaxed group-hover:text-slate-300 transition-colors">
-      Step-by-step technical analysis of competitive labs and machines from HackTheBox and TryHackMe.
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Complete serverless suite at{' '}
+      <a href="https://hacking.pwnvader.com" target="_blank" rel="noopener noreferrer" class="text-slate-200 hover:text-white font-semibold font-mono underline underline-offset-2 transition-colors">hacking.pwnvader.com</a>
+      {' '}— reverse shell generator, hashcat mask builder, passive CMS audit, JWT attacker, and tunnel designer.
     </p>
-  </a>
+  </aside>
 
-  <a href="https://hacking.pwnvader.com" target="_blank" rel="noopener noreferrer" class="group block p-6 bg-slate-900/20 backdrop-blur-sm border border-slate-800 rounded-xl hover:bg-slate-900/40 hover:border-slate-700 transition-all duration-300 relative overflow-hidden">
-    <div class="flex items-center gap-2.5 mb-3">
-      <Icon name="ui-terminal" class="w-4 h-4 text-slate-400 flex-shrink-0 group-hover:text-slate-300 transition-colors" />
-      <h3 class="text-slate-200 font-mono font-semibold text-base group-hover:text-white transition-colors">Tools Lab</h3>
-    </div>
-    <p class="!text-slate-400 text-sm leading-relaxed group-hover:text-slate-300 transition-colors">
-      Serverless suite at hacking.pwnvader.com. A collection of scripts, exploits, and automated utilities.
-    </p>
-  </a>
+  {/* ──── Additional resources (secondary grid) ──── */}
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
 
-  <a href="https://pwnvader.com" target="_blank" rel="noopener noreferrer" class="group block p-6 bg-slate-900/20 backdrop-blur-sm border border-slate-800 rounded-xl hover:bg-slate-900/40 hover:border-slate-700 transition-all duration-300 relative overflow-hidden">
-    <div class="flex items-center gap-2.5 mb-3">
-      <Icon name="ui-globe" class="w-4 h-4 text-slate-400 flex-shrink-0 group-hover:text-slate-300 transition-colors" />
-      <h3 class="text-slate-200 font-mono font-semibold text-base group-hover:text-white transition-colors">Main Nexus</h3>
-    </div>
-    <p class="!text-slate-400 text-sm leading-relaxed group-hover:text-slate-300 transition-colors">
-      Research projects, Red Teaming services, and security audits at pwnvader.com.
-    </p>
-  </a>
+    <a href="/en/writeups/" class="group block w-full p-6 bg-slate-900/30 backdrop-blur-sm border border-slate-800 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:bg-slate-800/40 hover:border-teal-800/60 hover:shadow-xl hover:shadow-black/50 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+        <Icon name="tech-htb-v2" class="w-16 h-16 text-slate-400" />
+      </div>
+      <div class="mb-3">
+        <h3 class="font-mono font-semibold text-base">HTB / THM Writeups</h3>
+      </div>
+      <p class="!text-slate-400 text-sm leading-relaxed">
+        Step-by-step technical analysis of competitive labs and machines from HackTheBox and TryHackMe.
+      </p>
+    </a>
+
+    <a href="https://hacking.pwnvader.com" target="_blank" rel="noopener noreferrer" class="group block w-full p-6 bg-slate-900/30 backdrop-blur-sm border border-slate-800 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:bg-slate-800/40 hover:border-teal-800/60 hover:shadow-xl hover:shadow-black/50 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+        <Icon name="tech-bash" class="w-16 h-16 text-slate-400" />
+      </div>
+      <div class="mb-3">
+        <h3 class="font-mono font-semibold text-base">Tools Lab</h3>
+      </div>
+      <p class="!text-slate-400 text-sm leading-relaxed">
+        A collection of scripts, exploits, and automated utilities for exploitation and post-exploitation phases.
+      </p>
+    </a>
+
+    <a href="https://pwnvader.com" target="_blank" rel="noopener noreferrer" class="group block w-full p-6 bg-slate-900/30 backdrop-blur-sm border border-slate-800 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:bg-slate-800/40 hover:border-teal-800/60 hover:shadow-xl hover:shadow-black/50 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+        <Icon name="social-github" class="w-16 h-16 text-slate-400" />
+      </div>
+      <div class="mb-3">
+        <h3 class="font-mono font-semibold text-base">Main Nexus — pwnvader.com</h3>
+      </div>
+      <p class="!text-slate-400 text-sm leading-relaxed">
+        Research projects, Red Teaming services, and security audits.
+      </p>
+    </a>
+
+  </div>
 
 </div>
 
 <hr class="border-t border-slate-800/60 my-12" />
 
 {/* Fastfetch Section */}
-<section class="my-12">
+<section class="w-full max-w-4xl mx-auto my-12">
   <div class="font-mono text-sm">
     <div class="mb-4">
       <div><span class="text-slate-400">┌──(pwnvader㉿kali)</span><span class="text-slate-300">-[~]</span></div>
@@ -130,7 +157,7 @@ import { Icon } from 'astro-icon/components';
 
       {/* Right column (User Info) */}
       <div class="flex-1 min-w-0 space-y-1">
-        <p class="text-base font-bold text-slate-500">
+        <p class="text-base font-bold text-slate-400">
           root@pwnvader
         </p>
         <p class="text-slate-500 select-none leading-none">--------------------------------</p>
@@ -200,16 +227,16 @@ import { Icon } from 'astro-icon/components';
           </a>
         </div>
 
-        {/* Color palette row — fastfetch signature adapted to Imperial Slate */}
+        {/* Color palette row — fastfetch signature adapted to Tactical Stealth */}
         <div class="flex flex-wrap gap-1.5 pt-3" aria-hidden="true">
-          <span class="w-5 h-2.5 bg-slate-900 border border-slate-700"></span>
-          <span class="w-5 h-2.5 bg-slate-800"></span>
-          <span class="w-5 h-2.5 bg-slate-600"></span>
-          <span class="w-5 h-2.5 bg-slate-400"></span>
-          <span class="w-5 h-2.5 bg-slate-500"></span>
-          <span class="w-5 h-2.5 bg-slate-200"></span>
-          <span class="w-5 h-2.5 bg-white"></span>
-          <span class="w-5 h-2.5 bg-slate-300"></span>
+          <span class="w-5 h-2.5 rounded bg-slate-900 border border-slate-700/50"></span>
+          <span class="w-5 h-2.5 rounded bg-slate-800"></span>
+          <span class="w-5 h-2.5 rounded bg-slate-700"></span>
+          <span class="w-5 h-2.5 rounded bg-teal-900"></span>
+          <span class="w-5 h-2.5 rounded bg-teal-800"></span>
+          <span class="w-5 h-2.5 rounded bg-teal-700"></span>
+          <span class="w-5 h-2.5 rounded bg-slate-500"></span>
+          <span class="w-5 h-2.5 rounded bg-slate-300"></span>
         </div>
       </div>
     </div>
