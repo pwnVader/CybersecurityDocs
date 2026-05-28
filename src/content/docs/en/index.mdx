@@ -26,28 +26,12 @@ import BackgroundGeometries from '../../../components/BackgroundGeometries.astro
 {/* ════════════ Unified central column · Terminal + Card + Banner + Grid ════════════ */}
 <div class="w-full max-w-4xl mx-auto flex flex-col gap-6 my-12 relative z-10">
 
-<div class="cyber-terminal w-full p-6 font-mono text-sm leading-relaxed space-y-4 bg-slate-900/30 backdrop-blur-sm border border-slate-800/50 rounded-xl">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-1.5 text-xs border-b border-slate-800/40 pb-4">
-    <div><span class="text-slate-500">SYSTEM   ·</span> <span class="text-slate-200">PwnVader Tactical Documentation v1.0.0</span></div>
-    <div><span class="text-slate-500">DATABASE ·</span> <span class="text-slate-200">OffSec Writeups & Cheatsheets</span></div>
-    <div><span class="text-slate-500">STATUS   ·</span> <span class="text-slate-200 font-semibold animate-pulse">● OPERATIONAL</span></div>
-    <div><span class="text-slate-500">TARGETS  ·</span> <span class="text-slate-200">HackTheBox · TryHackMe · AD · CTFs</span></div>
-  </div>
-
-    <div class="pt-1">
-      <span class="text-slate-300 font-semibold">root@pwnvader</span><span class="text-slate-600">:</span><span class="text-slate-600">~</span><span class="text-slate-600"># </span><span class="text-slate-300">cat welcome.txt</span>
-    </div>
-
-    <div class="text-slate-300 pl-4 space-y-2 text-[0.82rem] leading-relaxed">
-      <p>
-        Central tactical documentation. Preparation notes for CPTS and CWES focused on offensive auditing methodologies for real-world environments.
-      </p>
-    </div>
-
-    <div class="pt-1 flex items-center gap-1">
-      <span class="text-slate-300 font-semibold">root@pwnvader</span><span class="text-slate-600">:~# </span>
-      <span class="w-2 h-4 bg-slate-400/70 animate-[pulse_1s_infinite]"></span>
-    </div>
+{/* ──── Status HUD (Telemetry) ──── */}
+<div class="w-full px-4 py-2.5 font-mono text-[10px] md:text-xs bg-slate-900/40 backdrop-blur-sm border border-slate-800/50 rounded-lg grid grid-cols-1 sm:grid-cols-2 lg:flex lg:justify-between gap-1.5 md:gap-4 shadow-sm">
+  <div class="truncate"><span class="text-slate-500">SYSTEM:</span> <span class="text-slate-300">PwnVader Tactical Docs v1.0.0</span></div>
+  <div class="truncate"><span class="text-slate-500">DATABASE:</span> <span class="text-slate-300">OffSec Writeups & Cheatsheets</span></div>
+  <div class="truncate"><span class="text-slate-500">TARGETS:</span> <span class="text-slate-300">HTB · THM · AD · CTFs</span></div>
+  <div class="truncate"><span class="text-slate-500">STATUS:</span> <span class="text-teal-400 font-semibold animate-pulse">● OPERATIONAL</span></div>
 </div>
 
   {/* ──── DESTACADO · Punto de partida del sitio ──── */}
@@ -61,8 +45,8 @@ import BackgroundGeometries from '../../../components/BackgroundGeometries.astro
     <h2 class="font-mono font-bold text-2xl md:text-3xl leading-tight mb-4 text-slate-100 group-hover:text-white transition-colors">
       Cybersecurity Notes — Main Study Guide
     </h2>
-    <p class="text-slate-400 text-sm md:text-base leading-relaxed">
-      End-to-end attack methodology: reconnaissance, web exploitation, Active Directory, and pivoting. Structured knowledge base from scratch to professional level.
+    <p class="text-slate-400 text-sm md:text-base leading-relaxed line-clamp-2 md:line-clamp-none">
+      End-to-end offensive methodology: reconnaissance, web, Active Directory, and pivoting. Tactical knowledge base from scratch to professional level.
     </p>
     <div class="mt-4 inline-flex items-center text-teal-600 group-hover:text-[#9fef00] transition-colors font-mono text-sm font-bold uppercase tracking-wider">
       Access the notes <span class="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
