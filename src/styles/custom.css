@@ -99,16 +99,56 @@
   background: #475569; /* slate-600 neutral */
 }
 
-/* Fondo base — Slate oscuro limpio.
-   PURGADO el efecto CRT: el scanline `body::before` (repeating-linear-gradient)
-   pintaba rayas horizontales tenues sobre TODA la pantalla (z-index 99999, por
-   encima del texto) y `body::after` un haz de barrido azul de 2px que cruzaba
-   el contenido. Ambos + su @keyframes eran los responsables de las líneas
-   horizontales que atravesaban la terminal y las tarjetas. */
+/* Fondo base — Slate oscuro limpio con Efecto CRT Restaurado */
 body {
   position: relative;
   overflow-x: clip;
   background-color: #050810 !important;
+}
+
+/* El Haz Móvil (.scan-beam::before) */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(167, 139, 250, 0.15), transparent); /* Acento violeta tenue */
+  z-index: 9999;
+  pointer-events: none;
+  animation: scan 8s linear infinite;
+}
+
+/* La Rejilla de Monitor CRT (.scanlines::after) */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+  z-index: 9998;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  0%   { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before, body::after {
+    display: none !important;
+    animation: none !important;
+  }
 }
 
 /* ==========================================================================
