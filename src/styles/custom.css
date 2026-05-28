@@ -97,6 +97,8 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #475569; /* slate-600 neutral */
+}
+
 /* Fondo base — Slate oscuro limpio */
 body {
   position: relative;
