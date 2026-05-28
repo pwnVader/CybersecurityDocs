@@ -281,7 +281,7 @@ header.header > .ecosystem-strip .ecosystem-strip-inner {
   width: 100% !important;
   max-width: 56rem !important;      /* misma caja que la columna central (max-w-4xl) */
   margin-inline: auto !important;
-  padding-inline: 1rem !important;
+  padding-inline: 1.5rem !important;
 }
 
 /* Fila interna nativa: altura fija (no depende del contenido) y sin
@@ -294,7 +294,7 @@ header.header > div.header {
   padding-block: 0 !important;
   max-width: 56rem !important;     /* = max-w-4xl: alineado con la columna central y el fastfetch */
   margin-inline: auto !important;
-  padding-inline: 1rem !important;
+  padding-inline: 1.5rem !important;
 }
 
 @media (max-width: 50rem) {
@@ -533,7 +533,8 @@ header.header .site-title img {
        Anula el `--sl-content-margin-inline: auto 0` que lo pegaba al ToC y le
        da un ancho de lectura óptimo, centrado en su área. Se acota a
        `.content-panel` para NO afectar al `.sl-container` interno del ToC. */
-[data-has-sidebar] .content-panel .sl-container {
+[data-has-sidebar] .content-panel .sl-container,
+[data-has-hero] .content-panel .sl-container {
   max-width: 56rem !important;     /* max-w-4xl */
   margin-inline: auto !important;  /* mx-auto   */
   width: 100% !important;
