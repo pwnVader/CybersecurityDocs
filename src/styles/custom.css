@@ -375,9 +375,14 @@ header.header .site-title img {
   padding: 0.35rem 0.5rem !important;
   border-radius: 4px !important;
   background-color: transparent !important;
-  color: #94a3b8 !important;
+  color: #64748b !important; /* Carpetas anidadas cerradas (slate-500) */
   transition: all 0.2s ease !important;
   cursor: pointer;
+}
+
+/* Iluminar carpetas anidadas abiertas (Ruta Activa) */
+.sidebar-content details[open] > summary {
+  color: #e2e8f0 !important; /* Gris muy luminoso (slate-200) */
 }
 
 .sidebar-content details summary:hover {
@@ -398,6 +403,11 @@ header.header .site-title img {
 /* Hover pasivo para las carpetas principales (separadores visuales) */
 .sidebar-content details summary:hover .large {
   color: #94a3b8 !important; /* Gris intermedio (slate-400), sin llegar a blanco puro */
+}
+
+/* Iluminar carpetas raíz abiertas (Ruta Activa) */
+.sidebar-content details[open] > summary .large {
+  color: #e2e8f0 !important; /* Gris muy luminoso (slate-200) */
 }
 
 /* Normalización de enlaces directos top-level (como Home) para anular el estilo .large nativo */
