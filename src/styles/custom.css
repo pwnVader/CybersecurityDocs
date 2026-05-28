@@ -119,6 +119,7 @@ body {
 .site-title {
   color: #f1f5f9 !important; /* slate-100 */
   font-weight: 600 !important;
+  margin-left: 0.5rem !important; /* Nudge a bit to the right to perfect alignment with grid */
 }
 
 /* GitHub Nav Icon Override */
@@ -331,84 +332,75 @@ header.header .site-title img {
    Mejoras de Experiencia en la Barra Lateral Izquierda (Tree-view Index)
    ========================================================================== */
 
-/* Líneas guía verticales para listas anidadas (Efecto IDE / Treeview) */
+/* (Rule 2) Líneas de Rastreo Vertical (Estilo comando tree) */
 .sidebar-content ul ul {
-  margin-left: 0.8rem !important;
-  padding-left: 0.4rem !important;
-  border-left: 1px dashed rgba(148, 163, 184, 0.12) !important; /* slate-400 */
+  margin-left: 0.5rem !important;
+  padding-left: 0.5rem !important;
+  border-left: 1px solid rgba(30, 41, 59, 0.8) !important; /* solid sutil slate-800 */
   transition: border-color 0.25s ease;
 }
 
 .sidebar-content li:hover > ul {
-  border-left-color: rgba(148, 163, 184, 0.35) !important;
+  border-left-color: rgba(71, 85, 105, 0.5) !important; /* slate-600 sutil al hacer hover en la rama */
 }
 
+/* (Rule 4) Limpieza de los Enlaces Inactivos */
 .sidebar-content a {
   padding-left: 0.6rem !important;
   border-radius: 4px !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  position: relative;
+  background-color: transparent !important;
+  color: #94a3b8 !important; /* slate-400 */
+  transition: all 0.2s ease !important;
 }
 
 .sidebar-content a:hover {
-  background-color: rgba(148, 163, 184, 0.06) !important;
-  color: #e2e8f0 !important; /* slate-200 */
-  padding-left: 0.9rem !important;
+  background-color: transparent !important; /* Sin cajas grises */
+  color: #ffffff !important; /* Iluminar a blanco puro */
 }
 
-.sidebar-content a::before {
-  content: ">";
-  position: absolute;
-  left: 0px;
-  opacity: 0;
-  color: #94a3b8; /* slate-400 */
-  font-weight: 700;
-  transition: all 0.2s ease;
-}
-
-.sidebar-content a:hover::before {
-  opacity: 1;
-  left: 5px;
-}
-
+/* (Rule 3) Rediseño del Estado Activo (Indicador Stealth Teal) */
 .sidebar-content a[aria-current="page"] {
-  background-color: rgba(148, 163, 184, 0.12) !important;
-  color: #f1f5f9 !important; /* slate-100 — activo destacado en gris (sin azul) */
-  font-weight: 700 !important;
-  border-left: 3px solid #94a3b8 !important;
+  background-color: rgba(17, 94, 89, 0.1) !important; /* teal-900 muy sutil */
+  color: #ffffff !important; /* Texto en blanco puro */
+  font-weight: 600 !important;
+  border-left: 2px solid #0f766e !important; /* Borde táctico oscuro teal-700 */
   border-radius: 0 4px 4px 0 !important;
-  padding-left: 0.9rem !important;
-  box-shadow: inset 4px 0 10px rgba(148, 163, 184, 0.08);
+  padding-left: 0.8rem !important;
+  box-shadow: none !important;
   transition: none !important;
 }
 
-.sidebar-content a[aria-current="page"]::before {
-  opacity: 1;
-  left: 5px;
-  transition: none !important;
-}
-
+/* Detalles (carpetas) y Limpieza de Hover */
 .sidebar-content details summary {
   padding: 0.35rem 0.5rem !important;
   border-radius: 4px !important;
+  background-color: transparent !important;
+  color: #94a3b8 !important;
   transition: all 0.2s ease !important;
   cursor: pointer;
 }
 
 .sidebar-content details summary:hover {
-  background-color: rgba(30, 41, 59, 0.6) !important;
-  color: #e2e8f0 !important; /* slate-200 */
+  background-color: transparent !important; /* Sin cajas grises */
+  color: #ffffff !important; /* Iluminar a blanco puro */
 }
 
-.sidebar-content > ul > li > details > summary {
-  font-weight: 700 !important;
-  font-size: 0.85rem !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-  color: #cbd5e1 !important;
-  border-bottom: 1px solid rgba(30, 41, 59, 0.4) !important;
-  margin-bottom: 0.3rem !important;
-  padding-bottom: 0.4rem !important;
+/* (Rule 1) Jerarquía Tipográfica (Estilo System Directories) para la raíz */
+.sidebar-content > ul > li > details > summary,
+.sidebar-content > ul > li > a {
+  font-weight: 600 !important;
+  font-size: 0.75rem !important; /* Reducido (text-xs) */
+  letter-spacing: 0.1em !important; /* Espaciado de letras aumentado */
+  text-transform: uppercase !important; /* Mayúsculas */
+  color: #64748b !important; /* Gris mutado (slate-500) */
+  border-bottom: none !important;
+  margin-bottom: 0.2rem !important;
+  padding-bottom: 0.3rem !important;
+}
+
+.sidebar-content > ul > li > details > summary:hover,
+.sidebar-content > ul > li > a:hover {
+  color: #94a3b8 !important; /* hover sutil para la raíz */
 }
 
 /* ==========================================================================
