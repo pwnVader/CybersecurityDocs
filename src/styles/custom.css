@@ -772,12 +772,9 @@ a.group strong {
     display: none !important;
   }
 
-  /* Optimize horizontal space on mobile to avoid empty gaps */
+  /* Optimize horizontal space on mobile to ensure breathing room */
   .content-panel {
-    padding: 0.5rem !important;
-  }
-  .sl-container {
-    padding-inline: 0 !important;
+    padding-inline: 1.5rem !important;
   }
 
   /* Compact spacing for retro terminal and card content on mobile */
