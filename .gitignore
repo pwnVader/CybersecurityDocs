@@ -82,8 +82,11 @@ dist/
 *.sw?
 
 # Generados por el script de sincronización automática de writeups (docs.pwnvader.com)
-/src/content/docs/writeups/
+# Se ignora el directorio base pero se permite hackthebox/ manualmente
+/src/content/docs/writeups/*
 !/src/content/docs/writeups/.gitkeep
+!/src/content/docs/writeups/hackthebox/
+!/src/content/docs/writeups/index.mdx
 
 # Claude
 .claude/
